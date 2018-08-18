@@ -1,0 +1,38 @@
+﻿<Page x:Class="FacturaDigital.Settings.DbSettingsConnection"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d" 
+        d:DesignHeight="800" d:DesignWidth="1200"   
+      Title="DbSettingsConnection">
+
+    <StackPanel Grid.Row="0">
+        <TextBox Text="Conexion Base de Datos" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18" MinWidth="120" />
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Direccion del servidor" Width="150" VerticalAlignment="Center" Margin="10"/>
+            <TextBox x:Name="txt_host" materialDesign:HintAssist.Hint="Direccion del servidor" materialDesign:HintAssist.IsFloating="True" Margin="10" Width="200" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Usuario" Width="150" VerticalAlignment="Center" Margin="10"/>
+            <TextBox x:Name="txt_Usuario" materialDesign:HintAssist.Hint="Usuario base de datos" materialDesign:HintAssist.IsFloating="True" Margin="10" Width="200" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Contrasena" Width="150" VerticalAlignment="Center" Margin="10"/>
+            <PasswordBox x:Name="txt_password" materialDesign:HintAssist.Hint="Contrasena DB" materialDesign:HintAssist.IsFloating="True" Margin="10" Width="200" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Esquema base de datos" Width="150" VerticalAlignment="Center" Margin="10"/>
+            <TextBox x:Name="txt_dbName" materialDesign:HintAssist.Hint="Esquema base de datos" materialDesign:HintAssist.IsFloating="True" Margin="10" Width="200" />
+        </StackPanel>
+        <Button Content="Guardar" Click="SaveConexion" DockPanel.Dock="Right" Width="200" HorizontalAlignment="Right" Margin="10" />
+    </StackPanel>
+</Page>

@@ -1,0 +1,56 @@
+﻿<Page x:Class="FacturaDigital.Faturacion.Facturar"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FacturaDigital.Faturacion"
+            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d" 
+        d:DesignHeight="800" d:DesignWidth="1200"   
+      Title="Facturar">
+
+    <StackPanel>
+        <TextBox Text="Crear Factura" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18" MinWidth="120" />
+        <GroupBox Header="Cliente" Margin="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Cliente" />
+                <ComboBox Grid.Column="1" x:Name="cb_Clientes" materialDesign:HintAssist.Hint="Seleccione un cliente" Margin="10" DisplayMemberPath="Nombre"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Productos / Servicios" Margin="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="220" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="110" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="150" />
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Producto" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" x:Name="cb_Productos" materialDesign:HintAssist.Hint="Seleccione un Producto" Margin="10" DisplayMemberPath="ProductoServicio" SelectionChanged="Select_Producto_Servicio"/>
+                <TextBox x:Name="txt_precioUnitario" Grid.Column="2"  materialDesign:HintAssist.Hint=" ₡ Costo del producto / servicio" materialDesign:HintAssist.IsFloating="True" Margin="0,0,10,10" KeyUp="keyUpAddProductoServicioDecimal" />
+                <TextBox  x:Name="txt_Cantidad" Grid.Column="3" materialDesign:HintAssist.Hint="Cantidad" materialDesign:HintAssist.IsFloating="True" Margin="10" KeyUp="keyUpAddProductoServicio"/>
+                <TextBox x:Name="txt_Descuento" Grid.Column="4"  materialDesign:HintAssist.Hint="% Descuento" materialDesign:HintAssist.IsFloating="True" Margin="0,0,10,10" KeyUp="keyUpAddProductoServicio" />
+                <TextBox x:Name="txt_Impuesto" Grid.Column="5"   materialDesign:HintAssist.Hint="% Impuesto" materialDesign:HintAssist.IsFloating="True" Margin="10"  IsReadOnly="True" IsEnabled="False"/>
+                <TextBox Grid.Column="6"  x:Name="txt_subtotal"  materialDesign:HintAssist.Hint="₡ Subtotal" materialDesign:HintAssist.IsFloating="True" Margin="10"  IsReadOnly="True" IsEnabled="False"/>
+                <Button Content="Agregar" Grid.Column="7" Margin="10" Click="AgregarItem" />
+            </Grid>
+        </GroupBox>
+    </StackPanel>
+</Page>

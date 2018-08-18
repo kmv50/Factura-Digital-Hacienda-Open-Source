@@ -1,0 +1,32 @@
+﻿<Application x:Class="FacturaDigital.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:FacturaDigital"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- primary -->
+            <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#033059"/>
+            <!--5c5b5e-->
+            <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#31577E"/>
+            <!--6134d9-->
+            <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#48545e"/>
+            <!--4D1DCF-->
+            <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
+            <!-- accent -->
+            <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#1266a7"/>
+            <!--5c5b5e-->
+            <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="#FFFFFF"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

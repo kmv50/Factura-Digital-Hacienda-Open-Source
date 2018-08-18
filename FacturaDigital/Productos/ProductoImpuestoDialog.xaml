@@ -1,0 +1,49 @@
+﻿<Window x:Class="FacturaDigital.Productos.ProductoImpuestoDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FacturaDigital.Productos"
+               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d" 
+        Title="Impuesto"
+        Height="260" Width="500" ResizeMode="NoResize">
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="Tipo Impuesto" VerticalAlignment="Center" Margin="10"/>
+            <ComboBox Grid.Column="1"  x:Name="cb_impuestoTipo"  materialDesign:HintAssist.Hint="Seleccione el timpo de impuesto" materialDesign:HintAssist.IsFloating="True" Margin="10" DisplayMemberPath="Text" />
+        </Grid>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <Label Content="Tarifa" VerticalAlignment="Center" Margin="10"/>
+            <TextBox Grid.Column="1"  x:Name="txt_Tarifa" KeyUp="CalculeMonto"  materialDesign:HintAssist.Hint="Agregue una tarifa %" materialDesign:HintAssist.IsFloating="True" Margin="10"  />
+        </Grid>
+
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="Monto" VerticalAlignment="Center" Margin="10"/>
+            <TextBox Grid.Column="1" IsReadOnly="True" IsEnabled="False" x:Name="txt_monto"  materialDesign:HintAssist.Hint="Auto Calculado" materialDesign:HintAssist.IsFloating="True" Margin="10"  />
+        </Grid>
+
+        <Button Content="Agregar" HorizontalAlignment="Right" Margin="10" Click="Agregar" />
+    </StackPanel>
+</Window>

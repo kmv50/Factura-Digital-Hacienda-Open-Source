@@ -1,0 +1,150 @@
+﻿<Page x:Class="FacturaDigital.Clientes.Clientes"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FacturaDigital.Clientes"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d" 
+        d:DesignHeight="800" d:DesignWidth="1200"
+      Title="Clientes">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <ScrollViewer>
+        <StackPanel>
+            <TextBox Text="Cliente" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18" MinWidth="120" />
+            <GroupBox Header="Dactos generales" Margin="10">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Identificacion" VerticalAlignment="Center" Margin="10"/>
+                        <ComboBox Grid.Column="1" x:Name="cb_Cedula" SelectedIndex="0"  materialDesign:HintAssist.Hint="Seleccione un tipo" Margin="10" >
+                            <ComboBoxItem/>
+                            <ComboBoxItem Content="Cedula Fisica" Tag="01"/>
+                            <ComboBoxItem Content="Cedula Juridica" Tag="02"/>
+                            <ComboBoxItem Content="Dimex" Tag="03"/>
+                            <ComboBoxItem Content="Nite" Tag="04"/>
+                            <ComboBoxItem Content="Extranjero" Tag="EX"/>
+                        </ComboBox>
+                        <TextBox Grid.Column="2" x:Name="txt_Identificacion" materialDesign:HintAssist.Hint="Numero identificacion" materialDesign:HintAssist.IsFloating="True" Margin="10"  />
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Nombre *" VerticalAlignment="Center" Margin="10"/>
+                        <TextBox Grid.Column="1" x:Name="txt_Nombre" materialDesign:HintAssist.Hint="Nombre" materialDesign:HintAssist.IsFloating="True" Margin="10"  />
+                        <Label Grid.Column="2" Content="Nombre comercial" VerticalAlignment="Center" Margin="10"/>
+                        <TextBox Grid.Column="3" x:Name="txt_comercial" materialDesign:HintAssist.Hint="Nombre comercial" materialDesign:HintAssist.IsFloating="True" Margin="10"  />
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Correo *" VerticalAlignment="Center" Margin="10" />
+                        <TextBox Grid.Column="1" x:Name="txt_Correo" materialDesign:HintAssist.Hint="Correo Electronico" materialDesign:HintAssist.IsFloating="True" Margin="10"  />
+                    </Grid>
+
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Telefono" VerticalAlignment="Center" Margin="10" />
+                        <TextBox Grid.Column="1" x:Name="txt_TelefonoRegion" materialDesign:HintAssist.Hint="Region" materialDesign:HintAssist.IsFloating="True" Margin="10"  />
+                        <TextBox Grid.Column="2" x:Name="txt_TelefonoNumero" materialDesign:HintAssist.Hint="Telefono" materialDesign:HintAssist.IsFloating="True" Margin="10"  />
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+            <Border HorizontalAlignment="Stretch" Height="2" Margin="0,10,0,10" Background="#FF31577E" />
+            <GroupBox Header="Direccion" Margin="10">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Provincia" VerticalAlignment="Center" Margin="10" />
+                        <ComboBox x:Name="cb_Provincia" materialDesign:HintAssist.Hint="Seleccione un tipo" Margin="10" Grid.Column="1" DisplayMemberPath="Nombre"  />
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Canton" VerticalAlignment="Center" Margin="10" />
+                        <ComboBox x:Name="cb_canton" materialDesign:HintAssist.Hint="Seleccione un tipo" Margin="10" Grid.Column="1" DisplayMemberPath="Nombre"  />
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Distrito" VerticalAlignment="Center" Margin="10" />
+                        <ComboBox x:Name="cb_distrito" materialDesign:HintAssist.Hint="Seleccione un tipo" Margin="10" Grid.Column="1" DisplayMemberPath="Nombre"  />
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Barrio" VerticalAlignment="Center" Margin="10" />
+                        <ComboBox x:Name="cb_barrio" materialDesign:HintAssist.Hint="Seleccione un tipo" Margin="10" Grid.Column="1" DisplayMemberPath="Nombre"  />
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Otras senas" VerticalAlignment="Center" Margin="10" />
+                        <TextBox x:Name="txt_otrasSenas" materialDesign:HintAssist.Hint="Otras senas"  Margin="10" Grid.Column="1" />
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+            <TextBlock Margin="10" TextWrapping="Wrap" Text="Los items requeridos cos los marcados con un * Los campos de direccion no son requeridos pero si agrega uno se vuelven requeridos y los tendra que completar" />
+            <Grid>
+                <Button Content="Volver" HorizontalAlignment="Left"  Margin="10" Click="Volver"/>
+                <Button Content="Guardar" HorizontalAlignment="Right"  Margin="10" Click="Guardar"/>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
