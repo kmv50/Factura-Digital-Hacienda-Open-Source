@@ -29,11 +29,10 @@ namespace FacturaDigital.Productos
         {
             this.precioUnitario = precioUnitario;
             this.coleccionImpuesto = coleccionImpuesto;
-            List<Impuestos> ImpuestosDisponbles = ProductosData.Impuestos.Where(q => !coleccionImpuesto.Any( w => w.Impuesto_Tipo == q.Value)).ToList();            
+            List<Impuestos> ImpuestosDisponbles = ProductosData.Impuestos.Where(q => !coleccionImpuesto.Any( w => w.Impuesto_Codigo == q.Value)).ToList();            
             foreach (Producto_ImpuestoSeleccionado v in coleccionImpuesto)
             {
-                if (v.Impuesto_Tarifa.HasValue)
-                    TarifaTotalActual += v.Impuesto_Tarifa.Value;
+                    TarifaTotalActual += v.Impuesto_Tarifa;
             }
             
             InitializeComponent();
@@ -94,7 +93,7 @@ namespace FacturaDigital.Productos
             Producto_Impuesto = new Producto_ImpuestoSeleccionado()
             {
                 Impuesto_Tarifa = Tarifa,
-                Impuesto_Tipo = v1.Value,
+                Impuesto_Codigo = v1.Value,
                 Nombre = v1.Text,
                 Monto = Convert.ToDecimal(txt_monto.Text)
             };

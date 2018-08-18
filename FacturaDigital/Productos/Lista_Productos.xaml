@@ -17,7 +17,9 @@
       Title="Productos">
 
     <StackPanel>
-        <TextBox Text="Lista Productos" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18" MinWidth="120" Margin="10"/>
+        <materialDesign:Card Margin="10" Padding="20">
+            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Lista Productos"  MinWidth="120" Foreground="#31577E"/>
+        </materialDesign:Card>
 
         <Button Content="Agregar nuevo producto" HorizontalAlignment="Right" Margin="10" Click="AgregarNuevoProducto"/>
 

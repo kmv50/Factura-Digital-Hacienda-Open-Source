@@ -15,9 +15,11 @@
         mc:Ignorable="d" 
         d:DesignHeight="800" d:DesignWidth="1200"   
       Title="Facturar">
-
     <StackPanel>
-        <TextBox Text="Crear Factura" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18" MinWidth="120" />
+        <materialDesign:Card Margin="10" Padding="20">
+            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Crear Factura"  MinWidth="120" Foreground="#31577E"/>
+        </materialDesign:Card>
+        
         <GroupBox Header="Cliente" Margin="10">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -30,27 +32,64 @@
             </Grid>
         </GroupBox>
         <GroupBox Header="Productos / Servicios" Margin="10">
+            <StackPanel>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="71" />
+                    <ColumnDefinition />
                     <ColumnDefinition Width="220" />
                     <ColumnDefinition Width="80" />
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="110" />
                     <ColumnDefinition Width="120" />
-                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="120" />
                 </Grid.ColumnDefinitions>
 
-                <Label Content="Producto" VerticalAlignment="Center" />
-                <ComboBox Grid.Column="1" x:Name="cb_Productos" materialDesign:HintAssist.Hint="Seleccione un Producto" Margin="10" DisplayMemberPath="ProductoServicio" SelectionChanged="Select_Producto_Servicio"/>
+                <TextBlock Text="Producto /Servicio" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Height="31" Margin="2,13" />
+                <ComboBox Grid.Column="1" x:Name="cb_Productos" materialDesign:HintAssist.Hint="Seleccione un Producto" Margin="10,20,10,9" VerticalAlignment="Center" DisplayMemberPath="ProductoServicio" SelectionChanged="Select_Producto_Servicio" Height="28"/>
                 <TextBox x:Name="txt_precioUnitario" Grid.Column="2"  materialDesign:HintAssist.Hint=" ₡ Costo del producto / servicio" materialDesign:HintAssist.IsFloating="True" Margin="0,0,10,10" KeyUp="keyUpAddProductoServicioDecimal" />
-                <TextBox  x:Name="txt_Cantidad" Grid.Column="3" materialDesign:HintAssist.Hint="Cantidad" materialDesign:HintAssist.IsFloating="True" Margin="10" KeyUp="keyUpAddProductoServicio"/>
+                <TextBox x:Name="txt_Cantidad" Grid.Column="3" materialDesign:HintAssist.Hint="Cantidad" materialDesign:HintAssist.IsFloating="True" Margin="10" KeyUp="keyUpAddProductoServicio"/>
                 <TextBox x:Name="txt_Descuento" Grid.Column="4"  materialDesign:HintAssist.Hint="% Descuento" materialDesign:HintAssist.IsFloating="True" Margin="0,0,10,10" KeyUp="keyUpAddProductoServicio" />
                 <TextBox x:Name="txt_Impuesto" Grid.Column="5"   materialDesign:HintAssist.Hint="% Impuesto" materialDesign:HintAssist.IsFloating="True" Margin="10"  IsReadOnly="True" IsEnabled="False"/>
-                <TextBox Grid.Column="6"  x:Name="txt_subtotal"  materialDesign:HintAssist.Hint="₡ Subtotal" materialDesign:HintAssist.IsFloating="True" Margin="10"  IsReadOnly="True" IsEnabled="False"/>
-                <Button Content="Agregar" Grid.Column="7" Margin="10" Click="AgregarItem" />
+                <TextBox x:Name="txt_subtotal" Grid.Column="6" materialDesign:HintAssist.Hint="₡ Subtotal" materialDesign:HintAssist.IsFloating="True" Margin="10"  IsReadOnly="True" IsEnabled="False"/>
+                <Button Content="Agregar" Grid.Column="7" Margin="10,12,10,13" Click="AgregarItem" Height="Auto" />
             </Grid>
+                <TextBox x:Name="txt_NaturalezaDescuento" Visibility="Collapsed" materialDesign:HintAssist.Hint="Naturaleza Descuento" materialDesign:HintAssist.IsFloating="True" Margin="10" VerticalAlignment="Center" MaxLength="80" />
+            </StackPanel>
         </GroupBox>
+
+        <GroupBox Header="Detalle de la factura" Margin="10">
+            <DataGrid Margin="10" x:Name="dgv_DetalleFactura"  AutoGenerateColumns="False"  IsReadOnly="True" CanUserSortColumns="True"
+                          ItemsSource="{Binding}"  CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" SelectionMode="Single" materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+
+
+                <DataGrid.Columns>
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding ProductoServicio}" Width="*" Header="Producto" />
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding PrecioUnitario}" Width="150" Header="Precio" />
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding Cantidad}" Width="100" Header="Cantidad" />
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding Monto_Descuento}" Width="100" Header="Descuento" />
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding Impuesto_Monto}" Width="100" Header="Impuesto" />
+
+                    <DataGridCheckBoxColumn Binding="{Binding Gravado}" Header="Gravado" Width="80"
+                                            ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
+
+                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding SubTotal}" Width="200" Header="SubTotal" />
+
+
+                    <DataGridTemplateColumn  MinWidth="80" Header="Eliminar"  CanUserSort="False" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="MaterialDesignFloatingActionMiniAccentButton" CommandParameter="{Binding}" Click="EliminarDeTabla">
+                                    <materialDesign:PackIcon Kind="Delete" Height="24" Width="24" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        
     </StackPanel>
 </Page>

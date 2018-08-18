@@ -24,7 +24,9 @@
     </Page.Resources>
     <ScrollViewer>
         <StackPanel>
-            <TextBox Text="Cliente" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18" MinWidth="120" />
+            <materialDesign:Card Margin="10" Padding="20">
+                <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Cliente"  MinWidth="120" Foreground="#31577E"/>
+            </materialDesign:Card>
             <GroupBox Header="Dactos generales" Margin="10">
                 <StackPanel>
                     <Grid>
@@ -35,7 +37,7 @@
                         </Grid.ColumnDefinitions>
                         <Label Content="Identificacion" VerticalAlignment="Center" Margin="10"/>
                         <ComboBox Grid.Column="1" x:Name="cb_Cedula" SelectedIndex="0"  materialDesign:HintAssist.Hint="Seleccione un tipo" Margin="10" >
-                            <ComboBoxItem/>
+                            <ComboBoxItem Tag=""/>
                             <ComboBoxItem Content="Cedula Fisica" Tag="01"/>
                             <ComboBoxItem Content="Cedula Juridica" Tag="02"/>
                             <ComboBoxItem Content="Dimex" Tag="03"/>

@@ -29,7 +29,9 @@
             <RowDefinition Height="100"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
-        <TextBox Text="Productos" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18" MinWidth="120" />
+            <materialDesign:Card Margin="10" Padding="20">
+                <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Productos / Servicios"  MinWidth="120" Foreground="#31577E"/>
+            </materialDesign:Card>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
@@ -69,12 +71,13 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Label Content="Precio Unidatario *" VerticalAlignment="Center" Margin="10"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <Label Content="₡" VerticalAlignment="Center" FontSize="25" Margin="10,1,0,10" />
                 <TextBox x:Name="txt_precioUnitario"  materialDesign:HintAssist.Hint="Costo del producto / servicio" materialDesign:HintAssist.IsFloating="True" Margin="0,0,10,10"  />
+                <Label Margin="10" VerticalAlignment="Center" Content="Este es el precio por defecto mas adelante en la factura lo puede varir segun se requira." />
             </StackPanel>
         </Grid>
         

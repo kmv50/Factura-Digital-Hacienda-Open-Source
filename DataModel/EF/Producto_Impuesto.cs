@@ -16,11 +16,11 @@ namespace DataModel.EF
 
         [Column(TypeName = "char")]
         [StringLength(2)]
-        public string Impuesto_Tipo { get; set; }
+        public string Impuesto_Codigo { get; set; }
 
         public bool Exento { set; get; }
 
-        public decimal? Impuesto_Tarifa { get; set; }
+        public decimal Impuesto_Tarifa { get; set; }
 
         [Column(TypeName = "char")]
         [StringLength(2)]
@@ -38,7 +38,9 @@ namespace DataModel.EF
 
         public string Exoneracion_PorcentajeCompra { get; set; }
 
-        //[ForeignKey("Id_Producto_Impuesto"), Required]
+        public int Id_Producto { set; get; }
+
+        [ForeignKey("Id_Producto"), Required]
         public virtual Producto Producto { set; get; }
     }
 }

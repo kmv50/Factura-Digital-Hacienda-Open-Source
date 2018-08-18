@@ -17,8 +17,6 @@ namespace DataModel.EF
 
         public decimal Impuesto_Tarifa { get; set; }
 
-        public decimal Impuesto_TarifaReal { get; set; }
-
         public decimal Impuesto_Monto { get; set; }
 
         public bool Exento { set; get; }
@@ -48,6 +46,6 @@ namespace DataModel.EF
         [Column(Order = 1)]
         public int Id_Factura_Detalle { get; set; }
         [ForeignKey("Id_Factura_Detalle")]
-        public virtual Factura_Detalle Factura { get; set; }
+        public virtual Factura_Detalle Factura_Detalle { get; set; }
     }
 }

@@ -4,17 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FacturaDigital.Productos
 {
@@ -23,13 +14,21 @@ namespace FacturaDigital.Productos
     /// </summary>
     public partial class Productos : Page
     {
-        ObservableCollection<Producto_ImpuestoSeleccionado> ColeccionImpuesto;
+        private ObservableCollection<Producto_ImpuestoSeleccionado> ColeccionImpuesto;
         public Productos()
         {
             InitializeComponent();
             ColeccionImpuesto = new ObservableCollection<Producto_ImpuestoSeleccionado>();
-            cb_UnidadMedida.ItemsSource = ProductosData.UnidadesMedida;
             dgv_Impuestos.ItemsSource = ColeccionImpuesto;
+            cb_UnidadMedida.ItemsSource = ProductosData.UnidadesMedida;
+            try
+            {
+                cb_UnidadMedida.SelectedItem = ((List<UnidadMedida>)cb_UnidadMedida.ItemsSource).First(q => q.Value == "Sp");
+            }
+            catch (Exception ex)
+            {
+                RecursosSistema.LogError(ex);
+            }
         }
 
         private void Eliminar(object sender, RoutedEventArgs e)
@@ -46,23 +45,22 @@ namespace FacturaDigital.Productos
         {
             try
             {
-                decimal precioUnitario;
-                if(!decimal.TryParse(txt_precioUnitario.Text,out precioUnitario))
+                if (!decimal.TryParse(txt_precioUnitario.Text, out decimal precioUnitario))
                 {
                     MessageBox.Show("El precio unitario debe de estar en un formato decimal", "Error validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
                     return;
                 }
 
-                
+
 
                 Producto nuevoProducto = new Producto()
-                {                    
+                {
                     Codigo = txt_Codigo.Text,
                     PrecioUnitario = precioUnitario,
                     ProductoServicio = txt_Producto.Text,
                     Tipo = cb_Tipo.SelectedIndex == 0 ? true : false,
                     Unidad_Medida = ((UnidadMedida)cb_UnidadMedida.SelectedItem).Value,
-                    Id_Contribuyente = RecursosSistema.Contribuyente.Id_Contribuyente,                    
+                    Id_Contribuyente = RecursosSistema.Contribuyente.Id_Contribuyente,
                 };
 
                 decimal TarifaTotal = 0;
@@ -70,15 +68,13 @@ namespace FacturaDigital.Productos
                 {
                     foreach (Producto_ImpuestoSeleccionado s in ColeccionImpuesto)
                     {
-                        if (s.Impuesto_Tarifa.HasValue)
+                        TarifaTotal += s.Impuesto_Tarifa;
+                        nuevoProducto.Producto_Impuesto.Add(new Producto_Impuesto()
                         {
-                            TarifaTotal += s.Impuesto_Tarifa.Value;
-                            nuevoProducto.Producto_Impuesto.Add(new Producto_Impuesto()
-                            {
-                                Impuesto_Tarifa = s.Impuesto_Tarifa,
-                                Impuesto_Tipo = s.Impuesto_Tipo,
-                            });
-                        }
+                            Impuesto_Tarifa = s.Impuesto_Tarifa,
+                            Impuesto_Codigo = s.Impuesto_Codigo,
+                        });
+
                     }
                 }
                 nuevoProducto.ImpuestosTarifaTotal = TarifaTotal;
@@ -89,7 +85,7 @@ namespace FacturaDigital.Productos
                     db.SaveChanges();
                 }
 
-                VolverListaProductos(sender,e);
+                VolverListaProductos(sender, e);
             }
             catch (Exception ex)
             {
@@ -102,8 +98,7 @@ namespace FacturaDigital.Productos
         {
             try
             {
-                decimal PrecioUnitario;
-                if(string.IsNullOrEmpty(txt_precioUnitario.Text) ||  !decimal.TryParse(txt_precioUnitario.Text, out PrecioUnitario))
+                if (string.IsNullOrEmpty(txt_precioUnitario.Text) || !decimal.TryParse(txt_precioUnitario.Text, out decimal PrecioUnitario))
                 {
                     MessageBox.Show("Agregue el precio unitario antes de continuar");
                     return;
@@ -114,10 +109,13 @@ namespace FacturaDigital.Productos
                 if (dia.ShowDialog() == true)
                 {
                     Producto_ImpuestoSeleccionado im = dia.GetImpuesto();
-                    if(im.Monto > 0)
+                    if (im.Monto > 0)
+                    {
                         ColeccionImpuesto.Add(im);
+                    }
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 RecursosSistema.LogError(ex);
             }

@@ -117,7 +117,7 @@ namespace FacturaDigital.Clientes
 
                     cli.NombreComercial = txt_comercial.Text;
                     cli.Identificacion_Numero = txt_Identificacion.Text;
-                    if(cb_Cedula.SelectedItem != null && (cb_Cedula.SelectedItem as ComboBoxItem).Tag != null)
+                    if(cb_Cedula.SelectedItem != null &&  !string.IsNullOrEmpty((cb_Cedula.SelectedItem as ComboBoxItem).Tag as string))
                         cli.Identificacion_Tipo = (cb_Cedula.SelectedItem as ComboBoxItem).Tag.ToString();
                     else
                         cli.Identificacion_Tipo = null;

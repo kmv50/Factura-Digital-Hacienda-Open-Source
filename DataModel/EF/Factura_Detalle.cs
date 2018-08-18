@@ -11,6 +11,11 @@ namespace DataModel.EF
     [Table("dbo.Facturas_Detalles")]
     public partial class Factura_Detalle
     {
+        public Factura_Detalle()
+        {
+            Factura_Detalle_Impuesto = new HashSet<Factura_Detalle_Impuesto>();
+        }
+
         [Key]
         public int Id_Factura_Detalle { set; get; }
 
@@ -20,6 +25,8 @@ namespace DataModel.EF
         [Required]
         [StringLength(15)]
         public string Unidad_Medida { get; set; }
+
+        public int Cantidad { set; get; }
 
         [Required]
         [StringLength(160)]
@@ -40,11 +47,14 @@ namespace DataModel.EF
 
         public bool Gravado { get; set; }
 
+        public decimal? Impuesto_Monto { get; set; }
+
         public decimal Monto_Total_Linea { get; set; }
 
         public int Id_Factura { get; set; }
         [ForeignKey("Id_Factura")]
         public virtual Factura Factura { get; set; }
 
+        public virtual ICollection<Factura_Detalle_Impuesto> Factura_Detalle_Impuesto { get; set; }
     }
 }

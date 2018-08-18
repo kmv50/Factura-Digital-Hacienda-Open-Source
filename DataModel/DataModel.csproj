@@ -75,25 +75,13 @@
     <Compile Include="EF\Producto_Impuesto.cs" />
     <Compile Include="EF\SMTP.cs" />
     <Compile Include="EF\Ubicaciones.cs" />
-    <Compile Include="Migrations\201808120432020_InitialCreate.cs" />
-    <Compile Include="Migrations\201808120432020_InitialCreate.Designer.cs">
-      <DependentUpon>201808120432020_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201808181740450_Initial.cs" />
+    <Compile Include="Migrations\201808181740450_Initial.Designer.cs">
+      <DependentUpon>201808181740450_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201808121446596_UbicacionesTabla.cs" />
-    <Compile Include="Migrations\201808121446596_UbicacionesTabla.Designer.cs">
-      <DependentUpon>201808121446596_UbicacionesTabla.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808121447372_SeedUbicaciones.cs" />
-    <Compile Include="Migrations\201808121447372_SeedUbicaciones.Designer.cs">
-      <DependentUpon>201808121447372_SeedUbicaciones.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808130107234_productoimpuesto_deleteCascade.cs" />
-    <Compile Include="Migrations\201808130107234_productoimpuesto_deleteCascade.Designer.cs">
-      <DependentUpon>201808130107234_productoimpuesto_deleteCascade.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808130202559_productoTarifaTotal.cs" />
-    <Compile Include="Migrations\201808130202559_productoTarifaTotal.Designer.cs">
-      <DependentUpon>201808130202559_productoTarifaTotal.cs</DependentUpon>
+    <Compile Include="Migrations\201808181741024_Ubicaciones.cs" />
+    <Compile Include="Migrations\201808181741024_Ubicaciones.Designer.cs">
+      <DependentUpon>201808181741024_Ubicaciones.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,20 +101,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201808120432020_InitialCreate.resx">
-      <DependentUpon>201808120432020_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808181740450_Initial.resx">
+      <DependentUpon>201808181740450_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808121446596_UbicacionesTabla.resx">
-      <DependentUpon>201808121446596_UbicacionesTabla.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808121447372_SeedUbicaciones.resx">
-      <DependentUpon>201808121447372_SeedUbicaciones.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808130107234_productoimpuesto_deleteCascade.resx">
-      <DependentUpon>201808130107234_productoimpuesto_deleteCascade.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808130202559_productoTarifaTotal.resx">
-      <DependentUpon>201808130202559_productoTarifaTotal.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808181741024_Ubicaciones.resx">
+      <DependentUpon>201808181741024_Ubicaciones.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

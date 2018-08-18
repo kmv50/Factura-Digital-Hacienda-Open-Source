@@ -3,7 +3,7 @@ namespace ApiModels.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class SeedUbicaciones : DbMigration
+    public partial class Ubicaciones : DbMigration
     {
         public override void Up()
         {
@@ -6611,6 +6611,7 @@ namespace ApiModels.Migrations
             Sql("insert into `Ubicaciones`(`Id_Provincia`,`Provincia`,`Id_Canton`,`Canton`,`Id_Distrito`,`Distrito`,`Id_Barrio`,`Barrio`) values (7,'Limón',6,'Guácimo',5,'DUACARÍ',7,'San Cristóbal');");
             Sql("insert into `Ubicaciones`(`Id_Provincia`,`Provincia`,`Id_Canton`,`Canton`,`Id_Distrito`,`Distrito`,`Id_Barrio`,`Barrio`) values (7,'Limón',6,'Guácimo',5,'DUACARÍ',8,'Zancudo.');");
         }
+
 
         public override void Down()
         {

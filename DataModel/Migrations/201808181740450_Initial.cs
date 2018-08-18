@@ -3,7 +3,7 @@ namespace ApiModels.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -122,6 +122,7 @@ namespace ApiModels.Migrations
                         Id_Factura_Detalle = c.Int(nullable: false, identity: true),
                         Codigo = c.String(maxLength: 20, storeType: "nvarchar"),
                         Unidad_Medida = c.String(nullable: false, maxLength: 15, storeType: "nvarchar"),
+                        Cantidad = c.Int(nullable: false),
                         ProductoServicio = c.String(nullable: false, maxLength: 160, storeType: "nvarchar"),
                         PrecioUnitario = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Tipo = c.Boolean(nullable: false),
@@ -130,6 +131,7 @@ namespace ApiModels.Migrations
                         Naturaleza_Descuento = c.String(maxLength: 80, storeType: "nvarchar"),
                         SubTotal = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Gravado = c.Boolean(nullable: false),
+                        Impuesto_Monto = c.Decimal(precision: 18, scale: 2),
                         Monto_Total_Linea = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Id_Factura = c.Int(nullable: false),
                     })
@@ -144,7 +146,6 @@ namespace ApiModels.Migrations
                         Id_Factura_Detalle = c.Int(nullable: false),
                         Impuesto_Codigo = c.String(maxLength: 2, fixedLength: true, unicode: false, storeType: "char"),
                         Impuesto_Tarifa = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Impuesto_TarifaReal = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Impuesto_Monto = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Exento = c.Boolean(nullable: false),
                         Exoneracion_TipoDocumento = c.String(maxLength: 2, fixedLength: true, unicode: false, storeType: "char"),
@@ -155,7 +156,7 @@ namespace ApiModels.Migrations
                         Exoneracion_PorcentajeCompra = c.String(maxLength: 3, fixedLength: true, unicode: false, storeType: "char"),
                     })
                 .PrimaryKey(t => t.Id_Factura_Detalle)
-                .ForeignKey("dbo.Facturas_Detalles", t => t.Id_Factura_Detalle)
+                .ForeignKey("dbo.Facturas_Detalles", t => t.Id_Factura_Detalle, cascadeDelete: true)
                 .Index(t => t.Id_Factura_Detalle);
             
             CreateTable(
@@ -168,6 +169,7 @@ namespace ApiModels.Migrations
                         ProductoServicio = c.String(nullable: false, maxLength: 160, storeType: "nvarchar"),
                         PrecioUnitario = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Tipo = c.Boolean(nullable: false),
+                        ImpuestosTarifaTotal = c.Decimal(precision: 18, scale: 2),
                         Id_Contribuyente = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id_Producto)
@@ -178,20 +180,21 @@ namespace ApiModels.Migrations
                 "dbo.Productos_Impuestos",
                 c => new
                     {
-                        Id_Producto_Impuesto = c.Int(nullable: false),
-                        Impuesto_Tipo = c.String(maxLength: 2, fixedLength: true, unicode: false, storeType: "char"),
+                        Id_Producto_Impuesto = c.Int(nullable: false, identity: true),
+                        Impuesto_Codigo = c.String(maxLength: 2, fixedLength: true, unicode: false, storeType: "char"),
                         Exento = c.Boolean(nullable: false),
-                        Impuesto_Tarifa = c.Decimal(precision: 18, scale: 2),
+                        Impuesto_Tarifa = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Exoneracion_TipoDocumento = c.String(maxLength: 2, fixedLength: true, unicode: false, storeType: "char"),
                         Exoneracion_NumeroDocumento = c.String(maxLength: 17, storeType: "nvarchar"),
                         Exoneracion_NombreInstitucion = c.String(maxLength: 100, storeType: "nvarchar"),
                         Exoneracion_MontoImpuesto = c.Decimal(precision: 18, scale: 2),
                         Exoneracion_FechaEmision = c.DateTime(precision: 0),
                         Exoneracion_PorcentajeCompra = c.String(unicode: false),
+                        Id_Producto = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id_Producto_Impuesto)
-                .ForeignKey("dbo.Productos", t => t.Id_Producto_Impuesto)
-                .Index(t => t.Id_Producto_Impuesto);
+                .ForeignKey("dbo.Productos", t => t.Id_Producto, cascadeDelete: true)
+                .Index(t => t.Id_Producto);
             
             CreateTable(
                 "dbo.SMTP",
@@ -208,24 +211,41 @@ namespace ApiModels.Migrations
                 .ForeignKey("dbo.Contribuyentes", t => t.Id_Contribuyente, cascadeDelete: true)
                 .Index(t => t.Id_Contribuyente);
             
+            CreateTable(
+                "dbo.Ubicaciones",
+                c => new
+                    {
+                        Id_Ubicacion = c.Int(nullable: false, identity: true),
+                        Id_Provincia = c.Int(nullable: false),
+                        Provincia = c.String(nullable: false, maxLength: 50, storeType: "nvarchar"),
+                        Id_Canton = c.Int(nullable: false),
+                        Canton = c.String(nullable: false, maxLength: 50, storeType: "nvarchar"),
+                        Id_Distrito = c.Int(nullable: false),
+                        Distrito = c.String(nullable: false, maxLength: 50, storeType: "nvarchar"),
+                        Id_Barrio = c.Int(nullable: false),
+                        Barrio = c.String(nullable: false, maxLength: 50, storeType: "nvarchar"),
+                    })
+                .PrimaryKey(t => t.Id_Ubicacion);
+            
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.SMTP", "Id_Contribuyente", "dbo.Contribuyentes");
-            DropForeignKey("dbo.Productos_Impuestos", "Id_Producto_Impuesto", "dbo.Productos");
+            DropForeignKey("dbo.Productos_Impuestos", "Id_Producto", "dbo.Productos");
             DropForeignKey("dbo.Productos", "Id_Contribuyente", "dbo.Contribuyentes");
             DropForeignKey("dbo.Factura_Detalles_Impuestos", "Id_Factura_Detalle", "dbo.Facturas_Detalles");
             DropForeignKey("dbo.Facturas_Detalles", "Id_Factura", "dbo.Facturas");
             DropForeignKey("dbo.Facturas", "Id_Contribuyente", "dbo.Contribuyentes");
             DropForeignKey("dbo.Clientes", "Id_Contribuyente", "dbo.Contribuyentes");
             DropIndex("dbo.SMTP", new[] { "Id_Contribuyente" });
-            DropIndex("dbo.Productos_Impuestos", new[] { "Id_Producto_Impuesto" });
+            DropIndex("dbo.Productos_Impuestos", new[] { "Id_Producto" });
             DropIndex("dbo.Productos", new[] { "Id_Contribuyente" });
             DropIndex("dbo.Factura_Detalles_Impuestos", new[] { "Id_Factura_Detalle" });
             DropIndex("dbo.Facturas_Detalles", new[] { "Id_Factura" });
             DropIndex("dbo.Facturas", new[] { "Id_Contribuyente" });
             DropIndex("dbo.Clientes", new[] { "Id_Contribuyente" });
+            DropTable("dbo.Ubicaciones");
             DropTable("dbo.SMTP");
             DropTable("dbo.Productos_Impuestos");
             DropTable("dbo.Productos");

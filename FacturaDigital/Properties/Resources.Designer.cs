@@ -59,15 +59,5 @@ namespace FacturaDigital.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Byte[].
-        /// </summary>
-        internal static byte[] ubicacion {
-            get {
-                object obj = ResourceManager.GetObject("ubicacion", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

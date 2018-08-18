@@ -2,6 +2,7 @@
 using FacturaDigital.Recursos;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace FacturaDigital.Clientes
     /// </summary>
     public partial class Lista_Clientes : Page
     {
+        ObservableCollection<Cliente> ClienteCollection;
         public Lista_Clientes()
         {
             InitializeComponent();
@@ -39,7 +41,10 @@ namespace FacturaDigital.Clientes
                 }
 
                 if (Cliente != null)
-                    dgv_Clientes.ItemsSource = Cliente;
+                {
+                    ClienteCollection = new ObservableCollection<Cliente>(Cliente);
+                    dgv_Clientes.ItemsSource = ClienteCollection;
+                }
             }
             catch (Exception ex)
             {
@@ -52,7 +57,25 @@ namespace FacturaDigital.Clientes
 
         private void EliminarCliente(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (ClienteCollection != null)
+                {
+                    Button btn = (Button)sender;
+                    using (db_FacturaDigital db = new db_FacturaDigital())
+                    {
+                        int Id_Cliente = (int)btn.CommandParameter;
+                        db.Cliente.Remove(db.Cliente.First(q => q.Id_Cliente == Id_Cliente));
+                        db.SaveChanges();
 
+                        ClienteCollection.Remove(ClienteCollection.First(q => q.Id_Cliente == Id_Cliente));
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                RecursosSistema.LogError(ex);
+            }
         }
 
         private void AgregarNuevoCliente(object sender, RoutedEventArgs e)

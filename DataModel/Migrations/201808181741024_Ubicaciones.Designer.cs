@@ -7,13 +7,13 @@ namespace ApiModels.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class SeedUbicaciones : IMigrationMetadata
+    public sealed partial class Ubicaciones : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SeedUbicaciones));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Ubicaciones));
         
         string IMigrationMetadata.Id
         {
-            get { return "201808121447372_SeedUbicaciones"; }
+            get { return "201808181741024_Ubicaciones"; }
         }
         
         string IMigrationMetadata.Source
