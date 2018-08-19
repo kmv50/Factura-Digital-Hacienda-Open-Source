@@ -18,169 +18,169 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <StackPanel>
-        <materialDesign:Card Margin="10" Padding="20">
-            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Crear Factura"  MinWidth="120" Foreground="#31577E"/>
-        </materialDesign:Card>
+    <Grid>
+        <Grid Visibility="Hidden" x:Name="loadingDisplayer"  Margin="0,0,0,0"  Panel.ZIndex="10"   >
+            <Grid Margin="0,0,0,0" Background="Black" Opacity="0.71"  OpacityMask="Black" ></Grid>
+            <materialDesign:Card UniformCornerRadius="14" Opacity="1" Background="{DynamicResource MaterialDesignPaper}" Padding="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel >
+                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Width="80" Height="80" Value="35"  IsIndeterminate="True"/>
+                    <Label  Content="Por favor espere..." Foreground="#31577E"  FontSize="20" FontWeight="Bold" Margin="10"></Label>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
         
-        <GroupBox Header="Datos Factuacion" Margin="10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="90" />
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Label Content="Tipo Factura" VerticalAlignment="Center" />
-                <ToggleButton Grid.Column="1" Content="F" Style="{StaticResource MaterialDesignActionLightToggleButton}"  VerticalAlignment="Center" Click="CambiarTipoFactura"
+        <StackPanel>
+            <materialDesign:Card Margin="10" Padding="20">
+                <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Crear Factura"  MinWidth="120" Foreground="#31577E"/>
+            </materialDesign:Card>
+
+            <GroupBox Header="Datos Factuacion" Margin="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Tipo Factura" VerticalAlignment="Center" />
+                    <ToggleButton Grid.Column="1" Content="F" Style="{StaticResource MaterialDesignActionLightToggleButton}"  VerticalAlignment="Center" Click="CambiarTipoFactura"
                               ToolTip="Use Tiquete electronico para facturar productos o servicios que no requieren de un cliente. Use factura electronica cuando va a facturar a un cliente registrado"/>
-                <Label x:Name="lb_TipoFactura" VerticalAlignment="Center" Grid.Column="2" Content="Factura Electronica" />
-                <Label Grid.Column="3" Content="Cliente" VerticalAlignment="Center" />
-                <ComboBox Grid.Column="4" x:Name="cb_Clientes" materialDesign:HintAssist.Hint="Seleccione un cliente" Margin="10" DisplayMemberPath="Nombre"/>
-                <TextBox Grid.Column="4" x:Name="txt_Cliente_Tiquete" materialDesign:HintAssist.Hint="Nombre del cliente (opcional)" materialDesign:HintAssist.IsFloating="True" Margin="10" Visibility="Hidden" />
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="Productos / Servicios" Margin="10">
-            <StackPanel>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="71" />
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="220" />
-                    <ColumnDefinition Width="80" />
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="110" />
-                    <ColumnDefinition Width="120" />
-                    <ColumnDefinition Width="120" />
-                </Grid.ColumnDefinitions>
+                    <Label x:Name="lb_TipoFactura" VerticalAlignment="Center" Grid.Column="2" Content="Factura Electronica" />
+                    <Label Grid.Column="3" Content="Cliente" VerticalAlignment="Center" />
+                    <ComboBox Grid.Column="4" x:Name="cb_Clientes" materialDesign:HintAssist.Hint="Seleccione un cliente" Margin="10" DisplayMemberPath="Nombre" materialDesign:HintAssist.IsFloating="True"/>
+                    <TextBox Grid.Column="4" x:Name="txt_Cliente_Tiquete" materialDesign:HintAssist.Hint="Nombre del cliente (opcional)" materialDesign:HintAssist.IsFloating="True" Margin="10" Visibility="Hidden" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Productos / Servicios" Margin="10">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="71" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="120" />
+                        </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Producto /Servicio" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Height="31" Margin="2,13" />
-                <ComboBox Grid.Column="1" x:Name="cb_Productos" materialDesign:HintAssist.Hint="Seleccione un Producto" Margin="10,20,10,9" VerticalAlignment="Center" DisplayMemberPath="ProductoServicio" SelectionChanged="Select_Producto_Servicio" Height="28"/>
-                <TextBox x:Name="txt_precioUnitario" Grid.Column="2"  materialDesign:HintAssist.Hint=" ₡ Costo del producto / servicio" materialDesign:HintAssist.IsFloating="True" Margin="0,0,10,10" KeyUp="keyUpAddProductoServicioDecimal" />
-                <TextBox x:Name="txt_Cantidad" Grid.Column="3" materialDesign:HintAssist.Hint="Cantidad" materialDesign:HintAssist.IsFloating="True" Margin="10" KeyUp="keyUpAddProductoServicio"/>
-                <TextBox x:Name="txt_Descuento" Grid.Column="4"  materialDesign:HintAssist.Hint="% Descuento" materialDesign:HintAssist.IsFloating="True" Margin="0,0,10,10" KeyUp="keyUpAddProductoServicio" />
-                <TextBox x:Name="txt_Impuesto" Grid.Column="5"   materialDesign:HintAssist.Hint="% Impuesto" materialDesign:HintAssist.IsFloating="True" Margin="10"  IsReadOnly="True" IsEnabled="False"/>
-                <TextBox x:Name="txt_subtotal" Grid.Column="6" materialDesign:HintAssist.Hint="₡ Subtotal" materialDesign:HintAssist.IsFloating="True" Margin="10"  IsReadOnly="True" IsEnabled="False"/>
-                <Button Content="Agregar" Grid.Column="7" Margin="10,12,10,13" Click="AgregarItem" Height="Auto" />
-            </Grid>
-                <TextBox x:Name="txt_NaturalezaDescuento" Visibility="Collapsed" materialDesign:HintAssist.Hint="Naturaleza Descuento" materialDesign:HintAssist.IsFloating="True" Margin="10" VerticalAlignment="Center" MaxLength="80" />
-            </StackPanel>
-        </GroupBox>
+                        <TextBlock Text="Producto /Servicio" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Height="31" Margin="2,13" />
+                        <ComboBox Grid.Column="1" x:Name="cb_Productos"  materialDesign:HintAssist.Hint="Seleccione un Producto" Margin="10,20,10,9" VerticalAlignment="Center" DisplayMemberPath="ProductoServicio" SelectionChanged="Select_Producto_Servicio" Height="28"/>
+                        <TextBox x:Name="txt_precioUnitario" Grid.Column="2"  materialDesign:HintAssist.Hint=" ₡ Costo del producto / servicio" materialDesign:HintAssist.IsFloating="True" Margin="0,0,10,10" KeyUp="keyUpAddProductoServicioDecimal" />
+                        <TextBox x:Name="txt_Cantidad" Grid.Column="3" materialDesign:HintAssist.Hint="Cantidad" materialDesign:HintAssist.IsFloating="True" Margin="10" KeyUp="keyUpAddProductoServicio"/>
+                        <TextBox x:Name="txt_Descuento" Grid.Column="4"  materialDesign:HintAssist.Hint="% Descuento" materialDesign:HintAssist.IsFloating="True" Margin="0,0,10,10" KeyUp="keyUpAddProductoServicio" />
+                        <TextBox x:Name="txt_Impuesto" Grid.Column="5"   materialDesign:HintAssist.Hint="% Impuesto" materialDesign:HintAssist.IsFloating="True" Margin="10"  IsReadOnly="True" IsEnabled="False"/>
+                        <TextBox x:Name="txt_subtotal" Grid.Column="6" materialDesign:HintAssist.Hint="₡ Subtotal" materialDesign:HintAssist.IsFloating="True" Margin="10"  IsReadOnly="True" IsEnabled="False"/>
+                        <Button Content="Agregar" Grid.Column="7" Margin="10,12,10,13" Click="AgregarItem" Height="Auto" />
+                    </Grid>
+                    <TextBox x:Name="txt_NaturalezaDescuento" Visibility="Collapsed" materialDesign:HintAssist.Hint="Naturaleza Descuento" materialDesign:HintAssist.IsFloating="True" Margin="10" VerticalAlignment="Center" MaxLength="80" />
+                </StackPanel>
+            </GroupBox>
 
-        <GroupBox Header="Detalle de la factura" Margin="10">
-            <DataGrid Margin="10" x:Name="dgv_DetalleFactura"  AutoGenerateColumns="False"  IsReadOnly="True" CanUserSortColumns="True"
+            <GroupBox Header="Detalle de la factura" Margin="10">
+                <DataGrid Margin="10" x:Name="dgv_DetalleFactura"  AutoGenerateColumns="False"  IsReadOnly="True" CanUserSortColumns="True"
                           ItemsSource="{Binding}"  CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" SelectionMode="Single" materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8">
 
 
-                <DataGrid.Columns>
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding ProductoServicio}" Width="*" Header="Producto" />
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding PrecioUnitario}" Width="150" Header="Precio" />
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding Cantidad}" Width="100" Header="Cantidad" />
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding Monto_Descuento}" Width="100" Header="Descuento" />
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding Impuesto_Monto}" Width="100" Header="Impuesto" />
+                    <DataGrid.Columns>
+                        <materialDesign:MaterialDataGridTextColumn Binding="{Binding ProductoServicio}" Width="*" Header="Producto" />
+                        <materialDesign:MaterialDataGridTextColumn Binding="{Binding PrecioUnitario}" Width="150" Header="Precio" />
+                        <materialDesign:MaterialDataGridTextColumn Binding="{Binding Cantidad}" Width="100" Header="Cantidad" />
+                        <materialDesign:MaterialDataGridTextColumn Binding="{Binding Monto_Descuento}" Width="100" Header="Descuento" />
+                        <materialDesign:MaterialDataGridTextColumn Binding="{Binding Impuesto_Monto}" Width="100" Header="Impuesto" />
 
-                    <DataGridCheckBoxColumn Binding="{Binding Gravado}" Header="Gravado" Width="80"
+                        <DataGridCheckBoxColumn Binding="{Binding Gravado}" Header="Gravado" Width="80"
                                             ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                             EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
 
-                    <materialDesign:MaterialDataGridTextColumn Binding="{Binding Monto_Total_Linea}" Width="200" Header="Monto Total Linea" />
+                        <materialDesign:MaterialDataGridTextColumn Binding="{Binding Monto_Total_Linea}" Width="200" Header="Monto Total Linea" />
 
 
-                    <DataGridTemplateColumn  MinWidth="80" Header="Eliminar"  CanUserSort="False" >
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="MaterialDesignFloatingActionMiniAccentButton" CommandParameter="{Binding}" Click="EliminarDeTabla">
-                                    <materialDesign:PackIcon Kind="Delete" Height="24" Width="24" />
-                                </Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                        <DataGridTemplateColumn  MinWidth="80" Header="Eliminar"  CanUserSort="False" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="MaterialDesignFloatingActionMiniAccentButton" CommandParameter="{Binding}" Click="EliminarDeTabla">
+                                        <materialDesign:PackIcon Kind="Delete" Height="24" Width="24" />
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                </DataGrid.Columns>
-            </DataGrid>
-        </GroupBox>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
 
 
-        <GroupBox Header="Totales" Margin="10">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0"  Grid.Row="0" Content="SubTotal Neto"  Margin="5" VerticalAlignment="Top" />
-                <Label Grid.Column="1"  Grid.Row="0" Content="Decuento" Margin="5" VerticalAlignment="Top" />
-
-                <StackPanel Orientation="Horizontal" Grid.Column="2"  Grid.Row="0" Margin="0,-3,0,0"  VerticalAlignment="Top">
-                    <Label Content="Impuesto" VerticalAlignment="Center"/>
-                    <materialDesign:PopupBox Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+            <GroupBox Header="Totales" Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"  Grid.Row="0" Content="SubTotal Neto"  Margin="5" VerticalAlignment="Top" />
+                    <Label Grid.Column="1"  Grid.Row="0" Content="Decuento" Margin="5" VerticalAlignment="Top" />
+                    <Label Content="Impuesto" Grid.Column="2"  VerticalAlignment="Top"/>
+                    <StackPanel Orientation="Horizontal" Grid.Column="3" Margin="0,-3,0,0" Grid.Row="0" VerticalAlignment="Top">
+                        <Label Content="Total" VerticalAlignment="Center"/>
+                        <materialDesign:PopupBox Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
                                              PlacementMode="LeftAndAlignMiddles"
                                              Height="30" Width="30"
                                              >
-                        <StackPanel>
-                            <materialDesign:Card Margin="5" Padding="10">
-                                <StackPanel Orientation="Horizontal" Width="240">
-                                    <TextBlock Text="Producto Exento"  Width="120" Foreground="#31577E"/>
-                                    <TextBlock x:Name="txt_ImpuestoResumenProductoExento" Width="120" Foreground="#31577E"/>
-                                </StackPanel>                                                               
-                            </materialDesign:Card>
+                            <StackPanel>
+                                <materialDesign:Card Margin="5" Padding="10">
+                                    <StackPanel Orientation="Horizontal" Width="240">
+                                        <TextBlock Text="Producto Exento"  Width="120" Foreground="#31577E"/>
+                                        <TextBlock x:Name="txt_ImpuestoResumenProductoExento" Width="120" Foreground="#31577E"/>
+                                    </StackPanel>
+                                </materialDesign:Card>
 
-                            <materialDesign:Card Margin="5" Padding="10">
-                                <StackPanel Orientation="Horizontal" Width="240">
-                                    <TextBlock Text="Producto Gravado"  Width="120" Foreground="#31577E"/>
-                                    <TextBlock x:Name="txt_ImpuestoResumenProductoGravado" Width="120" Foreground="#31577E"/>
-                                </StackPanel>
-                            </materialDesign:Card>
+                                <materialDesign:Card Margin="5" Padding="10">
+                                    <StackPanel Orientation="Horizontal" Width="240">
+                                        <TextBlock Text="Producto Gravado"  Width="120" Foreground="#31577E"/>
+                                        <TextBlock x:Name="txt_ImpuestoResumenProductoGravado" Width="120" Foreground="#31577E"/>
+                                    </StackPanel>
+                                </materialDesign:Card>
 
-                            <materialDesign:Card Margin="5" Padding="10">
-                                <StackPanel Orientation="Horizontal" Width="240">
-                                    <TextBlock Text="Servicios Exento"  Width="120" Foreground="#31577E"/>
-                                    <TextBlock x:Name="txt_ImpuestoResumenServiciosExento" Width="120" Foreground="#31577E"/>
-                                </StackPanel>
-                            </materialDesign:Card>
+                                <materialDesign:Card Margin="5" Padding="10">
+                                    <StackPanel Orientation="Horizontal" Width="240">
+                                        <TextBlock Text="Servicios Exento"  Width="120" Foreground="#31577E"/>
+                                        <TextBlock x:Name="txt_ImpuestoResumenServiciosExento" Width="120" Foreground="#31577E"/>
+                                    </StackPanel>
+                                </materialDesign:Card>
 
-                            <materialDesign:Card Margin="5" Padding="10">
-                                <StackPanel Orientation="Horizontal" Width="240">
-                                    <TextBlock Text="Servicios Gravado"  Width="120" Foreground="#31577E"/>
-                                    <TextBlock x:Name="txt_ImpuestoResumenServiciosGravado" Width="120" Foreground="#31577E"/>
-                                </StackPanel>
-                            </materialDesign:Card>
-                        </StackPanel>
-                    </materialDesign:PopupBox>
-                </StackPanel>
+                                <materialDesign:Card Margin="5" Padding="10">
+                                    <StackPanel Orientation="Horizontal" Width="240">
+                                        <TextBlock Text="Servicios Gravado"  Width="120" Foreground="#31577E"/>
+                                        <TextBlock x:Name="txt_ImpuestoResumenServiciosGravado" Width="120" Foreground="#31577E"/>
+                                    </StackPanel>
+                                </materialDesign:Card>
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </StackPanel>
+
+                    <TextBox Grid.Column="0"  x:Name="txt_ResumenSubTotalNeto" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ SubTotal Neto" materialDesign:HintAssist.IsFloating="True"/>
+                    <TextBox Grid.Column="1"  x:Name="txt_ResumenDescuento" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Descuento" materialDesign:HintAssist.IsFloating="True"/>
+                    <TextBox Grid.Column="2"  x:Name="txt_ResumenImpuesto" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Impuesto" materialDesign:HintAssist.IsFloating="True"/>
+                    <TextBox Grid.Column="3"  x:Name="txt_ResumenTotales" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Total" materialDesign:HintAssist.IsFloating="True"/>
+
+                </Grid>
+            </GroupBox>
+            <Button Content="Facturar" HorizontalAlignment="Right" Margin="10" Width="200" Click="ModalFacturacion" />
 
 
-                <StackPanel Orientation="Horizontal" Grid.Column="3" Margin="0,-3,0,0" Grid.Row="0" VerticalAlignment="Top">
-                    <Label Content="Total" VerticalAlignment="Center"/>
-                    <materialDesign:PopupBox Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
-                                             PlacementMode="LeftAndAlignMiddles"
-                                             Height="30" Width="30"
-                                             >
-                        <StackPanel>
-                            <Button ToolTip="One with custom opacity" Opacity="0.5">1</Button>
-                            <Button ToolTip="Two">2</Button>
-                            <Button ToolTip="Three">3</Button>
-                        </StackPanel>
-                    </materialDesign:PopupBox>
-                </StackPanel>
-
-                <TextBox Grid.Column="0"  x:Name="txt_ResumenSubTotalNeto" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ SubTotal Neto" materialDesign:HintAssist.IsFloating="True"/>
-                <TextBox Grid.Column="1"  x:Name="txt_ResumenDescuento" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Descuento" materialDesign:HintAssist.IsFloating="True"/>
-                <TextBox Grid.Column="2"  x:Name="txt_ResumenImpuesto" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Impuesto" materialDesign:HintAssist.IsFloating="True"/>
-                <TextBox Grid.Column="3"  x:Name="txt_ResumenTotales" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Total" materialDesign:HintAssist.IsFloating="True"/>
-              
-            </Grid>
-        </GroupBox>
-        <Button Content="Facturar" HorizontalAlignment="Right" Margin="10" Width="200"/>
-    </StackPanel>
+        </StackPanel>
+    </Grid>
 </Page>

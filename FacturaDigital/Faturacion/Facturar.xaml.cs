@@ -54,9 +54,9 @@ namespace FacturaDigital.Faturacion
 
                 #region Validar Datos 
                 decimal PrecioUnitario;
-                if(!decimal.TryParse(txt_precioUnitario.Text,out PrecioUnitario))
+                if(!decimal.TryParse(txt_precioUnitario.Text,out PrecioUnitario) || PrecioUnitario  <= 0)
                 {
-                    MessageBox.Show("Error el precio unitario debe ser numerico","Validacion",MessageBoxButton.OK,MessageBoxImage.Stop);
+                    MessageBox.Show("Error el precio unitario debe ser numerico mayor a 0","Validacion",MessageBoxButton.OK,MessageBoxImage.Stop);
                     return;
                 }
                 item.PrecioUnitario = PrecioUnitario;
@@ -77,7 +77,7 @@ namespace FacturaDigital.Faturacion
                 item.Cantidad = Cantidad;
 
 
-                int ? DescuentoReal = null;
+                int ? DescuentoRealPorcentaje = null;
                 if (!string.IsNullOrEmpty(txt_Descuento.Text))
                 {
                     int Descuento;
@@ -86,11 +86,13 @@ namespace FacturaDigital.Faturacion
                         MessageBox.Show("Error el decuento debe ser un dato numerico positivo de tipo entero no mayor a 99 y mayor a 0", "Validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
                         return;
                     }
+
+                    if(Descuento != 0)
+                        DescuentoRealPorcentaje = Descuento;
                 }
 
-                item.Monto_Descuento = DescuentoReal;
 
-                if (DescuentoReal.HasValue && string.IsNullOrEmpty(txt_NaturalezaDescuento.Text))
+                if (DescuentoRealPorcentaje.HasValue && string.IsNullOrEmpty(txt_NaturalezaDescuento.Text))
                 {
                     MessageBox.Show("Error si ingresa un descuento por normativa de Hacienda debe de indicar la razon del mismo", "Validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
                     return;
@@ -101,7 +103,15 @@ namespace FacturaDigital.Faturacion
                 }
                 #endregion
 
+
                 item.Monto_Total = item.Cantidad * item.PrecioUnitario;
+
+                if (DescuentoRealPorcentaje.HasValue)
+                    item.Monto_Descuento = ((DescuentoRealPorcentaje / 100) * item.Monto_Total);
+                else
+                    item.Monto_Descuento = 0;
+
+
                 item.ProductoServicio = p.ProductoServicio;
                 item.Unidad_Medida = p.Unidad_Medida;
                 item.Tipo = p.Tipo;
@@ -133,8 +143,8 @@ namespace FacturaDigital.Faturacion
                     item.Impuesto_Monto = Impuesto_Monto;
                     item.Factura_Detalle_Impuesto = Factura_Detalle_Impuesto;
                 }
-                item.SubTotal = item.Monto_Total - item.Monto_Descuento ?? 0;
-                item.Monto_Total_Linea = item.SubTotal + (item.Impuesto_Monto ?? 0);
+                item.SubTotal = item.Monto_Total - (item.Monto_Descuento.HasValue ? item.Monto_Descuento.Value : 0);
+                item.Monto_Total_Linea = item.SubTotal + (item.Impuesto_Monto.HasValue ? item.Impuesto_Monto.Value : 0);
 
                 FacturaDetalle.Add(item);
                 LimpiarSelectorProducto();
@@ -202,11 +212,11 @@ namespace FacturaDigital.Faturacion
                 txt_ResumenSubTotalNeto.Text = ResumenSubTotalNeto.ToString();
                 txt_ResumenTotales.Text = ResumenTotales.ToString();
 
-                txt_ImpuestoResumenProductoExento.Text = ResumenDescuentos.ToString();
-                txt_ImpuestoResumenProductoGravado.Text = ResumenDescuentos.ToString();
+                txt_ImpuestoResumenProductoExento.Text = ResumenImpuestoProductoExento.ToString();
+                txt_ImpuestoResumenProductoGravado.Text = ResumenImpuestoProductoGravado.ToString();
 
-                txt_ImpuestoResumenServiciosExento.Text = ResumenDescuentos.ToString();
-                txt_ImpuestoResumenServiciosGravado.Text = ResumenDescuentos.ToString();
+                txt_ImpuestoResumenServiciosExento.Text = ResumenImpuestoServicioExento.ToString();
+                txt_ImpuestoResumenServiciosGravado.Text = ResumenImpuestoServicioGravado.ToString();
             }
             catch(Exception ex)
             {
@@ -228,7 +238,8 @@ namespace FacturaDigital.Faturacion
                 txt_Descuento.Text = null;
                 txt_NaturalezaDescuento.Text = null;
                 txt_precioUnitario.Text = null;
-                txt_subtotal.Text = null;               
+                txt_subtotal.Text = null;
+                txt_NaturalezaDescuento.Visibility = Visibility.Collapsed;
             }catch(Exception ex)
             {
                 RecursosSistema.LogError(ex);
@@ -266,7 +277,10 @@ namespace FacturaDigital.Faturacion
 
             decimal Unitario = Convert.ToDecimal(txt_precioUnitario.Text);
             int Cantidad = Convert.ToInt32(txt_Cantidad.Text);
-            decimal Decuento = Convert.ToDecimal(txt_Descuento.Text);
+
+            decimal Decuento = 0;
+            if (!string.IsNullOrEmpty(txt_Descuento.Text))
+                    Decuento = Convert.ToDecimal(txt_Descuento.Text);
 
             decimal Impuesto = 0;
             if (!string.IsNullOrEmpty(txt_Impuesto.Text))
@@ -294,7 +308,10 @@ namespace FacturaDigital.Faturacion
                 int v;
                 if(!int.TryParse(txt.Text, out v))
                 {
-                    txt.Text = "0";
+                    if (txt.Name == "txt_Descuento")
+                        txt.Text = null;
+                    else if (txt.Name == "txt_Cantidad")
+                        txt.Text = "1";
                 }
                 CalcularSubTotal();
 
@@ -327,7 +344,7 @@ namespace FacturaDigital.Faturacion
                 decimal v;
                 if (!decimal.TryParse(txt.Text, out v))
                 {
-                    txt.Text = "0";
+                    txt.Text = null;
                 }
                 CalcularSubTotal();
             }
@@ -380,6 +397,45 @@ namespace FacturaDigital.Faturacion
             {
                 MessageBox.Show("Error al cambiar el tipo de factura","Error",MessageBoxButton.OK,MessageBoxImage.Error);
                 RecursosSistema.LogError(ex);
+            }
+        }
+
+        private void ModalFacturacion(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                loadingDisplayer.Visibility = Visibility.Visible;
+                FacturaMedioPagos dia = new FacturaMedioPagos(txt_ResumenTotales.Text);
+                dia.Owner = Window.GetWindow(this);
+                if (dia.ShowDialog() == true)
+                    CrearFactura(dia.CondicionVenta , dia.MedioPago);
+                else
+                    loadingDisplayer.Visibility = Visibility.Collapsed;
+            }
+            catch(Exception ex)
+            {
+                RecursosSistema.LogError(ex);
+                MessageBox.Show("Ocurrio un error al facturar","Error", MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+        }
+
+
+        private void CrearFactura(string CondicionVenta , string MedioPago) {
+            try
+            {
+                Factura fac = new Factura()
+                {
+                    Codigo_Moneda = "CRC",
+                    CondicionVenta = CondicionVenta,
+                    
+                };
+
+            }catch(Exception ex)
+            {
+                RecursosSistema.LogError(ex);
+                loadingDisplayer.Visibility = Visibility.Collapsed;
+                MessageBox.Show("Ocurrio un error al crear la factura en la base de datos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
         }
     }

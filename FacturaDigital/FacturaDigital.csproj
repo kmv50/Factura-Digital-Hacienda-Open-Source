@@ -89,6 +89,9 @@
     <Compile Include="Contribuyente\PerfilHacienda.xaml.cs">
       <DependentUpon>PerfilHacienda.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Faturacion\FacturaMedioPagos.xaml.cs">
+      <DependentUpon>FacturaMedioPagos.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Productos\Lista_Productos.xaml.cs">
       <DependentUpon>Lista_Productos.xaml</DependentUpon>
     </Compile>
@@ -109,6 +112,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Contribuyente\PerfilHacienda.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Faturacion\FacturaMedioPagos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
