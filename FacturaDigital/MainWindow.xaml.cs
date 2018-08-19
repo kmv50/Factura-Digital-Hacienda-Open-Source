@@ -128,5 +128,11 @@ namespace FacturaDigital
             ButtonCloseMenu_Click(sender, e);
             MainConteiner.Content = new Contribuyente.PerfilHacienda();
         }
+
+        private void Consecutivos(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu_Click(sender, e);
+            MainConteiner.Content = new Settings.Consecutivos();
+        }
     }
 }

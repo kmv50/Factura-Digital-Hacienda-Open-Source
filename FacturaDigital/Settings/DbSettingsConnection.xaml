@@ -15,8 +15,10 @@
         d:DesignHeight="800" d:DesignWidth="1200"   
       Title="DbSettingsConnection">
 
-    <StackPanel Grid.Row="0">
-        <TextBox Text="Conexion Base de Datos" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="18" MinWidth="120" />
+    <StackPanel>
+        <materialDesign:Card Margin="10" Padding="20">
+            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Conexion Base de Datos"  MinWidth="120" Foreground="#31577E"/>
+        </materialDesign:Card>
         <StackPanel Orientation="Horizontal">
             <Label Content="Direccion del servidor" Width="150" VerticalAlignment="Center" Margin="10"/>
             <TextBox x:Name="txt_host" materialDesign:HintAssist.Hint="Direccion del servidor" materialDesign:HintAssist.IsFloating="True" Margin="10" Width="200" />

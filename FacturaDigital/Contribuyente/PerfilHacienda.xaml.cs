@@ -339,6 +339,20 @@ namespace FacturaDigital.Contribuyente
 
                     db.SaveChanges();
 
+                    Contribuyente_Consecutivos conse = db.Contribuyente_Consecutivos.FirstOrDefault(q => q.Id_Contribuyente == Contribuyente.Id_Contribuyente);
+
+                    if(conse == null)
+                    {
+                        conse = new Contribuyente_Consecutivos() {
+                            Consecutivo_Facturas = 1,
+                            Consecutivo_NotasCredito = 1,
+                            Consecutivo_Tiquete_Electrónico = 1,
+                            Id_Contribuyente = Contribuyente.Id_Contribuyente
+                        };
+                        db.Contribuyente_Consecutivos.Add(conse);
+                        db.SaveChanges();
+                    }
+
                     MessageBox.Show("Perfil actualizado correctamente","Informacion",MessageBoxButton.OK,MessageBoxImage.Information);
                     try
                     {

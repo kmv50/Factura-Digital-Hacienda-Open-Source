@@ -34,6 +34,7 @@ namespace DataModel.EF
         public virtual DbSet<Cliente> Cliente { get; set; }
         public virtual DbSet<SMTP> SMTP { get; set; }
         public virtual DbSet<Ubicacion> Ubicaciones { get; set; }
+        public virtual DbSet<Contribuyente_Consecutivos> Contribuyente_Consecutivos { set; get; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -42,6 +43,11 @@ namespace DataModel.EF
              .WithRequired(e => e.Producto)
              .WillCascadeOnDelete(true);
 
+
+            modelBuilder.Entity<Factura>()
+             .HasMany(e => e.Factura_Detalle)
+             .WithRequired(e => e.Factura)
+             .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Factura_Detalle>()
              .HasMany(e => e.Factura_Detalle_Impuesto)

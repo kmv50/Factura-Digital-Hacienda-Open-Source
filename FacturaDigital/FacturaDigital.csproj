@@ -100,8 +100,14 @@
     </Compile>
     <Compile Include="Productos\ProductosData.cs" />
     <Compile Include="Recursos\RecursosSistema.cs" />
+    <Compile Include="Settings\Consecutivos.xaml.cs">
+      <DependentUpon>Consecutivos.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\DbSettingsConnection.xaml.cs">
       <DependentUpon>DbSettingsConnection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\PuntosDeVenta.xaml.cs">
+      <DependentUpon>PuntosDeVenta.xaml</DependentUpon>
     </Compile>
     <Page Include="Clientes\Clientes.xaml">
       <SubType>Designer</SubType>
@@ -160,7 +166,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Settings\Consecutivos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\DbSettingsConnection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\PuntosDeVenta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

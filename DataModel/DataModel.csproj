@@ -67,6 +67,7 @@
     <Compile Include="EF\Cliente.cs" />
     <Compile Include="EF\Contribuyente.cs" />
     <Compile Include="EF\ConnectionSettings.cs" />
+    <Compile Include="EF\Contribuyente_Consecutivos.cs" />
     <Compile Include="EF\db_FacturaDigital.cs" />
     <Compile Include="EF\Factura.cs" />
     <Compile Include="EF\Factura_Detalle.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="EF\Producto_Impuesto.cs" />
     <Compile Include="EF\SMTP.cs" />
     <Compile Include="EF\Ubicaciones.cs" />
+    <Compile Include="EnumsSistema.cs" />
+    <Compile Include="GeneradorDeClaves.cs" />
     <Compile Include="Migrations\201808181740450_Initial.cs" />
     <Compile Include="Migrations\201808181740450_Initial.Designer.cs">
       <DependentUpon>201808181740450_Initial.cs</DependentUpon>
@@ -82,6 +85,10 @@
     <Compile Include="Migrations\201808181741024_Ubicaciones.cs" />
     <Compile Include="Migrations\201808181741024_Ubicaciones.Designer.cs">
       <DependentUpon>201808181741024_Ubicaciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808191625279_consecutivo.cs" />
+    <Compile Include="Migrations\201808191625279_consecutivo.Designer.cs">
+      <DependentUpon>201808191625279_consecutivo.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -106,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808181741024_Ubicaciones.resx">
       <DependentUpon>201808181741024_Ubicaciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808191625279_consecutivo.resx">
+      <DependentUpon>201808191625279_consecutivo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

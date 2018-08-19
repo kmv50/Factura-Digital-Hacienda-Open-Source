@@ -1,4 +1,5 @@
-﻿using DataModel.EF;
+﻿using DataModel;
+using DataModel.EF;
 using FacturaDigital.Recursos;
 using System;
 using System.Collections.Generic;
@@ -404,6 +405,13 @@ namespace FacturaDigital.Faturacion
         {
             try
             {
+                if (FacturaDetalle.Count == 0)
+                {
+                    MessageBox.Show("Por favor agregue almenops un producto / servicio a la factura", "Validacion",MessageBoxButton.OK , MessageBoxImage.Stop);
+                    return;
+                }
+
+
                 loadingDisplayer.Visibility = Visibility.Visible;
                 FacturaMedioPagos dia = new FacturaMedioPagos(txt_ResumenTotales.Text);
                 dia.Owner = Window.GetWindow(this);
@@ -423,12 +431,77 @@ namespace FacturaDigital.Faturacion
         private void CrearFactura(string CondicionVenta , string MedioPago) {
             try
             {
+                DateTime FechaEmicionDocumento = DateTime.Now;
+                int casaMatriz = 1;
+                int PuntoVenta = 1;
+                Tipo_documento tipoDocumento = Tipo_documento.Factura_electrónica;
+
                 Factura fac = new Factura()
                 {
                     Codigo_Moneda = "CRC",
                     CondicionVenta = CondicionVenta,
+                    Email_Enviado = false,
+                    CasaMatriz = casaMatriz,
+                    PuntoVenta = PuntoVenta,
+                    Emisor_CorreoElectronico = RecursosSistema.Contribuyente.CorreoElectronico,
+                    Emisor_Identificacion_Numero = RecursosSistema.Contribuyente.Identificacion_Numero,
+                    Emisor_Identificacion_Tipo = RecursosSistema.Contribuyente.Identificacion_Tipo,
+                    Emisor_Nombre = RecursosSistema.Contribuyente.Nombre,
+                    Emisor_NombreComercial = RecursosSistema.Contribuyente.NombreComercial,
+                    Emisor_Telefono_Codigo = RecursosSistema.Contribuyente.Telefono_Codigo,
+                    Emisor_Telefono_Numero = RecursosSistema.Contribuyente.Telefono_Numero,
+                    Emisor_Ubicacion_Barrio = RecursosSistema.Contribuyente.Barrio,
+                    Emisor_Ubicacion_Canton = RecursosSistema.Contribuyente.Canton,
+                    Emisor_Ubicacion_Distrito = RecursosSistema.Contribuyente.Distrito,
+                    Emisor_Ubicacion_Provincia = RecursosSistema.Contribuyente.Provincia,
+                    Emisor_Ubicacion_OtrasSenas = RecursosSistema.Contribuyente.OtrasSenas,
+                    Fecha_Emision_Documento = FechaEmicionDocumento,
+                    Estado = (int)EstadoComprobante.Enviado,
+                    Id_Contribuyente = RecursosSistema.Contribuyente.Id_Contribuyente,
+                    Id_TipoDocumento = (int)tipoDocumento,
+                    MedioPago = MedioPago,
                     
+                    //faltan los totales
                 };
+
+
+                if(tipoDocumento == Tipo_documento.Factura_electrónica)
+                {
+                    //meter toos los datos receptor
+                }
+
+                if(tipoDocumento == Tipo_documento.Tiquete_Electrónico)
+                {
+                    //meter solo el nombre 
+                }
+
+                fac.Factura_Detalle =  new List<Factura_Detalle>(FacturaDetalle);
+              
+
+                Contribuyente_Consecutivos Consecutivo;
+                using (db_FacturaDigital db = new db_FacturaDigital()) {
+                    Consecutivo = db.Contribuyente_Consecutivos.First(q => q.Id_Contribuyente == RecursosSistema.Contribuyente.Id_Contribuyente);
+                    fac.NumeroConsecutivo = Consecutivo.Consecutivo_Facturas;
+                    
+                    string ClaveHacienda = new GeneradorDeClavesHacienda(new GeneradorDeClavesHacienda() {
+                        ConsecutivoHacienda = new ConsecutivoHacienda(new ConsecutivoHacienda() {
+                            TipoDocumento = Tipo_documento.Factura_electrónica,
+                            NumeracionConsecutiva = Consecutivo.Consecutivo_Facturas,
+                            CasaMatriz = casaMatriz,
+                            PuntoVenta = PuntoVenta
+                        }),
+                        FechaEmicion = FechaEmicionDocumento,
+                        Identificacion_Contribuyente = Convert.ToInt32(RecursosSistema.Contribuyente.Identificacion_Numero),                        
+                    }).ToString();
+
+                    fac.Clave = ClaveHacienda;
+                    db.Factura.Add(fac);
+                    Consecutivo.Consecutivo_Facturas++;
+                    db.SaveChanges();
+                }
+
+                   
+                
 
             }catch(Exception ex)
             {

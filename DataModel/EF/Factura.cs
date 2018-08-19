@@ -11,6 +11,10 @@ namespace DataModel.EF
     [Table("dbo.Facturas")]
     public partial class Factura
     {
+        public Factura() {
+            Factura_Detalle = new HashSet<Factura_Detalle>();
+        }
+
         [Key]
         public int Id_Factura { get; set; }
 
@@ -20,9 +24,13 @@ namespace DataModel.EF
         [StringLength(50)]
         public string Clave { get; set; }
 
+        public int CasaMatriz { set; get; }
+
+        public int PuntoVenta { set; get; }
+
         public int NumeroConsecutivo { get; set; }
 
-        public DateTime FechaEmision { get; set; }
+        public DateTime Fecha_Emision_Documento { get; set; } 
 
         [Required]
         [StringLength(80)]
@@ -141,9 +149,6 @@ namespace DataModel.EF
         [StringLength(16777215)]
         public string XML_Respuesta { get; set; }
 
-        [StringLength(1500)]
-        public string Detalle { get; set; }
-
         [StringLength(2500)]
         public string Log_Envio_Api { set; get; }
 
@@ -154,5 +159,8 @@ namespace DataModel.EF
         public int Id_Contribuyente { get; set; }
         [ForeignKey("Id_Contribuyente")]
         public virtual Contribuyente Contribuyente { get; set; }
+
+        public virtual ICollection<Factura_Detalle> Factura_Detalle { get; set; }
+
     }
 }

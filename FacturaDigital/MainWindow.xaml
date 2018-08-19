@@ -48,7 +48,7 @@
                     <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Margin="10">
                         <StackPanel Width="150">
                             <Button Content="Perfil Hacienda" Click="PerfilHacienda"/>
-                            <Button Content="Account"/>
+                            <Button Content="Consecutivos" Click="Consecutivos"/>
                             <Button Content="Help"/>
                             <Separator/>
                             <Button Content="Logout"/>
