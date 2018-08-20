@@ -11,6 +11,10 @@ namespace DataModel.EF
     [Table("dbo.Factura_Detalles_Impuestos")]
     public partial class Factura_Detalle_Impuesto
     {
+        [Key]
+        [Column(Order = 1)]
+        public int Id_Factura_Detalle_Impuesto { set; get; }
+
         [Column(TypeName = "char")]
         [StringLength(2)]
         public string Impuesto_Codigo { get; set; }
@@ -42,10 +46,8 @@ namespace DataModel.EF
         [Column(TypeName = "char")]
         public string Exoneracion_PorcentajeCompra { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
+        
         public int Id_Factura_Detalle { get; set; }
-        [ForeignKey("Id_Factura_Detalle")]
         public virtual Factura_Detalle Factura_Detalle { get; set; }
     }
 }

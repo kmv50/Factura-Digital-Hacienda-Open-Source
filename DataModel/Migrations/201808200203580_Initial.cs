@@ -56,14 +56,29 @@ namespace ApiModels.Migrations
                 .PrimaryKey(t => t.Id_Contribuyente);
             
             CreateTable(
+                "dbo.Contribuyente_Consecutivos",
+                c => new
+                    {
+                        Id_Contribuyente = c.Int(nullable: false),
+                        Consecutivo_Facturas = c.Int(nullable: false),
+                        Consecutivo_NotasCredito = c.Int(nullable: false),
+                        Consecutivo_Tiquete_Electrónico = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id_Contribuyente)
+                .ForeignKey("dbo.Contribuyentes", t => t.Id_Contribuyente)
+                .Index(t => t.Id_Contribuyente);
+            
+            CreateTable(
                 "dbo.Facturas",
                 c => new
                     {
                         Id_Factura = c.Int(nullable: false, identity: true),
                         Estado = c.Int(nullable: false),
                         Clave = c.String(nullable: false, maxLength: 50, storeType: "nvarchar"),
+                        CasaMatriz = c.Int(nullable: false),
+                        PuntoVenta = c.Int(nullable: false),
                         NumeroConsecutivo = c.Int(nullable: false),
-                        FechaEmision = c.DateTime(nullable: false, precision: 0),
+                        Fecha_Emision_Documento = c.DateTime(nullable: false, precision: 0),
                         Emisor_Nombre = c.String(nullable: false, maxLength: 80, storeType: "nvarchar"),
                         Emisor_Identificacion_Tipo = c.String(maxLength: 2, fixedLength: true, unicode: false, storeType: "char"),
                         Emisor_Identificacion_Numero = c.String(maxLength: 20, storeType: "nvarchar"),
@@ -106,7 +121,6 @@ namespace ApiModels.Migrations
                         Email_Enviado = c.Boolean(nullable: false),
                         XML_Enviado = c.String(nullable: false, unicode: false, storeType: "text"),
                         XML_Respuesta = c.String(nullable: false, unicode: false, storeType: "text"),
-                        Detalle = c.String(maxLength: 1500, storeType: "nvarchar"),
                         Log_Envio_Api = c.String(maxLength: 2500, storeType: "nvarchar"),
                         Ultimo_Log_Consulta_Api = c.String(maxLength: 2500, storeType: "nvarchar"),
                         Id_Contribuyente = c.Int(nullable: false),
@@ -143,7 +157,7 @@ namespace ApiModels.Migrations
                 "dbo.Factura_Detalles_Impuestos",
                 c => new
                     {
-                        Id_Factura_Detalle = c.Int(nullable: false),
+                        Id_Factura_Detalle_Impuesto = c.Int(nullable: false, identity: true),
                         Impuesto_Codigo = c.String(maxLength: 2, fixedLength: true, unicode: false, storeType: "char"),
                         Impuesto_Tarifa = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Impuesto_Monto = c.Decimal(nullable: false, precision: 18, scale: 2),
@@ -154,8 +168,9 @@ namespace ApiModels.Migrations
                         Exoneracion_MontoImpuesto = c.Decimal(precision: 18, scale: 2),
                         Exoneracion_FechaEmision = c.DateTime(precision: 0),
                         Exoneracion_PorcentajeCompra = c.String(maxLength: 3, fixedLength: true, unicode: false, storeType: "char"),
+                        Id_Factura_Detalle = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.Id_Factura_Detalle)
+                .PrimaryKey(t => t.Id_Factura_Detalle_Impuesto)
                 .ForeignKey("dbo.Facturas_Detalles", t => t.Id_Factura_Detalle, cascadeDelete: true)
                 .Index(t => t.Id_Factura_Detalle);
             
@@ -234,9 +249,10 @@ namespace ApiModels.Migrations
             DropForeignKey("dbo.SMTP", "Id_Contribuyente", "dbo.Contribuyentes");
             DropForeignKey("dbo.Productos_Impuestos", "Id_Producto", "dbo.Productos");
             DropForeignKey("dbo.Productos", "Id_Contribuyente", "dbo.Contribuyentes");
-            DropForeignKey("dbo.Factura_Detalles_Impuestos", "Id_Factura_Detalle", "dbo.Facturas_Detalles");
             DropForeignKey("dbo.Facturas_Detalles", "Id_Factura", "dbo.Facturas");
+            DropForeignKey("dbo.Factura_Detalles_Impuestos", "Id_Factura_Detalle", "dbo.Facturas_Detalles");
             DropForeignKey("dbo.Facturas", "Id_Contribuyente", "dbo.Contribuyentes");
+            DropForeignKey("dbo.Contribuyente_Consecutivos", "Id_Contribuyente", "dbo.Contribuyentes");
             DropForeignKey("dbo.Clientes", "Id_Contribuyente", "dbo.Contribuyentes");
             DropIndex("dbo.SMTP", new[] { "Id_Contribuyente" });
             DropIndex("dbo.Productos_Impuestos", new[] { "Id_Producto" });
@@ -244,6 +260,7 @@ namespace ApiModels.Migrations
             DropIndex("dbo.Factura_Detalles_Impuestos", new[] { "Id_Factura_Detalle" });
             DropIndex("dbo.Facturas_Detalles", new[] { "Id_Factura" });
             DropIndex("dbo.Facturas", new[] { "Id_Contribuyente" });
+            DropIndex("dbo.Contribuyente_Consecutivos", new[] { "Id_Contribuyente" });
             DropIndex("dbo.Clientes", new[] { "Id_Contribuyente" });
             DropTable("dbo.Ubicaciones");
             DropTable("dbo.SMTP");
@@ -252,6 +269,7 @@ namespace ApiModels.Migrations
             DropTable("dbo.Factura_Detalles_Impuestos");
             DropTable("dbo.Facturas_Detalles");
             DropTable("dbo.Facturas");
+            DropTable("dbo.Contribuyente_Consecutivos");
             DropTable("dbo.Contribuyentes");
             DropTable("dbo.Clientes");
         }

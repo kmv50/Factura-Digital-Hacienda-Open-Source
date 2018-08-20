@@ -140,12 +140,10 @@ namespace DataModel.EF
         public bool Email_Enviado { set; get; }
 
         [Column(TypeName = "text")]
-        [Required]
         [StringLength(16777215)]
         public string XML_Enviado { get; set; }
 
         [Column(TypeName = "text")]
-        [Required]
         [StringLength(16777215)]
         public string XML_Respuesta { get; set; }
 

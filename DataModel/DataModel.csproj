@@ -77,18 +77,20 @@
     <Compile Include="EF\SMTP.cs" />
     <Compile Include="EF\Ubicaciones.cs" />
     <Compile Include="EnumsSistema.cs" />
+    <Compile Include="EstructurasHacienda\FacturaElectronica_V.4.2.cs" />
+    <Compile Include="EstructurasHacienda\TiqueteElectronico_V4_2.cs" />
     <Compile Include="GeneradorDeClaves.cs" />
-    <Compile Include="Migrations\201808181740450_Initial.cs" />
-    <Compile Include="Migrations\201808181740450_Initial.Designer.cs">
-      <DependentUpon>201808181740450_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201808200203580_Initial.cs" />
+    <Compile Include="Migrations\201808200203580_Initial.Designer.cs">
+      <DependentUpon>201808200203580_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201808181741024_Ubicaciones.cs" />
-    <Compile Include="Migrations\201808181741024_Ubicaciones.Designer.cs">
-      <DependentUpon>201808181741024_Ubicaciones.cs</DependentUpon>
+    <Compile Include="Migrations\201808200205064_Ubicaciones.cs" />
+    <Compile Include="Migrations\201808200205064_Ubicaciones.Designer.cs">
+      <DependentUpon>201808200205064_Ubicaciones.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201808191625279_consecutivo.cs" />
-    <Compile Include="Migrations\201808191625279_consecutivo.Designer.cs">
-      <DependentUpon>201808191625279_consecutivo.cs</DependentUpon>
+    <Compile Include="Migrations\201808200209118_FacturaXMLs.cs" />
+    <Compile Include="Migrations\201808200209118_FacturaXMLs.Designer.cs">
+      <DependentUpon>201808200209118_FacturaXMLs.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,14 +110,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201808181740450_Initial.resx">
-      <DependentUpon>201808181740450_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808200203580_Initial.resx">
+      <DependentUpon>201808200203580_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808181741024_Ubicaciones.resx">
-      <DependentUpon>201808181741024_Ubicaciones.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808200205064_Ubicaciones.resx">
+      <DependentUpon>201808200205064_Ubicaciones.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808191625279_consecutivo.resx">
-      <DependentUpon>201808191625279_consecutivo.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808200209118_FacturaXMLs.resx">
+      <DependentUpon>201808200209118_FacturaXMLs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

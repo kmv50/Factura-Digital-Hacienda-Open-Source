@@ -21,11 +21,10 @@ namespace FacturaDigital.Faturacion
     {
         public string CondicionVenta { set; get; }
         public string MedioPago { set; get; } 
-        public FacturaMedioPagos(string Total)
+        public FacturaMedioPagos(decimal Total)
         {
             InitializeComponent();
-            decimal total = Convert.ToDecimal(Total);
-            lb_Total.Text = total.ToString("₡0.##");
+            lb_Total.Text = Total.ToString("₡0.##");
         }
 
         private void Aceptar(object sender, RoutedEventArgs e)

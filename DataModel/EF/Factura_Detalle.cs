@@ -52,9 +52,7 @@ namespace DataModel.EF
         public decimal Monto_Total_Linea { get; set; }
 
         public int Id_Factura { get; set; }
-        [ForeignKey("Id_Factura")]
         public virtual Factura Factura { get; set; }
-
         public virtual ICollection<Factura_Detalle_Impuesto> Factura_Detalle_Impuesto { get; set; }
     }
 }

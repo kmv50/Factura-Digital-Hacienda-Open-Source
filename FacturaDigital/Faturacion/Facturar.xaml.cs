@@ -4,28 +4,46 @@ using FacturaDigital.Recursos;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FacturaDigital.Faturacion
 {
     /// <summary>
     /// Interaction logic for Facturar.xaml
     /// </summary>
-    public partial class Facturar : Page
+    public partial class Facturar : Page, INotifyPropertyChanged
     {
-        ObservableCollection<Factura_Detalle> FacturaDetalle;
+        #region Binding
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+
+        }
+        #endregion
+
+        #region CalculoTotales
+        public decimal ResumenSubTotalNeto { set; get; }
+        public decimal ResumenImpuesto { set; get; }
+        public decimal ResumenDescuentos { set; get; }
+        public decimal ResumenTotales { set; get; }
+
+        public decimal ResumenServicioGravado { set; get; }
+        public decimal ResumenServicioExento { set; get; }
+
+        public decimal ResumenProductoGravado { set; get; }
+        public decimal ResumenProductoExento { set; get; }
+        #endregion
+        private ObservableCollection<Factura_Detalle> FacturaDetalle;
 
         public Facturar()
         {
@@ -35,10 +53,11 @@ namespace FacturaDigital.Faturacion
             LoadData();
         }
 
-        void LoadData() {
+        private void LoadData()
+        {
             using (db_FacturaDigital db = new db_FacturaDigital())
             {
-                cb_Clientes.ItemsSource =  db.Cliente.ToList();
+                cb_Clientes.ItemsSource = db.Cliente.ToList();
                 cb_Productos.ItemsSource = db.Producto.Include("Producto_Impuesto").ToList();
             }
         }
@@ -49,47 +68,48 @@ namespace FacturaDigital.Faturacion
             {
                 Producto p = cb_Productos.SelectedItem as Producto;
                 if (p == null)
+                {
                     return;
+                }
 
                 Factura_Detalle item = new Factura_Detalle();
 
                 #region Validar Datos 
-                decimal PrecioUnitario;
-                if(!decimal.TryParse(txt_precioUnitario.Text,out PrecioUnitario) || PrecioUnitario  <= 0)
+                if (!decimal.TryParse(txt_precioUnitario.Text, out decimal PrecioUnitario) || PrecioUnitario <= 0)
                 {
-                    MessageBox.Show("Error el precio unitario debe ser numerico mayor a 0","Validacion",MessageBoxButton.OK,MessageBoxImage.Stop);
+                    MessageBox.Show("Error el precio unitario debe ser numerico mayor a 0", "Validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
                     return;
                 }
                 item.PrecioUnitario = PrecioUnitario;
 
-                int Cantidad;
-                if (!int.TryParse(txt_Cantidad.Text, out Cantidad))
+                if (!int.TryParse(txt_Cantidad.Text, out int Cantidad))
                 {
                     MessageBox.Show("Error la cantidad debe de ser de tipo entero", "Validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
                     return;
                 }
 
-                if(Cantidad == 0)
+                if (Cantidad == 0)
                 {
-                    MessageBox.Show("La cantidad no puede ser 0","Validacion",MessageBoxButton.OK,MessageBoxImage.Stop);
+                    MessageBox.Show("La cantidad no puede ser 0", "Validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
                     return;
                 }
 
                 item.Cantidad = Cantidad;
 
 
-                int ? DescuentoRealPorcentaje = null;
+                int? DescuentoRealPorcentaje = null;
                 if (!string.IsNullOrEmpty(txt_Descuento.Text))
                 {
-                    int Descuento;
-                    if (!int.TryParse(txt_Descuento.Text, out Descuento) && Descuento <= 99 && Descuento > 0)
+                    if (!int.TryParse(txt_Descuento.Text, out int Descuento) && Descuento <= 99 && Descuento > 0)
                     {
                         MessageBox.Show("Error el decuento debe ser un dato numerico positivo de tipo entero no mayor a 99 y mayor a 0", "Validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
                         return;
                     }
 
-                    if(Descuento != 0)
+                    if (Descuento != 0)
+                    {
                         DescuentoRealPorcentaje = Descuento;
+                    }
                 }
 
 
@@ -108,10 +128,13 @@ namespace FacturaDigital.Faturacion
                 item.Monto_Total = item.Cantidad * item.PrecioUnitario;
 
                 if (DescuentoRealPorcentaje.HasValue)
+                {
                     item.Monto_Descuento = ((DescuentoRealPorcentaje / 100) * item.Monto_Total);
+                }
                 else
+                {
                     item.Monto_Descuento = 0;
-
+                }
 
                 item.ProductoServicio = p.ProductoServicio;
                 item.Unidad_Medida = p.Unidad_Medida;
@@ -125,8 +148,9 @@ namespace FacturaDigital.Faturacion
                     List<Factura_Detalle_Impuesto> Factura_Detalle_Impuesto = new List<Factura_Detalle_Impuesto>();
                     foreach (Producto_Impuesto impuesto in p.Producto_Impuesto)
                     {
-                        decimal SubImpuesto =  ((impuesto.Impuesto_Tarifa / 100) * item.Monto_Total);
-                        Factura_Detalle_Impuesto.Add(new Factura_Detalle_Impuesto() {
+                        decimal SubImpuesto = ((impuesto.Impuesto_Tarifa / 100) * item.Monto_Total);
+                        Factura_Detalle_Impuesto.Add(new Factura_Detalle_Impuesto()
+                        {
                             Exento = impuesto.Exento,
                             Exoneracion_FechaEmision = impuesto.Exoneracion_FechaEmision,
                             Exoneracion_MontoImpuesto = impuesto.Exoneracion_MontoImpuesto,
@@ -168,26 +192,18 @@ namespace FacturaDigital.Faturacion
                     return;
                 }
 
-                decimal ResumenSubTotalNeto = 0
-                    , ResumenImpuesto = 0
-                    , ResumenDescuentos = 0
-                    , ResumenTotales = 0
 
-                    , ResumenImpuestoServicioGravado = 0
-                    , ResumenImpuestoServicioExento = 0
-
-                    , ResumenImpuestoProductoGravado = 0
-                    , ResumenImpuestoProductoExento = 0;
-                ;
-
-
-                foreach(Factura_Detalle item in FacturaDetalle)
+                foreach (Factura_Detalle item in FacturaDetalle)
                 {
                     if (item.Impuesto_Monto.HasValue)
-                        ResumenImpuesto += item.Impuesto_Monto.Value;                    
+                    {
+                        ResumenImpuesto += item.Impuesto_Monto.Value;
+                    }
 
                     if (item.Monto_Descuento.HasValue)
+                    {
                         ResumenDescuentos += item.Monto_Descuento.Value;
+                    }
 
                     ResumenSubTotalNeto += item.SubTotal;
                     ResumenTotales += item.Monto_Total_Linea;
@@ -195,43 +211,68 @@ namespace FacturaDigital.Faturacion
                     if (item.Tipo) // tipo true => servicio
                     {
                         if (item.Gravado && item.Impuesto_Monto.HasValue)
-                            ResumenImpuestoServicioGravado += item.Monto_Total_Linea;
+                        {
+                            ResumenServicioGravado += item.Monto_Total_Linea;
+                        }
                         else
-                            ResumenImpuestoServicioExento += item.Monto_Total_Linea;
+                        {
+                            ResumenServicioExento += item.Monto_Total_Linea;
+                        }
                     }
                     else
                     {
                         if (item.Gravado && item.Impuesto_Monto.HasValue)
-                            ResumenImpuestoProductoGravado += item.Monto_Total_Linea;
+                        {
+                            ResumenProductoGravado += item.Monto_Total_Linea;
+                        }
                         else
-                            ResumenImpuestoProductoExento += item.Monto_Total_Linea;
+                        {
+                            ResumenProductoExento += item.Monto_Total_Linea;
+                        }
                     }
                 }
 
-                txt_ResumenDescuento.Text = ResumenDescuentos.ToString();
-                txt_ResumenImpuesto.Text = ResumenImpuesto.ToString();
-                txt_ResumenSubTotalNeto.Text = ResumenSubTotalNeto.ToString();
-                txt_ResumenTotales.Text = ResumenTotales.ToString();
 
-                txt_ImpuestoResumenProductoExento.Text = ResumenImpuestoProductoExento.ToString();
-                txt_ImpuestoResumenProductoGravado.Text = ResumenImpuestoProductoGravado.ToString();
 
-                txt_ImpuestoResumenServiciosExento.Text = ResumenImpuestoServicioExento.ToString();
-                txt_ImpuestoResumenServiciosGravado.Text = ResumenImpuestoServicioGravado.ToString();
+                NotificarCambioTotales();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RecursosSistema.LogError(ex);
-                MessageBox.Show("Error al calcular el sub total","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Error al calcular el sub total", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+
+        private void NotificarCambioTotales()
+        {
+            OnPropertyChanged("ResumenSubTotalNeto");
+            OnPropertyChanged("ResumenImpuesto");
+            OnPropertyChanged("ResumenDescuentos");
+            OnPropertyChanged("ResumenTotales");
+            OnPropertyChanged("ResumenServicioGravado");
+            OnPropertyChanged("ResumenServicioExento");
+            OnPropertyChanged("ResumenProductoGravado");
+            OnPropertyChanged("ResumenProductoExento");
         }
 
         private void LimpiarResumenTotales()
         {
-            throw new NotImplementedException();
+            ResumenSubTotalNeto = 0;
+            ResumenImpuesto = 0;
+            ResumenDescuentos = 0;
+            ResumenTotales = 0;
+
+            ResumenServicioGravado = 0;
+            ResumenServicioExento = 0;
+
+            ResumenProductoGravado = 0;
+            ResumenProductoExento = 0;
+            NotificarCambioTotales();
         }
 
-        void LimpiarSelectorProducto() {
+        private void LimpiarSelectorProducto()
+        {
             try
             {
                 cb_Productos.SelectedItem = null;
@@ -241,7 +282,8 @@ namespace FacturaDigital.Faturacion
                 txt_precioUnitario.Text = null;
                 txt_subtotal.Text = null;
                 txt_NaturalezaDescuento.Visibility = Visibility.Collapsed;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 RecursosSistema.LogError(ex);
             }
@@ -251,21 +293,27 @@ namespace FacturaDigital.Faturacion
         {
             try
             {
-               Producto p = cb_Productos.SelectedItem as Producto;
-               if (p == null)
-                   return;
+                Producto p = cb_Productos.SelectedItem as Producto;
+                if (p == null)
+                {
+                    return;
+                }
 
                 txt_precioUnitario.Text = p.PrecioUnitario.ToString();
                 txt_Cantidad.Text = "1";
                 if (p.ImpuestosTarifaTotal.HasValue)
+                {
                     txt_Impuesto.Text = p.ImpuestosTarifaTotal.ToString();
+                }
                 else
+                {
                     txt_Impuesto.Text = (0).ToString();
+                }
 
                 txt_Descuento.Text = "0";
                 CalcularSubTotal();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RecursosSistema.LogError(ex);
                 MessageBox.Show("Ocurrio un error al seleccionar el articulo");
@@ -273,7 +321,8 @@ namespace FacturaDigital.Faturacion
         }
 
 
-        private void CalcularSubTotal() {
+        private void CalcularSubTotal()
+        {
             decimal SubTotal = 0;
 
             decimal Unitario = Convert.ToDecimal(txt_precioUnitario.Text);
@@ -281,19 +330,27 @@ namespace FacturaDigital.Faturacion
 
             decimal Decuento = 0;
             if (!string.IsNullOrEmpty(txt_Descuento.Text))
-                    Decuento = Convert.ToDecimal(txt_Descuento.Text);
+            {
+                Decuento = Convert.ToDecimal(txt_Descuento.Text);
+            }
 
             decimal Impuesto = 0;
             if (!string.IsNullOrEmpty(txt_Impuesto.Text))
+            {
                 Impuesto = Convert.ToDecimal(txt_Impuesto.Text);
+            }
 
             SubTotal = Unitario * Cantidad;
 
-            if(Decuento > 0)
+            if (Decuento > 0)
+            {
                 SubTotal = SubTotal - ((Decuento / 100) * SubTotal);
+            }
 
             if (Impuesto > 0)
-                SubTotal = SubTotal  + ((Impuesto / 100) * SubTotal);
+            {
+                SubTotal = SubTotal + ((Impuesto / 100) * SubTotal);
+            }
 
             txt_subtotal.Text = SubTotal.ToString();
         }
@@ -304,19 +361,24 @@ namespace FacturaDigital.Faturacion
             {
                 TextBox txt = sender as TextBox;
                 if (txt == null)
+                {
                     return;
+                }
 
-                int v;
-                if(!int.TryParse(txt.Text, out v))
+                if (!int.TryParse(txt.Text, out int v))
                 {
                     if (txt.Name == "txt_Descuento")
+                    {
                         txt.Text = null;
+                    }
                     else if (txt.Name == "txt_Cantidad")
+                    {
                         txt.Text = "1";
+                    }
                 }
                 CalcularSubTotal();
 
-                if(txt.Name == "txt_Descuento" && !string.IsNullOrEmpty(txt.Text))
+                if (txt.Name == "txt_Descuento" && !string.IsNullOrEmpty(txt.Text))
                 {
                     txt_NaturalezaDescuento.Visibility = Visibility.Visible;
                 }
@@ -331,7 +393,7 @@ namespace FacturaDigital.Faturacion
                 MessageBox.Show("Ocurrio un error al calcular el subtotal");
             }
 
-           
+
         }
 
         private void keyUpAddProductoServicioDecimal(object sender, KeyEventArgs e)
@@ -340,10 +402,11 @@ namespace FacturaDigital.Faturacion
             {
                 TextBox txt = sender as TextBox;
                 if (txt == null)
+                {
                     return;
+                }
 
-                decimal v;
-                if (!decimal.TryParse(txt.Text, out v))
+                if (!decimal.TryParse(txt.Text, out decimal v))
                 {
                     txt.Text = null;
                 }
@@ -362,15 +425,17 @@ namespace FacturaDigital.Faturacion
             {
                 Button btn = sender as Button;
                 if (btn == null)
+                {
                     return;
+                }
 
                 Factura_Detalle item = btn.CommandParameter as Factura_Detalle;
                 FacturaDetalle.Remove(item);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Ocurrio un error al eliminar el producto de la lista","Error",MessageBoxButton.OK,MessageBoxImage.Error);
-                RecursosSistema.LogError(ex);                
+                MessageBox.Show("Ocurrio un error al eliminar el producto de la lista", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                RecursosSistema.LogError(ex);
             }
         }
 
@@ -380,23 +445,27 @@ namespace FacturaDigital.Faturacion
             {
                 ToggleButton tb = sender as ToggleButton;
                 if (tb == null)
+                {
                     return;
+                }
+
                 if (tb.IsChecked.Value)
                 {
                     txt_Cliente_Tiquete.Visibility = Visibility.Visible;
                     cb_Clientes.Visibility = Visibility.Hidden;
                     lb_TipoFactura.Content = "Tiquete electronico";
                 }
-                else {
+                else
+                {
                     txt_Cliente_Tiquete.Visibility = Visibility.Hidden;
                     cb_Clientes.Visibility = Visibility.Visible;
                     lb_TipoFactura.Content = "Factura Electronica";
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error al cambiar el tipo de factura","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Error al cambiar el tipo de factura", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 RecursosSistema.LogError(ex);
             }
         }
@@ -405,37 +474,49 @@ namespace FacturaDigital.Faturacion
         {
             try
             {
-                if (FacturaDetalle.Count == 0)
+                if (FacturaDetalle.Count == 0 || ResumenTotales == 0)
                 {
-                    MessageBox.Show("Por favor agregue almenops un producto / servicio a la factura", "Validacion",MessageBoxButton.OK , MessageBoxImage.Stop);
+                    MessageBox.Show("Por favor agregue almenops un producto / servicio a la factura", "Validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
                     return;
                 }
 
 
                 loadingDisplayer.Visibility = Visibility.Visible;
-                FacturaMedioPagos dia = new FacturaMedioPagos(txt_ResumenTotales.Text);
-                dia.Owner = Window.GetWindow(this);
+                FacturaMedioPagos dia = new FacturaMedioPagos(ResumenTotales)
+                {
+                    Owner = Window.GetWindow(this)
+                };
                 if (dia.ShowDialog() == true)
-                    CrearFactura(dia.CondicionVenta , dia.MedioPago);
+                {
+                    CrearFactura(dia.CondicionVenta, dia.MedioPago);
+                }
                 else
+                {
                     loadingDisplayer.Visibility = Visibility.Collapsed;
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RecursosSistema.LogError(ex);
-                MessageBox.Show("Ocurrio un error al facturar","Error", MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Ocurrio un error al facturar", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
 
-        private void CrearFactura(string CondicionVenta , string MedioPago) {
+        private void CrearFactura(string CondicionVenta, string MedioPago)
+        {
             try
             {
                 DateTime FechaEmicionDocumento = DateTime.Now;
                 int casaMatriz = 1;
                 int PuntoVenta = 1;
                 Tipo_documento tipoDocumento = Tipo_documento.Factura_electrónica;
+                if (tb_TipoFactura.IsChecked.Value)
+                {
+                    tipoDocumento = Tipo_documento.Tiquete_Electrónico;
+                }
 
+                #region HeaderFactura
                 Factura fac = new Factura()
                 {
                     Codigo_Moneda = "CRC",
@@ -460,50 +541,123 @@ namespace FacturaDigital.Faturacion
                     Id_Contribuyente = RecursosSistema.Contribuyente.Id_Contribuyente,
                     Id_TipoDocumento = (int)tipoDocumento,
                     MedioPago = MedioPago,
-                    
-                    //faltan los totales
                 };
+                #endregion
 
-
-                if(tipoDocumento == Tipo_documento.Factura_electrónica)
+                #region Totales
+                if (ResumenProductoExento != 0)
                 {
-                    //meter toos los datos receptor
+                    fac.TotalMercanciasExentas = ResumenProductoExento;
                 }
 
-                if(tipoDocumento == Tipo_documento.Tiquete_Electrónico)
+                if (ResumenProductoGravado != 0)
                 {
-                    //meter solo el nombre 
+                    fac.TotalMercanciasGravadas = ResumenProductoGravado;
                 }
 
-                fac.Factura_Detalle =  new List<Factura_Detalle>(FacturaDetalle);
-              
+                if (ResumenServicioExento != 0)
+                {
+                    fac.TotalServExentos = ResumenServicioExento;
+                }
+
+                if (ResumenServicioGravado != 0)
+                {
+                    fac.TotalServGravados = ResumenServicioGravado;
+                }
+
+                if (ResumenImpuesto != 0)
+                {
+                    fac.TotalImpuesto = ResumenImpuesto;
+                }
+
+                if (ResumenDescuentos != 0)
+                {
+                    fac.TotalDescuentos = ResumenDescuentos;
+                }
+
+                fac.TotalGravado = (fac.TotalMercanciasGravadas ?? 0) + (fac.TotalServGravados ?? 0);
+                fac.TotalExento = (fac.TotalMercanciasExentas ?? 0) + (fac.TotalServExentos ?? 0);
+                fac.TotalVenta = (fac.TotalGravado ?? 0) + (fac.TotalExento ?? 0);
+
+                fac.TotalVentaNeta = fac.TotalVenta - (fac.TotalDescuentos ?? 0);
+                fac.TotalComprobante = fac.TotalVentaNeta + (fac.TotalImpuesto ?? 0);
+
+                #endregion
+
+
+
+                if (tipoDocumento == Tipo_documento.Factura_electrónica)
+                {
+                    Cliente ClienteSeleccionado = cb_Clientes.SelectedItem as Cliente;
+                    if (ClienteSeleccionado == null)
+                    {
+                        loadingDisplayer.Visibility = Visibility.Collapsed;
+                        MessageBox.Show("Error al obtener datos del cliente seleccionado", "Validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
+                        return;
+                    }
+
+                    fac.Receptor_CorreoElectronico = ClienteSeleccionado.CorreoElectronico;
+                    fac.Receptor_Identificacion_Numero = ClienteSeleccionado.Identificacion_Numero;
+                    fac.Receptor_Identificacion_Tipo = ClienteSeleccionado.Identificacion_Tipo;
+                    fac.Receptor_Nombre = ClienteSeleccionado.Nombre;
+                    fac.Receptor_NombreComercial = ClienteSeleccionado.NombreComercial;
+                    fac.Receptor_Telefono_Codigo = ClienteSeleccionado.Telefono_Codigo;
+                    fac.Receptor_Telefono_Numero = ClienteSeleccionado.Telefono_Numero;
+                    fac.Receptor_Ubicacion_Barrio = ClienteSeleccionado.Barrio;
+                    fac.Receptor_Ubicacion_Canton = ClienteSeleccionado.Canton;
+                    fac.Receptor_Ubicacion_Distrito = ClienteSeleccionado.Distrito;
+                    fac.Receptor_Ubicacion_OtrasSenas = ClienteSeleccionado.OtrasSenas;
+                    fac.Receptor_Ubicacion_Provincia = ClienteSeleccionado.Provincia;
+                }
+
+                if (tipoDocumento == Tipo_documento.Tiquete_Electrónico)
+                {
+                    string clienteTiquete;
+                    if (string.IsNullOrEmpty(txt_Cliente_Tiquete.Text))
+                    {
+                        clienteTiquete = "Cliente Contado";
+                    }
+                    else
+                    {
+                        clienteTiquete = txt_Cliente_Tiquete.Text;
+                    }
+
+                    fac.Receptor_Nombre = clienteTiquete;
+                }
+
+                fac.Factura_Detalle = new List<Factura_Detalle>(FacturaDetalle);
+
 
                 Contribuyente_Consecutivos Consecutivo;
-                using (db_FacturaDigital db = new db_FacturaDigital()) {
+                using (db_FacturaDigital db = new db_FacturaDigital())
+                {
                     Consecutivo = db.Contribuyente_Consecutivos.First(q => q.Id_Contribuyente == RecursosSistema.Contribuyente.Id_Contribuyente);
                     fac.NumeroConsecutivo = Consecutivo.Consecutivo_Facturas;
-                    
-                    string ClaveHacienda = new GeneradorDeClavesHacienda(new GeneradorDeClavesHacienda() {
-                        ConsecutivoHacienda = new ConsecutivoHacienda(new ConsecutivoHacienda() {
+
+                    string ClaveHacienda = new GeneradorDeClavesHacienda(new GeneradorDeClavesHacienda()
+                    {
+                        ConsecutivoHacienda = new ConsecutivoHacienda(new ConsecutivoHacienda()
+                        {
                             TipoDocumento = Tipo_documento.Factura_electrónica,
                             NumeracionConsecutiva = Consecutivo.Consecutivo_Facturas,
                             CasaMatriz = casaMatriz,
                             PuntoVenta = PuntoVenta
                         }),
                         FechaEmicion = FechaEmicionDocumento,
-                        Identificacion_Contribuyente = Convert.ToInt32(RecursosSistema.Contribuyente.Identificacion_Numero),                        
+                        Identificacion_Contribuyente = Convert.ToInt32(RecursosSistema.Contribuyente.Identificacion_Numero),
                     }).ToString();
 
                     fac.Clave = ClaveHacienda;
                     db.Factura.Add(fac);
                     Consecutivo.Consecutivo_Facturas++;
+
+
+
                     db.SaveChanges();
                 }
 
-                   
-                
-
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 RecursosSistema.LogError(ex);
                 loadingDisplayer.Visibility = Visibility.Collapsed;

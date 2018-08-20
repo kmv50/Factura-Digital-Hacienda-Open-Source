@@ -55,7 +55,7 @@ namespace FacturaDigital.Settings
                     }
                 }
 
-                txt_TiqueteElectronico.Text = consecutivos.Consecutivo_Tiquete_Electrónico.ToString()
+                txt_TiqueteElectronico.Text = consecutivos.Consecutivo_Tiquete_Electrónico.ToString();
                 txt_facturas.Text = consecutivos.Consecutivo_Facturas.ToString();
                 txt_NotasCredito.Text = consecutivos.Consecutivo_NotasCredito.ToString();
 

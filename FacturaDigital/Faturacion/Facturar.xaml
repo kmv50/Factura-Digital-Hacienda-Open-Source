@@ -49,7 +49,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label Content="Tipo Factura" VerticalAlignment="Center" />
-                    <ToggleButton Grid.Column="1" Content="F" Style="{StaticResource MaterialDesignActionLightToggleButton}"  VerticalAlignment="Center" Click="CambiarTipoFactura"
+                    <ToggleButton x:Name="tb_TipoFactura" Grid.Column="1" Content="F" Style="{StaticResource MaterialDesignActionLightToggleButton}"  VerticalAlignment="Center" Click="CambiarTipoFactura"
                               ToolTip="Use Tiquete electronico para facturar productos o servicios que no requieren de un cliente. Use factura electronica cuando va a facturar a un cliente registrado"/>
                     <Label x:Name="lb_TipoFactura" VerticalAlignment="Center" Grid.Column="2" Content="Factura Electronica" />
                     <Label Grid.Column="3" Content="Cliente" VerticalAlignment="Center" />
@@ -143,38 +143,38 @@
                                 <materialDesign:Card Margin="5" Padding="10">
                                     <StackPanel Orientation="Horizontal" Width="240">
                                         <TextBlock Text="Producto Exento"  Width="120" Foreground="#31577E"/>
-                                        <TextBlock x:Name="txt_ImpuestoResumenProductoExento" Width="120" Foreground="#31577E"/>
+                                        <TextBlock Text="{Binding ResumenProductoExento, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Foreground="#31577E"/>
                                     </StackPanel>
                                 </materialDesign:Card>
 
                                 <materialDesign:Card Margin="5" Padding="10">
                                     <StackPanel Orientation="Horizontal" Width="240">
                                         <TextBlock Text="Producto Gravado"  Width="120" Foreground="#31577E"/>
-                                        <TextBlock x:Name="txt_ImpuestoResumenProductoGravado" Width="120" Foreground="#31577E"/>
+                                        <TextBlock Text="{Binding ResumenProductoGravado , UpdateSourceTrigger=PropertyChanged , RelativeSource={RelativeSource AncestorType={x:Type Page}}}"  Width="120" Foreground="#31577E"/>
                                     </StackPanel>
                                 </materialDesign:Card>
 
                                 <materialDesign:Card Margin="5" Padding="10">
                                     <StackPanel Orientation="Horizontal" Width="240">
                                         <TextBlock Text="Servicios Exento"  Width="120" Foreground="#31577E"/>
-                                        <TextBlock x:Name="txt_ImpuestoResumenServiciosExento" Width="120" Foreground="#31577E"/>
+                                        <TextBlock Text="{Binding ResumenServicioExento, UpdateSourceTrigger=PropertyChanged , RelativeSource={RelativeSource AncestorType={x:Type Page}}}"  Width="120" Foreground="#31577E"/>
                                     </StackPanel>
                                 </materialDesign:Card>
 
                                 <materialDesign:Card Margin="5" Padding="10">
                                     <StackPanel Orientation="Horizontal" Width="240">
                                         <TextBlock Text="Servicios Gravado"  Width="120" Foreground="#31577E"/>
-                                        <TextBlock x:Name="txt_ImpuestoResumenServiciosGravado" Width="120" Foreground="#31577E"/>
+                                        <TextBlock Text="{Binding ResumenServicioGravado, UpdateSourceTrigger=PropertyChanged , RelativeSource={RelativeSource AncestorType={x:Type Page}}}" Width="120" Foreground="#31577E"/>
                                     </StackPanel>
                                 </materialDesign:Card>
                             </StackPanel>
                         </materialDesign:PopupBox>
                     </StackPanel>
 
-                    <TextBox Grid.Column="0"  x:Name="txt_ResumenSubTotalNeto" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ SubTotal Neto" materialDesign:HintAssist.IsFloating="True"/>
-                    <TextBox Grid.Column="1"  x:Name="txt_ResumenDescuento" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Descuento" materialDesign:HintAssist.IsFloating="True"/>
-                    <TextBox Grid.Column="2"  x:Name="txt_ResumenImpuesto" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Impuesto" materialDesign:HintAssist.IsFloating="True"/>
-                    <TextBox Grid.Column="3"  x:Name="txt_ResumenTotales" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Total" materialDesign:HintAssist.IsFloating="True"/>
+                    <TextBox Grid.Column="0" Text="{Binding ResumenSubTotalNeto, UpdateSourceTrigger=PropertyChanged , RelativeSource={RelativeSource AncestorType={x:Type Page}}}" Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ SubTotal Neto" materialDesign:HintAssist.IsFloating="True"/>
+                    <TextBox Grid.Column="1" Text="{Binding ResumenDescuentos, UpdateSourceTrigger=PropertyChanged , RelativeSource={RelativeSource AncestorType={x:Type Page}}}"  Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Descuento" materialDesign:HintAssist.IsFloating="True"/>
+                    <TextBox Grid.Column="2" Text="{Binding ResumenImpuesto, UpdateSourceTrigger=PropertyChanged , RelativeSource={RelativeSource AncestorType={x:Type Page}}}"  Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Impuesto" materialDesign:HintAssist.IsFloating="True"/>
+                    <TextBox Grid.Column="3" Text="{Binding ResumenTotales, UpdateSourceTrigger=PropertyChanged , RelativeSource={RelativeSource AncestorType={x:Type Page}}}"  Grid.Row="1" IsEnabled="False" IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Total" materialDesign:HintAssist.IsFloating="True"/>
 
                 </Grid>
             </GroupBox>

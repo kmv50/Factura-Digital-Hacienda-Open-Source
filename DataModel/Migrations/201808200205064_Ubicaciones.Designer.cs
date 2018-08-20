@@ -7,13 +7,13 @@ namespace ApiModels.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class consecutivo : IMigrationMetadata
+    public sealed partial class Ubicaciones : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(consecutivo));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Ubicaciones));
         
         string IMigrationMetadata.Id
         {
-            get { return "201808191625279_consecutivo"; }
+            get { return "201808200205064_Ubicaciones"; }
         }
         
         string IMigrationMetadata.Source

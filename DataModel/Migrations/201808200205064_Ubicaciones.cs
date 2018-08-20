@@ -2,7 +2,7 @@ namespace ApiModels.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Ubicaciones : DbMigration
     {
         public override void Up()
