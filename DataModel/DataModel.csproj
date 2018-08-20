@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conversores\FacturaDB_ToFacturaElectronica.cs" />
     <Compile Include="EF\Cliente.cs" />
     <Compile Include="EF\Contribuyente.cs" />
     <Compile Include="EF\ConnectionSettings.cs" />
@@ -77,7 +78,7 @@
     <Compile Include="EF\SMTP.cs" />
     <Compile Include="EF\Ubicaciones.cs" />
     <Compile Include="EnumsSistema.cs" />
-    <Compile Include="EstructurasHacienda\FacturaElectronica_V.4.2.cs" />
+    <Compile Include="EstructurasHacienda\FacturaElectronica_V_4_2.cs" />
     <Compile Include="EstructurasHacienda\TiqueteElectronico_V4_2.cs" />
     <Compile Include="GeneradorDeClaves.cs" />
     <Compile Include="Migrations\201808200203580_Initial.cs" />
@@ -119,6 +120,12 @@
     <EmbeddedResource Include="Migrations\201808200209118_FacturaXMLs.resx">
       <DependentUpon>201808200209118_FacturaXMLs.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FirmaXadesNet\FirmaXadesNet.csproj">
+      <Project>{84b87815-dd45-4c60-b343-c11d45847bdf}</Project>
+      <Name>FirmaXadesNet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
