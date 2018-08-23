@@ -1,5 +1,6 @@
 ﻿using DataModel;
 using DataModel.EF;
+using DataModel.Hacienda_Comunication;
 using FacturaDigital.Recursos;
 using System;
 using System.Collections.Generic;
@@ -651,16 +652,32 @@ namespace FacturaDigital.Faturacion
                     db.Factura.Add(fac);
                     Consecutivo.Consecutivo_Facturas++;
 
+                    try
+                    {
+                        if (tipoDocumento == Tipo_documento.Factura_electrónica)
+                        {
+                            FacturaDB_ToFacturaElectronica Hacienda = new FacturaDB_ToFacturaElectronica(RecursosSistema.Contribuyente);
+                            Hacienda.Convertir(fac).CrearXml(tipoDocumento).Enviar();
+                            fac.XML_Enviado = Hacienda.XML.InnerXml;
+                        }
+                        else
+                        {
 
+                        }
 
+                    }catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message,"Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                    }
+                    loadingDisplayer.Visibility = Visibility.Collapsed;
                     db.SaveChanges();
                 }
 
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
                 loadingDisplayer.Visibility = Visibility.Collapsed;
+                RecursosSistema.LogError(ex);
                 MessageBox.Show("Ocurrio un error al crear la factura en la base de datos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }

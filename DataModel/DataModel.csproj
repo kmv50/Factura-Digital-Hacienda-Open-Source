@@ -44,6 +44,9 @@
       <HintPath>..\packages\MySql.Data.Entity.6.8.8\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -64,7 +67,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Conversores\FacturaDB_ToFacturaElectronica.cs" />
+    <Compile Include="Hacienda_Comunication\ApiConnector.cs" />
+    <Compile Include="Hacienda_Comunication\FacturaDB_ToFacturaElectronica.cs" />
     <Compile Include="EF\Cliente.cs" />
     <Compile Include="EF\Contribuyente.cs" />
     <Compile Include="EF\ConnectionSettings.cs" />
@@ -81,6 +85,10 @@
     <Compile Include="EstructurasHacienda\FacturaElectronica_V_4_2.cs" />
     <Compile Include="EstructurasHacienda\TiqueteElectronico_V4_2.cs" />
     <Compile Include="GeneradorDeClaves.cs" />
+    <Compile Include="Hacienda_Comunication\FacturaRequest.cs" />
+    <Compile Include="Hacienda_Comunication\HaciendaComunication.cs" />
+    <Compile Include="Hacienda_Comunication\IDP\TokenIdp.cs" />
+    <Compile Include="ILog.cs" />
     <Compile Include="Migrations\201808200203580_Initial.cs" />
     <Compile Include="Migrations\201808200203580_Initial.Designer.cs">
       <DependentUpon>201808200203580_Initial.cs</DependentUpon>
@@ -101,6 +109,7 @@
       <DependentUpon>DbSettings.settings</DependentUpon>
     </Compile>
     <Compile Include="UbicacionesData\UbicacionesData.cs" />
+    <Compile Include="Utilidades.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
