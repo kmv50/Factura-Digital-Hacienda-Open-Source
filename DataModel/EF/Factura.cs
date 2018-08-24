@@ -148,11 +148,7 @@ namespace DataModel.EF
         public string XML_Respuesta { get; set; }
 
         [StringLength(2500)]
-        public string Log_Envio_Api { set; get; }
-
-        [StringLength(2500)]
-        public string Ultimo_Log_Consulta_Api { set; get; }
-
+        public string HaciendaDetalle { set; get; }
 
         public int Id_Contribuyente { get; set; }
         [ForeignKey("Id_Contribuyente")]

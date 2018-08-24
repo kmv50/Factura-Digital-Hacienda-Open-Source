@@ -66,6 +66,8 @@ namespace FacturaDigital
                         lb_mainUser.Text = RecursosSistema.Contribuyente.Nombre;
                     }
                 }
+
+                RecursosSistema.IniciarServicioConsulta();
             }
             catch (Exception ex)
             {

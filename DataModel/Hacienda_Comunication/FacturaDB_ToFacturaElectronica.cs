@@ -10,7 +10,6 @@ namespace DataModel.Hacienda_Comunication
 {
     public class FacturaDB_ToFacturaElectronica : HaciendaComunication
     {
-        private Contribuyente contribuyente;
 
         public FacturaDB_ToFacturaElectronica(Contribuyente contribuyente): base(contribuyente)
         {
@@ -50,11 +49,11 @@ namespace DataModel.Hacienda_Comunication
                         NumTelefono = facturaDB.Emisor_Telefono_Numero.Value.ToString()
                     },
                     Ubicacion = new UbicacionType() {
-                        Barrio = facturaDB.Emisor_Ubicacion_Barrio.Value.ToString(),
+                        Barrio = facturaDB.Emisor_Ubicacion_Barrio.Value.ToString("00"),
                         Provincia = facturaDB.Emisor_Ubicacion_Provincia.Value.ToString(),
-                        Canton = facturaDB.Emisor_Ubicacion_Canton.Value.ToString(),
-                        Distrito = facturaDB.Emisor_Ubicacion_Distrito.Value.ToString(),
-                        OtrasSenas = facturaDB.Emisor_Ubicacion_OtrasSenas
+                        Canton = facturaDB.Emisor_Ubicacion_Canton.Value.ToString("00"),
+                        Distrito = facturaDB.Emisor_Ubicacion_Distrito.Value.ToString("00"),
+                        OtrasSenas = facturaDB.Emisor_Ubicacion_OtrasSenas ?? "No indicado"
                     }                  
                 },
                 Normativa = new FacturaElectronicaNormativa()
@@ -63,7 +62,8 @@ namespace DataModel.Hacienda_Comunication
                     FechaResolucion = facturaDB.Fecha_Emision_Documento.ToString("dd-MM-yyyy HH:mm:ss")
                 },
                 DetalleServicio = GetDetalleFromFacturaDB(facturaDB.Factura_Detalle).ToArray(),
-                Receptor = GetReceptorFromFacturaDB(facturaDB)
+                Receptor = GetReceptorFromFacturaDB(facturaDB),
+                ResumenFactura = GetResumenFactura(facturaDB)
             };
             DocumentoElectronico = FacturaElectronica;
 
@@ -78,7 +78,6 @@ namespace DataModel.Hacienda_Comunication
                     tipoIdentificacion = FacturaElectronica.Emisor.Identificacion.Tipo.GetXmlValue()
                 },
                 fecha = FacturaElectronica.FechaEmision.ToString("yyyy-MM-ddTHH:mm:ss"),
-                //callbackUrl = CallbackHaciendaUrl
             };
 
             if(FacturaElectronica.Receptor != null && FacturaElectronica.Receptor.Identificacion != null)
@@ -92,6 +91,82 @@ namespace DataModel.Hacienda_Comunication
 
             return this;
         }
+
+        private FacturaElectronicaResumenFactura GetResumenFactura(Factura fac)
+        {
+            FacturaElectronicaResumenFactura resumen = new FacturaElectronicaResumenFactura();
+            //if (fac.Codigo_Moneda == "CRC")
+            //{
+                resumen.CodigoMoneda = FacturaElectronicaResumenFacturaCodigoMoneda.CRC;
+                resumen.CodigoMonedaSpecified = false;
+            //}
+            //else
+            //{
+            //    resumen.CodigoMoneda = FacturaElectronicaResumenFacturaCodigoMoneda.USD;
+            //    resumen.CodigoMonedaSpecified = true;
+            //    resumen.TipoCambio = fac.Tipo_Cambio;
+            //    resumen.TipoCambioSpecified = true;
+            //}
+
+
+            resumen.TotalComprobante = fac.TotalComprobante;
+
+
+            if (fac.TotalDescuentos != null && fac.TotalDescuentos > 0)
+            {
+                resumen.TotalDescuentos = fac.TotalDescuentos.Value;
+                resumen.TotalDescuentosSpecified = true;
+            }
+
+            if (fac.TotalExento != null && fac.TotalExento > 0)
+            {
+                resumen.TotalExento = fac.TotalExento.Value;
+                resumen.TotalExentoSpecified = true;
+            }
+
+            if (fac.TotalGravado != null && fac.TotalGravado > 0)
+            {
+                resumen.TotalGravado = fac.TotalGravado.Value;
+                resumen.TotalGravadoSpecified = true;
+            }
+
+            if (fac.TotalImpuesto != null && fac.TotalImpuesto > 0)
+            {
+                resumen.TotalImpuesto = fac.TotalImpuesto.Value;
+                resumen.TotalImpuestoSpecified = true;
+            }
+            resumen.TotalVentaNeta = fac.TotalVentaNeta;
+            resumen.TotalVenta = fac.TotalExento.Value + fac.TotalGravado.Value;
+
+            if (fac.TotalMercanciasExentas != null && fac.TotalMercanciasExentas > 0)
+            {
+                resumen.TotalMercanciasExentas = fac.TotalMercanciasExentas.Value;
+                resumen.TotalMercanciasExentasSpecified = true;
+            }
+
+            if (fac.TotalMercanciasGravadas != null && fac.TotalMercanciasGravadas > 0)
+            {
+                resumen.TotalMercanciasGravadas = fac.TotalMercanciasGravadas.Value;
+                resumen.TotalMercanciasGravadasSpecified = true;
+            }
+
+            //////////////////////////////////////
+
+            if (fac.TotalServExentos != null && fac.TotalServExentos > 0)
+            {
+                resumen.TotalServExentos = fac.TotalServExentos.Value;
+                resumen.TotalServExentosSpecified = true;
+            }
+
+            if (fac.TotalServGravados != null && fac.TotalServGravados > 0)
+            {
+                resumen.TotalServGravados = fac.TotalServGravados.Value;
+                resumen.TotalServGravadosSpecified = true;
+            }
+
+            return resumen;
+        }
+
 
         private ReceptorType GetReceptorFromFacturaDB(Factura facturaDB)
         {
@@ -168,6 +243,7 @@ namespace DataModel.Hacienda_Comunication
                             Tipo = CodigoTypeTipo.Item01
                         }
                     },
+                    Detalle = q.ProductoServicio,
                     MontoDescuentoSpecified = false,
                     NumeroLinea = NumeroLinea.ToString(),
                     PrecioUnitario = q.PrecioUnitario,
@@ -193,8 +269,7 @@ namespace DataModel.Hacienda_Comunication
                     }
                 }
 
-                if (q.Unidad_Medida != null)
-                    fd.UnidadMedidaComercial = q.Unidad_Medida;
+            
 
 
                 if (q.Factura_Detalle_Impuesto != null && q.Factura_Detalle_Impuesto.Count > 0)

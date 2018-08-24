@@ -671,6 +671,9 @@ namespace FacturaDigital.Faturacion
                     }
                     loadingDisplayer.Visibility = Visibility.Collapsed;
                     db.SaveChanges();
+                    LimpiarVista();
+                    RecursosSistema.WindosNotification("Factura", "La factura Clave ["+fac.Clave+ "] se envío para su valoración");
+                    RecursosSistema.Servicio_AgregarFactura(fac.Clave);
                 }
 
             }
@@ -680,6 +683,21 @@ namespace FacturaDigital.Faturacion
                 RecursosSistema.LogError(ex);
                 MessageBox.Show("Ocurrio un error al crear la factura en la base de datos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
+            }
+        }
+
+        private void LimpiarVista()
+        {
+            try
+            {
+                LimpiarResumenTotales();
+                LimpiarSelectorProducto();
+                FacturaDetalle.Clear();
+            }
+            catch(Exception ex)
+            {
+                RecursosSistema.LogError(ex);
+                MessageBox.Show("Ocurrio un error al limpiara la pagina","Error",MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
     }

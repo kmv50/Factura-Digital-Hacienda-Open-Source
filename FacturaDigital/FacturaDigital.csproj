@@ -2,6 +2,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <TargetPlatformVersion>8.0</TargetPlatformVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{AFFBB4A8-8DE0-457C-A51B-26468041C7E6}</ProjectGuid>
@@ -74,6 +75,8 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Windows.Data" />
+    <Reference Include="Windows.UI" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -100,6 +103,7 @@
     </Compile>
     <Compile Include="Productos\ProductosData.cs" />
     <Compile Include="Recursos\RecursosSistema.cs" />
+    <Compile Include="Servicio_Consulta\ServicioConsulta.cs" />
     <Compile Include="Settings\Consecutivos.xaml.cs">
       <DependentUpon>Consecutivos.xaml</DependentUpon>
     </Compile>

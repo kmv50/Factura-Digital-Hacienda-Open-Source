@@ -71,7 +71,7 @@ namespace FacturaDigital.Settings
             try
             {
                 int FacturasConsecutivo ,  NotasCreditoConsecutivo , TiqueteElectronico;
-                if(!int.TryParse(txt_facturas.Text,out FacturasConsecutivo) || !int.TryParse(txt_NotasCredito.Text,out NotasCreditoConsecutivo) || int.TryParse(txt_TiqueteElectronico.Text, out TiqueteElectronico) || TiqueteElectronico <= 0 || FacturasConsecutivo <= 0|| NotasCreditoConsecutivo <= 0)
+                if(!int.TryParse(txt_facturas.Text,out FacturasConsecutivo) || !int.TryParse(txt_NotasCredito.Text,out NotasCreditoConsecutivo) || !int.TryParse(txt_TiqueteElectronico.Text, out TiqueteElectronico) || TiqueteElectronico <= 0 || FacturasConsecutivo <= 0|| NotasCreditoConsecutivo <= 0)
                 {
                     MessageBox.Show("Error de formato para los consecutivo solo se permiten numeros","Validacion",MessageBoxButton.OK,MessageBoxImage.Stop);
                     return;

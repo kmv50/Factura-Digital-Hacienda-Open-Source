@@ -49,10 +49,13 @@ namespace DataModel
         Enviado = 0,        
         ErrorEnviar = -1,
         Anulando = -2,
-        ErrorAnulando = -3 
+        ErrorAnulando = -3,
+        ErrorInternoHacienda = -4,
+        SinRespuestaDeHacienda = -5,
+        ErrorAlDescomprimirXMLHacienda = -6
     }
 
-    
+
 
 
     public static class EnumUtils

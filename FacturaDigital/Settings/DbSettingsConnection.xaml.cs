@@ -106,7 +106,7 @@ namespace FacturaDigital.Settings
                     }
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 MessageBox.Show("Si algo salio realmente mal intente con otra combinacion. En todo caso gracias por jugar","Error",MessageBoxButton.OK,MessageBoxImage.Error);
             }

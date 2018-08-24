@@ -86,6 +86,31 @@ namespace DataModel.Hacienda_Comunication
 
         }
 
+        public RespuestaHaciendaModel Consultar(string clave)
+        {
+            TokenIdp token = GetTokenAutentification();
+
+            ApiResponse responce = null;
+            try
+            {
+                responce = new ApiClient().GET(new ApiRequest()
+                {
+                    Token = token.id_token,
+                    Route = "recepcion",
+                    Id = clave
+                });
+            }
+            catch (Exception ex)
+            {
+                this.LogError(ex);
+            }
+
+            if (responce == null)
+                return null;
+
+            return responce.mapObjet<RespuestaHaciendaModel>();
+        }
+
         private TokenIdp GetTokenAutentification()
         {
             ApiResponse response = null;
