@@ -21,6 +21,13 @@ namespace FacturaDigital
             {
                 LoadContribuyente();
             }
+
+            //Esto hay q borrarlo 
+            using (db_FacturaDigital db = new db_FacturaDigital())
+            {
+                
+                new FacturaPDF.FacturaElectronicaPDF().CrearFactura(db.Factura.Include("Factura_Detalle").OrderByDescending(q => q.Id_Factura).First());
+            }
         }
 
         private bool TestDbConection()
