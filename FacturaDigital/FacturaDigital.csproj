@@ -96,9 +96,6 @@
       <DependentUpon>PerfilHacienda.xaml</DependentUpon>
     </Compile>
     <Compile Include="FacturaPDF\FacturaElectronicaPDF.cs" />
-    <Compile Include="FacturaPDF\VisorPDF.xaml.cs">
-      <DependentUpon>VisorPDF.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Faturacion\FacturaMedioPagos.xaml.cs">
       <DependentUpon>FacturaMedioPagos.xaml</DependentUpon>
     </Compile>
@@ -129,10 +126,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Contribuyente\PerfilHacienda.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FacturaPDF\VisorPDF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

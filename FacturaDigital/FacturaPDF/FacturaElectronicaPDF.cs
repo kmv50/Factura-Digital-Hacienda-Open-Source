@@ -3,11 +3,42 @@ using DataModel.EF;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 
 namespace FacturaDigital.FacturaPDF
 {
+    public class PDFFooter : PdfPageEventHelper
+    {
+        public override void OnStartPage(PdfWriter writer, Document document)
+        {
+            base.OnStartPage(writer, document);
+        }
+
+        public override void OnEndPage(PdfWriter writer, Document document)
+        {
+            base.OnEndPage(writer, document);
+            PdfPTable tabFot = new PdfPTable(new float[] { 1F });            
+            tabFot.SpacingAfter = 10F;
+            PdfPCell cell;
+            tabFot.TotalWidth = 500f;
+            BaseFont font = BaseFont.CreateFont("c:\\windows\\fonts\\calibri.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            cell = new PdfPCell(new Phrase("Autorizada mediante resolución Nº DGT-R-48-2016 del 7 de octubre de 2016", new Font(font, 10)));
+            cell.Border = Rectangle.NO_BORDER;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;            
+            tabFot.AddCell(cell);
+            float yPosition = 20;
+            float xPosition = 35;
+            tabFot.WriteSelectedRows(0, -1, xPosition, yPosition, writer.DirectContent);
+        }
+        public override void OnCloseDocument(PdfWriter writer, Document document)
+        {
+            base.OnCloseDocument(writer, document);
+        }
+    }
+
     public static class PdfContentByte_Extencion
     {
         public static void Linea(this PdfContentByte PDF, string txt, int x, int y, bool bold = false, int align = PdfContentByte.ALIGN_LEFT, int fontsize = 10)
@@ -29,6 +60,7 @@ namespace FacturaDigital.FacturaPDF
             }
         }
 
+
         public static void Parrafo(this PdfContentByte PDF, string txt, int x, int y, int xMAx = 0, int yMAx = 100)
         {
             PDF.SaveState();
@@ -46,16 +78,17 @@ namespace FacturaDigital.FacturaPDF
     {
         private readonly BaseFont f_cn = BaseFont.CreateFont("c:\\windows\\fonts\\calibri.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
-
+        
 
         public void CrearFactura(Factura fac)
         {
+            string NewPdfName = Guid.NewGuid().ToString()+".pdf";
 
             try
             {
 
                 //La hoja de ancho mide 590
-                using (System.IO.FileStream fs = new FileStream("test.pdf", FileMode.Create))
+                using (System.IO.FileStream fs = new FileStream(NewPdfName, FileMode.Create))
                 {
                     Document document = new Document(PageSize.A4, 25, 25, 30, 1);
                     PdfWriter writer = PdfWriter.GetInstance(document, fs);
@@ -68,14 +101,30 @@ namespace FacturaDigital.FacturaPDF
 
                     document.Open();
 
+                    writer.PageEvent = new PDFFooter();
 
                     PdfContentByte doc = writer.DirectContent;
-                    //  cb.AddTemplate(PdfFooter(cb, drPayee), 30, 1);
 
-                    //iTextSharp.text.Image png = iTextSharp.text.Image.GetInstance(Server.MapPath("mbase_emc2.png"));
-                    //png.ScaleAbsolute(200, 55);
-                    //png.SetAbsolutePosition(40, 750);
-                    //cb.AddImage(png);
+                    string Logo = Directory.GetFiles(Environment.CurrentDirectory, "Logo.*",SearchOption.TopDirectoryOnly).FirstOrDefault();
+                    if (!string.IsNullOrEmpty(Logo)) {
+                        iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(Logo);
+
+                        if (img.Height > img.Width)
+                        {
+                            float percentage = 0.0f;
+                            percentage = 100 / img.Height;
+                            img.ScalePercent(percentage * 100);
+                        }
+                        else
+                        {
+                            float percentage = 0.0f;
+                            percentage = 100 / img.Width;
+                            img.ScalePercent(percentage * 100);
+                        }
+
+                        img.SetAbsolutePosition(30, 730);
+                        doc.AddImage(img);
+                    }
 
                     doc.BeginText();
 
@@ -100,7 +149,7 @@ namespace FacturaDigital.FacturaPDF
 
                     int left_margin = 40;
                     int left_marginValues = 115;
-                    int top_margin = 750;
+                    int top_margin = 720;
                     doc.Linea("Datos Vendedor", left_margin, top_margin);
                     doc.Linea("Nombre:", left_margin, top_margin - 12);
                     doc.Linea(fac.Emisor_NombreComercial, left_marginValues, top_margin - 12);
@@ -202,23 +251,19 @@ namespace FacturaDigital.FacturaPDF
                     top_margin -= 80;
                     left_margin = 350;
 
-                    writeText(doc, "Invoice line totals", left_margin, top_margin);
-                    writeText(doc, "Freight fee", left_margin, top_margin - 12);
-                    writeText(doc, "VAT amount", left_margin, top_margin - 24);
-                    writeText(doc, "Invoice grand total", left_margin, top_margin - 48);
+                    writeText(doc, "SubTotal", left_margin, top_margin);
+                    writeText(doc, "Descuento", left_margin, top_margin - 12);
+                    writeText(doc, "Impuesto", left_margin, top_margin - 24);
+                    writeText(doc, "Total", left_margin, top_margin - 48);
                     // Move right to write out the values
                     left_margin = 540;
                     // Write out the invoice currency and values in regular text
-                    string curr = "Total";
-                    doc.ShowTextAligned(PdfContentByte.ALIGN_LEFT, curr, left_margin, top_margin, 0);
-                    doc.ShowTextAligned(PdfContentByte.ALIGN_LEFT, curr, left_margin, top_margin - 12, 0);
-                    doc.ShowTextAligned(PdfContentByte.ALIGN_LEFT, curr, left_margin, top_margin - 24, 0);
-                    doc.ShowTextAligned(PdfContentByte.ALIGN_LEFT, curr, left_margin, top_margin - 48, 0);
+
                     left_margin = 535;
-                    doc.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Total1", left_margin, top_margin, 0);
-                    doc.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Total1", left_margin, top_margin - 12, 0);
-                    doc.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Total1", left_margin, top_margin - 24, 0);
-                    doc.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Total1", left_margin, top_margin - 48, 0);
+                    doc.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, fac.TotalVenta.ToString("₡#0.00"), left_margin, top_margin, 0);
+                    doc.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, (fac.TotalDescuentos ?? 0 ).ToString("₡#0.00"), left_margin, top_margin - 12, 0);
+                    doc.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, (fac.TotalImpuesto ?? 0).ToString("₡#0.00"), left_margin, top_margin - 24, 0);
+                    doc.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, fac.TotalComprobante.ToString("₡#0.00"), left_margin, top_margin - 48, 0);
 
                     // End the writing of text
                     doc.EndText();
@@ -234,6 +279,24 @@ namespace FacturaDigital.FacturaPDF
             catch (Exception ex)
             {
                 this.LogError(ex);                
+            }
+
+            try
+            {
+              foreach(string pdfFile in  Directory.GetFiles(Environment.CurrentDirectory, "*.pdf", SearchOption.TopDirectoryOnly))
+              {
+                    try
+                    {
+                        if (Path.GetFileName(pdfFile) != NewPdfName)
+                            File.Delete(pdfFile);
+                    }
+                    catch { }                    
+              }
+              Process.Start(Path.Combine(Environment.CurrentDirectory, NewPdfName));              
+            }catch(Exception ex)
+            {
+                this.LogError(ex);
+                MessageBox.Show("Error al mostrar el pdf","Error",MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
 
