@@ -34,15 +34,15 @@
                 <ComboBoxItem Content="Crédito" Tag="02" />
                 <ComboBoxItem Content="Consignación" Tag="03" />
                 <ComboBoxItem Content="Apartado" Tag="04" />
-                <ComboBoxItem Content="Arrendamiento con opción de compra " Tag="05" />
-                <ComboBoxItem Content="Arrendamiento en función financiera " Tag="06" />
+                <ComboBoxItem Content="Arrendamiento con opción de compra" Tag="05" />
+                <ComboBoxItem Content="Arrendamiento en función financiera" Tag="06" />
             </ComboBox>
 
             <ComboBox Grid.Column="1" Grid.Row="1" SelectedIndex="0" x:Name="cb_MedioPago" materialDesign:HintAssist.IsFloating="True" materialDesign:HintAssist.Hint="Medio Pago" Margin="10">
                 <ComboBoxItem Content="Efectivo" Tag="01" />
                 <ComboBoxItem Content="Tarjeta" Tag="02" />
                 <ComboBoxItem Content="Cheque" Tag="03" />
-                <ComboBoxItem Content="Transferencia – depósito bancario " Tag="04" />
+                <ComboBoxItem Content="Transferencia – depósito bancario" Tag="04" />
                 <ComboBoxItem Content="Recaudado por terceros" Tag="05" />
             </ComboBox>
         </Grid>

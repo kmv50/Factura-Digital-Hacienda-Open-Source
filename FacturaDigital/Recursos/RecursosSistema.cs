@@ -86,5 +86,6 @@ namespace FacturaDigital.Recursos
                 MessageBox.Show("Error al agregar factura a servicio de consulta", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        
     }
 }

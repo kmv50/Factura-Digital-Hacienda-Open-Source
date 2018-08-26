@@ -37,5 +37,44 @@ namespace DataModel
             }
         }
     }
+
+    public static class Utilides
+    {
+        public static string GetCondicionVentaFullName(string key)
+        {
+            if (key == "01")
+                return "Contado";
+            if (key == "02")
+                return "Crédito";
+            if (key == "03")
+                return "Consignación";
+            if (key == "04")
+                return "Apartado";
+            if (key == "05")
+                return "Arrendamiento con opción de compra";
+            if (key == "06")
+                return "Arrendamiento en función financiera";
+            return "";
+        }
+
+
+        public static string GetMedioDePagoFullName(string key)
+        {
+            if (key == "01")
+                return "Efectivo";
+            if (key == "02")
+                return "Tarjeta";
+            if (key == "03")
+                return "Cheque";
+            if (key == "04")
+                return "Transferencia – depósito bancario";
+            if (key == "05")
+                return "Recaudado por terceros";
+
+            return "";
+        }
+
+
+    }
     
 }

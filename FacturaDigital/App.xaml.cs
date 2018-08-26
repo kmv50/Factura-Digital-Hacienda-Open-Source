@@ -13,5 +13,9 @@ namespace FacturaDigital
     /// </summary>
     public partial class App : Application
     {
+        private void OnApplicationExit(object sender, ExitEventArgs e)
+        {
+            Recursos.RecursosSistema.DetenerServicioConsulta();
+        }
     }
 }
