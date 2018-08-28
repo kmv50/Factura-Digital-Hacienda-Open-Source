@@ -1,4 +1,5 @@
-﻿using DataModel.EF;
+﻿using DataModel;
+using DataModel.EF;
 using FacturaDigital.Recursos;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace FacturaDigital.Productos
     /// <summary>
     /// Interaction logic for Productos.xaml
     /// </summary>
-    public partial class Productos : Page
+    public partial class Productos : Page , ILog
     {
         private ObservableCollection<Producto_ImpuestoSeleccionado> ColeccionImpuesto;
         public Productos()
@@ -27,7 +28,7 @@ namespace FacturaDigital.Productos
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
             }
         }
 
@@ -89,7 +90,7 @@ namespace FacturaDigital.Productos
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio un error al guardar el producto", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -117,7 +118,7 @@ namespace FacturaDigital.Productos
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
             }
         }
     }

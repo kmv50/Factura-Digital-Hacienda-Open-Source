@@ -1,4 +1,5 @@
-﻿using DataModel.EF;
+﻿using DataModel;
+using DataModel.EF;
 using FacturaDigital.Recursos;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace FacturaDigital.Clientes
     /// <summary>
     /// Interaction logic for Lista_Clientes.xaml
     /// </summary>
-    public partial class Lista_Clientes : Page
+    public partial class Lista_Clientes : Page ,ILog
     {
         ObservableCollection<Cliente> ClienteCollection;
         public Lista_Clientes()
@@ -48,7 +49,7 @@ namespace FacturaDigital.Clientes
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio un error al obtener la lista de clientes", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -74,7 +75,7 @@ namespace FacturaDigital.Clientes
             }
             catch(Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
             }
         }
 

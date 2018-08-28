@@ -49,7 +49,7 @@
                         <StackPanel Width="150">
                             <Button Content="Perfil Hacienda" Click="PerfilHacienda"/>
                             <Button Content="Consecutivos" Click="Consecutivos"/>
-                            <Button Content="Help"/>
+                            <Button Content="Correo" Click="ConfiguracionCorreo"/>
                             <Separator/>
                             <Button Content="Logout"/>
                         </StackPanel>

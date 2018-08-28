@@ -1,4 +1,5 @@
-﻿using FacturaDigital.Servicio_Consulta;
+﻿using DataModel.EF;
+using FacturaDigital.Servicio_Consulta;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,16 +9,13 @@ namespace FacturaDigital.Recursos
 {
     public static class RecursosSistema
     {
-        public delegate void Contribuyente_Load();
-        public static Contribuyente_Load OnContribuyente_Load;
+        public delegate void StartMain_Load();
+        public static StartMain_Load OnStartMain_Load;
         public static Frame MainConteiner { set; get; }
         public static DataModel.EF.Contribuyente Contribuyente { get; internal set; }
         private static ServicioConsulta Servicio;
 
-        public static void LogError(Exception ex)
-        {
-
-        }
+       
 
         public static void IniciarServicioConsulta() {
             try
@@ -46,6 +44,18 @@ namespace FacturaDigital.Recursos
             }
         }
 
+        private static void LogError(Exception ex)
+        {
+            try
+            {
+                using (db_FacturaDigital db = new db_FacturaDigital()) {
+                   
+                }
+            }catch
+            {
+
+            }
+        }
 
         public static void WindosNotification(string Titulo , string Mensaje)
         {

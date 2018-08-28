@@ -80,7 +80,7 @@ namespace FacturaDigital.FacturaPDF
 
         
 
-        public void CrearFactura(Factura fac)
+        public string CrearFactura(Factura fac)
         {
             string NewPdfName = Guid.NewGuid().ToString()+".pdf";
 
@@ -278,28 +278,45 @@ namespace FacturaDigital.FacturaPDF
             }
             catch (Exception ex)
             {
-                this.LogError(ex);                
-            }
+                this.LogError(ex);
+                MessageBox.Show("Error al crear el PDF", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }          
+            return NewPdfName;
+        }
+
+        public void MostrarFactura(string FacturaNamePDF) {
 
             try
             {
-              foreach(string pdfFile in  Directory.GetFiles(Environment.CurrentDirectory, "*.pdf", SearchOption.TopDirectoryOnly))
-              {
+                foreach (string pdfFile in Directory.GetFiles(Environment.CurrentDirectory, "*.pdf", SearchOption.TopDirectoryOnly))
+                {
                     try
                     {
-                        if (Path.GetFileName(pdfFile) != NewPdfName)
+                        if (Path.GetFileName(pdfFile) != FacturaNamePDF && File.GetCreationTime(pdfFile).AddMinutes(30) <= DateTime.Now)
                             File.Delete(pdfFile);
                     }
-                    catch { }                    
-              }
-              Process.Start(Path.Combine(Environment.CurrentDirectory, NewPdfName));              
-            }catch(Exception ex)
+                    catch { }
+                }
+                Process.Start(Path.Combine(Environment.CurrentDirectory, FacturaNamePDF));
+            }
+            catch (Exception ex)
             {
                 this.LogError(ex);
-                MessageBox.Show("Error al mostrar el pdf","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Error al mostrar el pdf", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        public void ImprimirFactura(string FacturaNamePDF) {
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo()
+            {
+                CreateNoWindow = true,
+                Verb = "print",
+                FileName = FacturaNamePDF 
+            };
+            p.Start();
+        }
 
         private string FullAddress(Factura fac)
         {

@@ -35,6 +35,9 @@ namespace DataModel.EF
         public virtual DbSet<SMTP> SMTP { get; set; }
         public virtual DbSet<Ubicacion> Ubicaciones { get; set; }
         public virtual DbSet<Contribuyente_Consecutivos> Contribuyente_Consecutivos { set; get; }
+        public virtual DbSet<Errores_Sistema> Errores_Sistema { set; get; }
+
+        
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

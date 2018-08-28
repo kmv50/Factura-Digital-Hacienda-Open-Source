@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DataModel;
 using DataModel.EF;
 
 namespace FacturaDigital.Productos
@@ -19,7 +20,7 @@ namespace FacturaDigital.Productos
     /// <summary>
     /// Interaction logic for ProductoImpuestoDialog.xaml
     /// </summary>
-    public partial class ProductoImpuestoDialog : Window
+    public partial class ProductoImpuestoDialog : Window , ILog
     {
         private ObservableCollection<Producto_ImpuestoSeleccionado> coleccionImpuesto;
         private decimal precioUnitario;
@@ -77,7 +78,7 @@ namespace FacturaDigital.Productos
             }
             catch(Exception ex)
             {
-                Recursos.RecursosSistema.LogError(ex);
+                this.LogError(ex);
             }
         }
 

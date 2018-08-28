@@ -1,4 +1,5 @@
-﻿using DataModel.EF;
+﻿using DataModel;
+using DataModel.EF;
 using DataModel.UbicacionesData;
 using FacturaDigital.Recursos;
 using System;
@@ -21,7 +22,7 @@ namespace FacturaDigital.Clientes
     /// <summary>
     /// Interaction logic for Clientes.xaml
     /// </summary>
-    public partial class Clientes : Page
+    public partial class Clientes : Page , ILog
     {
         public Clientes()
         {
@@ -58,7 +59,7 @@ namespace FacturaDigital.Clientes
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio al seleccionar la provincia", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -73,7 +74,7 @@ namespace FacturaDigital.Clientes
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio al seleccionar la provincia", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -89,7 +90,7 @@ namespace FacturaDigital.Clientes
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio al seleccionar la provincia", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -219,7 +220,7 @@ namespace FacturaDigital.Clientes
             }
             catch(Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Error al guardar datos del cliente","Error",MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
@@ -228,10 +229,10 @@ namespace FacturaDigital.Clientes
         {
             try
             {
-                Recursos.RecursosSistema.MainConteiner.Content = new Lista_Clientes();
+                RecursosSistema.MainConteiner.Content = new Lista_Clientes();
             }catch(Exception ex)
             {
-                Recursos.RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Error al volver a la lista de clientes","Error",MessageBoxButton.OK,MessageBoxImage.Error);            
             }
         }

@@ -94,7 +94,7 @@ namespace FacturaDigital.Settings
                             {
                                 GuardarCredenciales();
                                 MessageBox.Show("Listo conexion establecida.", "Informacion", MessageBoxButton.OK, MessageBoxImage.Information);
-                                Recursos.RecursosSistema.OnContribuyente_Load();
+                                Recursos.RecursosSistema.OnStartMain_Load();
                             }
                         }
                     }
@@ -102,7 +102,7 @@ namespace FacturaDigital.Settings
                     {
                         GuardarCredenciales();
                         MessageBox.Show("Listo conexion establecida.", "Informacion", MessageBoxButton.OK, MessageBoxImage.Information);
-                        Recursos.RecursosSistema.OnContribuyente_Load();
+                        Recursos.RecursosSistema.OnStartMain_Load();
                     }
                 }
             }

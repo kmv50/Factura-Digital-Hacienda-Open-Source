@@ -28,6 +28,8 @@ namespace DataModel.EF
 
         public int Puerto { set; get; }
 
+        public bool SSL { set; get; }
+
         public int Id_Contribuyente { get; set; }
         [ForeignKey("Id_Contribuyente")]
         public virtual Contribuyente Contribuyente { get; set; }

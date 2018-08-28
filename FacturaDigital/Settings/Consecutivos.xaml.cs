@@ -1,4 +1,5 @@
-﻿using DataModel.EF;
+﻿using DataModel;
+using DataModel.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace FacturaDigital.Settings
     /// <summary>
     /// Lógica de interacción para Consecutivos.xaml
     /// </summary>
-    public partial class Consecutivos : Page
+    public partial class Consecutivos : Page, ILog
     {
         public Consecutivos()
         {
@@ -62,7 +63,7 @@ namespace FacturaDigital.Settings
             }
             catch(Exception ex)
             {
-                Recursos.RecursosSistema.LogError(ex);
+                this.LogError(ex);
             }
         }
 
@@ -106,7 +107,7 @@ namespace FacturaDigital.Settings
 
             }catch(Exception ex)
             {
-                Recursos.RecursosSistema.LogError(ex);
+                this.LogError(ex);
             }
         }
     }

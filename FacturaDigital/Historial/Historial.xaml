@@ -4,11 +4,73 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FacturaDigital.Historial"
+            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
-      Title="Historial">
+      d:DesignHeight="800" d:DesignWidth="1200" 
+      Title="Historial" Loaded="OnLoad">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
 
+    </Page.Resources>
+    
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card Margin="10" Padding="20">
+            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Historial Facturacion"  MinWidth="120" Foreground="#31577E"/>
+        </materialDesign:Card>
+
+        <WrapPanel Grid.Row="1" Orientation="Horizontal">
+            <Label Content="Fecha Inicio" Width="150" VerticalAlignment="Center" Margin="10"/>
+            <DatePicker x:Name="dp_FechaInicio" Width="150" VerticalAlignment="Center" Margin="10"/>
+            <Label Content="Fecha Inicio" Width="150" VerticalAlignment="Center" Margin="10"/>
+            <DatePicker x:Name="dp_FechaFinal"  Width="150" VerticalAlignment="Center" Margin="10"/>
+            <Button Content="Filtrar" Margin="10" Click="Filtrar" />
+        </WrapPanel>
+
+        <DataGrid x:Name="dgv_Historial" Grid.Row="2" AutoGenerateColumns="False"   Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  SelectionMode="Single" materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                   IsReadOnly="True" CanUserSortColumns="True" 
+                          ItemsSource="{Binding}"  CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" 
+                  >
+            <DataGrid.Columns>
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding NumeroConsecutivo}" Width="100" Header="Consecutivo" />
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding Fecha_Emision_Documento}" Width="180" Header="Fecha" />
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding EstadoHaciendaLabel }" Width="100" Header="Estado" />
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding GetTipoDocumentoLabel  }" Width="150" Header="Tipo Documento" />
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding Receptor_Nombre }" Width="*" Header="Receptor" />
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding Receptor_CorreoElectronico }" Width="*" Header="Email" />
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding Receptor_Telefono_Numero }" Width="100" Header="Telefono" />
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding TotalComprobante }" Width="100" Header="Total" />
+                <DataGridTemplateColumn  MinWidth="100" Header="Mostrar"  CanUserSort="False" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Mostrar" CommandParameter="{Binding Id_Factura}" Click="MostrarFactura"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="{materialDesign:PackIcon Kind=ChevronDoubleLeft}" ToolTip="Anterior" Margin="10" Click="Previous"/>
+            <Button Content="{materialDesign:PackIcon Kind=ChevronDoubleRight}" ToolTip="Siguiente" Margin="10" Click="Next" />
+        </StackPanel>
     </Grid>
 </Page>

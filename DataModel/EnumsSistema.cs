@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,13 +11,20 @@ namespace DataModel
 {
     public enum Tipo_documento
     {
-        [NameSpace("https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/facturaElectronica")]
+        [Description("Factura Electrónica")]
+        [NameSpace("https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/facturaElectronica")]       
         Factura_electrónica = 1,
+        [Description("Noda Débito")]
         Nota_de_débito_electrónica = 2,
+        [Description("Anulación")]
         Nota_de_crédito_electrónica = 3,
+        [Description("Tiquete Electrónico")]
         Tiquete_Electrónico = 4,
+        [Description("Confirmación Aceptación")]
         Confirmación_aceptación = 5,
+        [Description("Confirmación Aceptación Parcial")]
         Confirmación_aceptación_parcial = 6,
+        [Description("Rechazo Comprobante")]    
         Confirmación_rechazo_comprobante = 7
     }
 
@@ -42,16 +50,26 @@ namespace DataModel
     public enum EstadoComprobante
     {
         //Estdos Hacienda
+        [Description("Aceptado")]
         Aceptado = 1,
+        [Description("Aceptado Parcialmente")]
         AceptadoParcialmente  = 2,
+        [Description("Rechazado")]
         Rechazado = 3,
         //Estados Sistema
-        Enviado = 0,        
+        [Description("Enviado")]
+        Enviado = 0,
+        [Description("Error al Enviar")]
         ErrorEnviar = -1,
+        [Description("Anulado")]
         Anulando = -2,
+        [Description("Error Anulando")]
         ErrorAnulando = -3,
+        [Description("Error de Hacienda")]
         ErrorInternoHacienda = -4,
+        [Description("En espera")]
         SinRespuestaDeHacienda = -5,
+        [Description("Error sistema")]
         ErrorAlDescomprimirXMLHacienda = -6
     }
 

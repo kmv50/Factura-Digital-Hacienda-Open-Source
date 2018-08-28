@@ -1,4 +1,5 @@
-﻿using DataModel.EF;
+﻿using DataModel;
+using DataModel.EF;
 using FacturaDigital.Recursos;
 using System;
 using System.Linq;
@@ -10,24 +11,16 @@ namespace FacturaDigital
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window , ILog
     {
+        bool ConexionDBChequeada, DatosSMTP , DatosContribuyente;
         public MainWindow()
         {
-            RecursosSistema.OnContribuyente_Load = new RecursosSistema.Contribuyente_Load(LoadContribuyente);
+            RecursosSistema.OnStartMain_Load = new RecursosSistema.StartMain_Load(StartMain);
             InitializeComponent();
+            ListViewMenu.Visibility = Visibility.Hidden;
             RecursosSistema.MainConteiner = MainConteiner;
-            if (TestDbConection())
-            {
-                LoadContribuyente();
-            }
-
-            //Esto hay q borrarlo 
-            using (db_FacturaDigital db = new db_FacturaDigital())
-            {
-                
-                new FacturaPDF.FacturaElectronicaPDF().CrearFactura(db.Factura.Include("Factura_Detalle").OrderByDescending(q => q.Id_Factura).First());
-            }
+            StartMain();         
         }
 
         private bool TestDbConection()
@@ -54,7 +47,51 @@ namespace FacturaDigital
             }
         }
 
-        private void LoadContribuyente()
+        private void StartMain() {
+            if (!ConexionDBChequeada  && !TestDbConection())
+                return;
+            else
+                ConexionDBChequeada = true;
+
+            if (!DatosContribuyente && !VerificarDatosContribuyente())
+                return;
+            else
+                DatosContribuyente = true;
+
+            if (!DatosSMTP && !CheckSmtp())
+                return;
+            else
+                DatosSMTP = true;
+
+
+            ListViewMenu.Visibility = Visibility.Visible;
+            lb_mainUser.Text = RecursosSistema.Contribuyente.Nombre;
+            RecursosSistema.IniciarServicioConsulta();
+            ShowHistorial();
+        }
+
+        private bool CheckSmtp()
+        {
+            try
+            {
+                using (db_FacturaDigital db = new db_FacturaDigital())
+                {
+                    if(db.SMTP.Any())                    
+                        return true;
+
+                    MessageBox.Show("Antes de continuar debe llenar los datos de smpt con el fin de poder enviar sus facturas", "Informacion", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ConfiguracionCorreo(null, null);
+                    return false;
+                }
+            }catch(Exception ex)
+            {
+                this.LogError(ex);
+                MessageBox.Show("Error al validar datos de SMTP","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                return false;
+            }
+        }
+
+        private bool VerificarDatosContribuyente()
         {
             try
             {
@@ -64,22 +101,20 @@ namespace FacturaDigital
                     if (RecursosSistema.Contribuyente == null)
                     {
                         MessageBox.Show("Antes de continuar llene el perfil de contribuyente", "Informacion", MessageBoxButton.OK, MessageBoxImage.Information);
-                        ListViewMenu.Visibility = Visibility.Hidden;
                         PerfilHacienda(null, null);
+                        return false;
                     }
                     else
                     {
-                        ListViewMenu.Visibility = Visibility.Visible;
-                        lb_mainUser.Text = RecursosSistema.Contribuyente.Nombre;
+                        return true;
                     }
                 }
-
-                RecursosSistema.IniciarServicioConsulta();
             }
             catch (Exception ex)
             {
                 ListViewMenu.Visibility = Visibility.Hidden;
                 MessageBox.Show("Error al consultar la base de datos. Esto de se puede deber a que la base de datos no responde. Verfique que el servidor de mysql se encuente en linea. Verifique los datos de conexion de la base datos. " + ex.Message + " " + ex.StackTrace, "Erro", MessageBoxButton.OK);
+                return false;
             }
 
         }
@@ -142,6 +177,12 @@ namespace FacturaDigital
         {
             ButtonCloseMenu_Click(sender, e);
             MainConteiner.Content = new Settings.Consecutivos();
+        }
+
+        private void ConfiguracionCorreo(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu_Click(sender, e);
+            MainConteiner.Content = new Settings.ConfiguracionCorreo();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace FacturaDigital.Faturacion
     /// <summary>
     /// Interaction logic for Facturar.xaml
     /// </summary>
-    public partial class Facturar : Page, INotifyPropertyChanged
+    public partial class Facturar : Page, INotifyPropertyChanged , ILog
     {
         #region Binding
         public event PropertyChangedEventHandler PropertyChanged;
@@ -178,7 +178,7 @@ namespace FacturaDigital.Faturacion
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio un error al seleccionar el articulo");
             }
         }
@@ -239,7 +239,7 @@ namespace FacturaDigital.Faturacion
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Error al calcular el sub total", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -286,7 +286,7 @@ namespace FacturaDigital.Faturacion
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
             }
         }
 
@@ -316,7 +316,7 @@ namespace FacturaDigital.Faturacion
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio un error al seleccionar el articulo");
             }
         }
@@ -390,7 +390,7 @@ namespace FacturaDigital.Faturacion
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio un error al calcular el subtotal");
             }
 
@@ -415,7 +415,7 @@ namespace FacturaDigital.Faturacion
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio un error al calcular el subtotal");
             }
         }
@@ -436,7 +436,7 @@ namespace FacturaDigital.Faturacion
             catch (Exception ex)
             {
                 MessageBox.Show("Ocurrio un error al eliminar el producto de la lista", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
             }
         }
 
@@ -467,7 +467,7 @@ namespace FacturaDigital.Faturacion
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cambiar el tipo de factura", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
             }
         }
 
@@ -498,7 +498,7 @@ namespace FacturaDigital.Faturacion
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio un error al facturar", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -659,6 +659,7 @@ namespace FacturaDigital.Faturacion
                             FacturaDB_ToFacturaElectronica Hacienda = new FacturaDB_ToFacturaElectronica(RecursosSistema.Contribuyente);
                             Hacienda.Convertir(fac).CrearXml(tipoDocumento).Enviar();
                             fac.XML_Enviado = Hacienda.XML.InnerXml;
+                            new FacturaPDF.FacturaElectronicaPDF().CrearFactura(fac);
                         }
                         else
                         {
@@ -680,7 +681,7 @@ namespace FacturaDigital.Faturacion
             catch (Exception ex)
             {
                 loadingDisplayer.Visibility = Visibility.Collapsed;
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio un error al crear la factura en la base de datos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }
@@ -696,7 +697,7 @@ namespace FacturaDigital.Faturacion
             }
             catch(Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio un error al limpiara la pagina","Error",MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }

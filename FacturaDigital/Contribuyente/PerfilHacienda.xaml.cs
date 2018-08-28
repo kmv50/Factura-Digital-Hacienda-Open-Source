@@ -1,4 +1,5 @@
-﻿using DataModel.EF;
+﻿using DataModel;
+using DataModel.EF;
 using DataModel.UbicacionesData;
 using FacturaDigital.Recursos;
 using Microsoft.Win32;
@@ -24,7 +25,7 @@ namespace FacturaDigital.Contribuyente
     /// <summary>
     /// Interaction logic for PerfilHacienda.xaml
     /// </summary>
-    public partial class PerfilHacienda : Page
+    public partial class PerfilHacienda : Page , ILog
     {
         string CertificadoUrl;
         public PerfilHacienda()
@@ -100,7 +101,7 @@ namespace FacturaDigital.Contribuyente
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio un error al obtener los datos del contribuyente", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -126,7 +127,7 @@ namespace FacturaDigital.Contribuyente
             }
             catch(Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio al seleccionar la provincia", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -141,7 +142,7 @@ namespace FacturaDigital.Contribuyente
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio al seleccionar la provincia", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -157,7 +158,7 @@ namespace FacturaDigital.Contribuyente
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio al seleccionar la provincia", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -325,7 +326,7 @@ namespace FacturaDigital.Contribuyente
                     }
                     catch (Exception ex)
                     {
-                        RecursosSistema.LogError(ex);
+                        this.LogError(ex);
                         MessageBox.Show("No se pudo abrir el ceritificado. Esto se puede deber a que la contrasena indicada no es valida o que el contenido del certificado es invalido","Error",MessageBoxButton.OK,MessageBoxImage.Stop);
                         return;
                     }
@@ -356,17 +357,17 @@ namespace FacturaDigital.Contribuyente
                     MessageBox.Show("Perfil actualizado correctamente","Informacion",MessageBoxButton.OK,MessageBoxImage.Information);
                     try
                     {
-                        RecursosSistema.OnContribuyente_Load();
+                        RecursosSistema.OnStartMain_Load();
                     }catch(Exception ex)
                     {
-                        RecursosSistema.LogError(ex);
+                        this.LogError(ex);
                         MessageBox.Show("Reinicie el sistema para continuar");
                     }
                 }
             }
             catch (Exception ex)
             {
-                RecursosSistema.LogError(ex);
+                this.LogError(ex);
                 MessageBox.Show("Ocurrio al guardar el perfil del contribuyente", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
