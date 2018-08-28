@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FacturaDigital.Historial"
+        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -13,28 +14,121 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="DetalleFactura" Height="450" Width="800" WindowStartupLocation="CenterOwner" WindowStyle="None">
+        Title="DetalleFactura" Height="550" Width="800" WindowStartupLocation="CenterOwner" WindowStyle="None">
+    <Window.Resources>
+        <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100" />
+            <RowDefinition Height="80" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
-        <materialDesign:Card Margin="10" Padding="20" Grid.Row="0"> 
+        <materialDesign:Card Margin="5" Padding="20" Grid.Row="0"> 
             <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Detalle Factura"  MinWidth="120" Foreground="#31577E"/>
         </materialDesign:Card>
-        <TabControl Grid.Row="1" Margin="10">
+        <dragablz:TabablzControl Grid.Row="1" Margin="5">
             <TabItem Header="General" IsSelected="True">
-                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <materialDesign:Card Margin="10,5,10,5" Padding="5" >
+                            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Datos Cliente"  MinWidth="120" Foreground="#31577E"/>
+                        </materialDesign:Card>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0" >
+                            <Label Content="Nombre" Width="100" VerticalAlignment="Center"/>
+                            <TextBox IsReadOnly="True" MinWidth="150" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0" >
+                            <Label Content="Identificacion"  Width="100" VerticalAlignment="Center"/>
+                            <TextBox IsReadOnly="True" MinWidth="150" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <Label Content="Telefono" Width="100" VerticalAlignment="Center"/>
+                            <TextBox IsReadOnly="True"  MinWidth="150"  VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <Label Content="Correo"  Width="100" VerticalAlignment="Center"/>
+                            <TextBox IsReadOnly="True"  MinWidth="150"  VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <materialDesign:Card Margin="10,5,10,5"  Padding="5" >
+                            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" Text="Datos Factura"  MinWidth="120" Foreground="#31577E"/>
+                        </materialDesign:Card>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <Label Content="Clave"  Width="100" />
+                            <TextBox IsReadOnly="True"  MinWidth="150"  VerticalAlignment="Center"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <Label Content="Consecutivo"  Width="100" />
+                            <TextBox IsReadOnly="True"  MinWidth="150"  VerticalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <Label Content="Fecha" Width="100" />
+                            <TextBox IsReadOnly="True"  MinWidth="150"  VerticalAlignment="Center"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+                            <Label Content="Estado"  Width="100" />
+                            <TextBox IsReadOnly="True"  MinWidth="150"  VerticalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" Margin="10" Grid.ColumnSpan="2"
+                      SelectionMode="Single" materialDesign:DataGridAssist.CellPadding="13 8 8 8" materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                      IsReadOnly="True" CanUserSortColumns="True" 
+                      ItemsSource="{Binding}"  CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
+                              >
+                        <DataGrid.Columns>
+                            <materialDesign:MaterialDataGridTextColumn Binding="{Binding ProductoServicio}" Width="*" Header="Producto" />
+                            <materialDesign:MaterialDataGridTextColumn Binding="{Binding PrecioUnitario}" Width="150" Header="Precio" />
+                            <materialDesign:MaterialDataGridTextColumn Binding="{Binding Cantidad}" Width="100" Header="Cantidad" />
+                            <materialDesign:MaterialDataGridTextColumn Binding="{Binding Monto_Descuento}" Width="100" Header="Descuento" />
+                            <materialDesign:MaterialDataGridTextColumn Binding="{Binding Impuesto_Monto}" Width="100" Header="Impuesto" />
+
+                            <DataGridCheckBoxColumn Binding="{Binding Gravado}" Header="Gravado" Width="80"
+                                            ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
+
+                            <materialDesign:MaterialDataGridTextColumn Binding="{Binding Monto_Total_Linea}" Width="200" Header="Monto Total Linea" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Row="2" Grid.ColumnSpan="2" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0"   IsReadOnly="True" materialDesign:HintAssist.Hint="₡ SubTotal Neto" materialDesign:HintAssist.IsFloating="True"/>
+                        <TextBox Grid.Column="1"   IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Descuento" materialDesign:HintAssist.IsFloating="True"/>
+                        <TextBox Grid.Column="2"   IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Impuesto" materialDesign:HintAssist.IsFloating="True"/>
+                        <TextBox Grid.Column="3"   IsReadOnly="True" materialDesign:HintAssist.Hint="₡ Total" materialDesign:HintAssist.IsFloating="True"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tb_Anular" Header="Anular">
+                <StackPanel>
+                    <TextBox x:Name="txt_MotivoAnulacion" HorizontalAlignment="Stretch" />
+                </StackPanel>
             </TabItem>
             <TabItem Header="Xml  Hacienda">
                 
             </TabItem>
-        </TabControl>
+        </dragablz:TabablzControl>
         <Grid Grid.Row="2">
             <Button Content="Volver" HorizontalAlignment="Right" Margin="10" Click="OnClose"/>
-            <Button Content="Reenviar Factura" HorizontalAlignment="Left" Margin="100,10,10,10" />
-            <Button Content="Ver PDF" HorizontalAlignment="Left" Margin="10" />
+            <Button Content="Reenviar Factura" HorizontalAlignment="Left" Margin="100,10,10,10" Click="EnviarEmail" />
+            <Button Content="Ver PDF" HorizontalAlignment="Left" Margin="10" Click="MostrarPDF" />
         </Grid>
     </Grid>
 </Window>

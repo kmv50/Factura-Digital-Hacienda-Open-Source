@@ -114,6 +114,10 @@
     <Compile Include="Migrations\201808262211168_smtp.Designer.cs">
       <DependentUpon>201808262211168_smtp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808280144594_Email_Details_ColumnADD.cs" />
+    <Compile Include="Migrations\201808280144594_Email_Details_ColumnADD.Designer.cs">
+      <DependentUpon>201808280144594_Email_Details_ColumnADD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\DbSettings.Designer.cs">
@@ -150,6 +154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808262211168_smtp.resx">
       <DependentUpon>201808262211168_smtp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808280144594_Email_Details_ColumnADD.resx">
+      <DependentUpon>201808280144594_Email_Details_ColumnADD.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

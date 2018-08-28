@@ -43,6 +43,7 @@ namespace FacturaDigital.Settings
                     txt_Usuario.Text = value.Usuario;
                     txt_contrasena.Password = value.Contrasena;
                     chk_SSL.IsChecked = value.SSL;
+                    txt_EmailDetails.Text = value.Detalle_Email;
                 }
             }
             catch(Exception ex)
@@ -104,6 +105,7 @@ namespace FacturaDigital.Settings
                     value.Url_Servidor = txt_host.Text;
                     value.Usuario = txt_Usuario.Text;
                     value.SSL = chk_SSL.IsChecked.Value;
+                    value.Detalle_Email = txt_EmailDetails.Text;
                     value.Id_Contribuyente = RecursosSistema.Contribuyente.Id_Contribuyente;
                     db.SaveChanges();
                 }

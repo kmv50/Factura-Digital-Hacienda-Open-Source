@@ -153,9 +153,13 @@ namespace FacturaDigital.Servicio_Consulta
                                     fac.Estado = EstadoHacienda;
                                     fac.HaciendaDetalle = DetalleRespuestaHacienda;
                                     db.SaveChanges();
-                                    if(fac.Estado == 1 || fac.Estado == 2)
+                                    if (fac.Estado == 1 || fac.Estado == 2)
+                                    {
                                         RecursosSistema.WindosNotification("Facturación", "Factura aceptada [" + Consulta.Clave + "]");
-                                    else if(fac.Estado == 3)
+                                        new SendSmtp.SendSmtp(fac.Id_Factura).Enviar();
+                                        fac.Email_Enviado = true;
+                                    }
+                                    else if (fac.Estado == 3)
                                         RecursosSistema.WindosNotification("Facturación", "Factura rechazada [" + Consulta.Clave + "]");
 
                                 }

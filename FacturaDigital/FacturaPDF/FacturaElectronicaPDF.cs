@@ -63,9 +63,10 @@ namespace FacturaDigital.FacturaPDF
 
         public static void Parrafo(this PdfContentByte PDF, string txt, int x, int y, int xMAx = 0, int yMAx = 100)
         {
+            //calibri
             PDF.SaveState();
             ColumnText ct = new ColumnText(PDF);
-            BaseFont font = BaseFont.CreateFont("c:\\windows\\fonts\\calibri.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont font = BaseFont.CreateFont("c:\\windows\\fonts\\Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Phrase parrafo = new Phrase(new Chunk(txt, new Font(font, 10)));
             xMAx = xMAx == 0 ? x + 450 : xMAx;
             ct.SetSimpleColumn(parrafo, x, y, xMAx, yMAx, 12, Element.ALIGN_LEFT);
@@ -76,7 +77,7 @@ namespace FacturaDigital.FacturaPDF
 
     public class FacturaElectronicaPDF : ILog
     {
-        private readonly BaseFont f_cn = BaseFont.CreateFont("c:\\windows\\fonts\\calibri.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        private readonly BaseFont f_cn = BaseFont.CreateFont("c:\\windows\\fonts\\Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
         
 
@@ -197,7 +198,7 @@ namespace FacturaDigital.FacturaPDF
                     left_margin = 40;
                     top_margin = 590;
                     doc.Linea("Detalle:", left_margin, top_margin);
-                    doc.Parrafo("BMW (originally an initialism for Bayerische Motoren Werke in German, or Bavarian Motor Works in English) is a German multinational company which currently produces luxury automobiles and motorcycles, and also produced aircraft engines until 1945.", left_marginValues, 610);
+                    doc.Parrafo("No se indica", left_marginValues, 610);
 
 
                     doc.EndText();

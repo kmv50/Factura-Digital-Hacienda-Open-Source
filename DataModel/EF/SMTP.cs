@@ -30,6 +30,9 @@ namespace DataModel.EF
 
         public bool SSL { set; get; }
 
+        [StringLength(150)]
+        public string Detalle_Email { set; get; }
+
         public int Id_Contribuyente { get; set; }
         [ForeignKey("Id_Contribuyente")]
         public virtual Contribuyente Contribuyente { get; set; }

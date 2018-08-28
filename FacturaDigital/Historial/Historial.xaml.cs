@@ -154,7 +154,7 @@ namespace FacturaDigital.Historial
 
                 int IdFactura = (int)btn.CommandParameter;
 
-                new DetalleFactura()
+                new DetalleFactura(IdFactura)
                 {
                     Owner = Window.GetWindow(this)
                 }.ShowDialog();
