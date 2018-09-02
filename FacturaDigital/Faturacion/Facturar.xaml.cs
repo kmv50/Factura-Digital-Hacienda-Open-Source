@@ -192,6 +192,7 @@ namespace FacturaDigital.Faturacion
                     LimpiarResumenTotales();
                     return;
                 }
+                LimpiarResumenTotales(false);
 
 
                 foreach (Factura_Detalle item in FacturaDetalle)
@@ -213,22 +214,22 @@ namespace FacturaDigital.Faturacion
                     {
                         if (item.Gravado && item.Impuesto_Monto.HasValue)
                         {
-                            ResumenServicioGravado += item.Monto_Total_Linea;
+                            ResumenServicioGravado += item.SubTotal;
                         }
                         else
                         {
-                            ResumenServicioExento += item.Monto_Total_Linea;
+                            ResumenServicioExento += item.SubTotal;
                         }
                     }
                     else
                     {
                         if (item.Gravado && item.Impuesto_Monto.HasValue)
                         {
-                            ResumenProductoGravado += item.Monto_Total_Linea;
+                            ResumenProductoGravado += item.SubTotal;
                         }
                         else
                         {
-                            ResumenProductoExento += item.Monto_Total_Linea;
+                            ResumenProductoExento += item.SubTotal;
                         }
                     }
                 }
@@ -257,7 +258,7 @@ namespace FacturaDigital.Faturacion
             OnPropertyChanged("ResumenProductoExento");
         }
 
-        private void LimpiarResumenTotales()
+        private void LimpiarResumenTotales(bool Notificar = true)
         {
             ResumenSubTotalNeto = 0;
             ResumenImpuesto = 0;
@@ -269,7 +270,8 @@ namespace FacturaDigital.Faturacion
 
             ResumenProductoGravado = 0;
             ResumenProductoExento = 0;
-            NotificarCambioTotales();
+            if(Notificar)
+                NotificarCambioTotales();
         }
 
         private void LimpiarSelectorProducto()
@@ -432,6 +434,7 @@ namespace FacturaDigital.Faturacion
 
                 Factura_Detalle item = btn.CommandParameter as Factura_Detalle;
                 FacturaDetalle.Remove(item);
+                CalcularTotales();
             }
             catch (Exception ex)
             {
@@ -665,16 +668,17 @@ namespace FacturaDigital.Faturacion
                         {
 
                         }
-
-                    }catch(Exception ex)
+                        db.SaveChanges();
+                        LimpiarVista();
+                        RecursosSistema.WindosNotification("Factura", "La factura Clave [" + fac.Clave + "] se envío para su valoración");
+                        RecursosSistema.Servicio_AgregarFactura(fac.Clave);
+                    }
+                    catch(Exception ex)
                     {
                         MessageBox.Show(ex.Message,"Error",MessageBoxButton.OK,MessageBoxImage.Error);
                     }
                     loadingDisplayer.Visibility = Visibility.Collapsed;
-                    db.SaveChanges();
-                    LimpiarVista();
-                    RecursosSistema.WindosNotification("Factura", "La factura Clave ["+fac.Clave+ "] se envío para su valoración");
-                    RecursosSistema.Servicio_AgregarFactura(fac.Clave);
+                    
                 }
 
             }

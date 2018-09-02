@@ -98,7 +98,7 @@ namespace DataModel.Hacienda_Comunication
             //if (fac.Codigo_Moneda == "CRC")
             //{
                 resumen.CodigoMoneda = FacturaElectronicaResumenFacturaCodigoMoneda.CRC;
-                resumen.CodigoMonedaSpecified = false;
+                resumen.CodigoMonedaSpecified = true;
             //}
             //else
             //{
@@ -255,7 +255,7 @@ namespace DataModel.Hacienda_Comunication
 
                 };
 
-                if (q.Monto_Descuento != null)
+                if (q.Monto_Descuento.HasValue && q.Monto_Descuento.Value != 0)
                 {
                     fd.MontoDescuento = q.Monto_Descuento.Value;
                     fd.MontoDescuentoSpecified = true;
