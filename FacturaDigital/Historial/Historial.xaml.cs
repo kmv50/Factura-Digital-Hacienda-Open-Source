@@ -71,10 +71,12 @@ namespace FacturaDigital.Historial
         private int GetCantidadPagina() {
             using(db_FacturaDigital db = new db_FacturaDigital())
             {
-                int cantidadElementos = db.Factura.Count(q => q.Fecha_Emision_Documento >= FechaInicioActual && q.Fecha_Emision_Documento <= FechaFinalActual);
+                int cantidadElementos = db.Factura.Count(q => q.Fecha_Emision_Documento >= FechaInicioActual && q.Fecha_Emision_Documento <= FechaFinalActual && q.Id_TipoDocumento == (int)Tipo_documento.Factura_electrónica);
                 if (cantidadElementos == 0)
                     return 0;
                 decimal Elementos = (decimal)cantidadElementos / TamanoPagina;
+                if (Elementos < 1)
+                    return 1;
                 return (int)Math.Round(Elementos, 0,MidpointRounding.AwayFromZero);
             }
         }
@@ -170,7 +172,7 @@ namespace FacturaDigital.Historial
         {
             using (db_FacturaDigital db = new db_FacturaDigital())
             {
-              List<FacturaGrid> data = db.Factura.Where(q => q.Fecha_Emision_Documento >= FechaInicioActual && q.Fecha_Emision_Documento <= FechaFinalActual)
+              List<FacturaGrid> data = db.Factura.Where(q => q.Fecha_Emision_Documento >= FechaInicioActual && q.Fecha_Emision_Documento <= FechaFinalActual && q.Id_TipoDocumento == (int)Tipo_documento.Factura_electrónica)
                     .Select(q => new FacturaGrid()
                     {
                         Id_Factura = q.Id_Factura,

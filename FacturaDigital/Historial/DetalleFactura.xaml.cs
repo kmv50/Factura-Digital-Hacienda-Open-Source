@@ -1,6 +1,8 @@
 ﻿using DataModel;
 using DataModel.EF;
+using DataModel.Hacienda_Comunication;
 using FacturaDigital.FacturaPDF;
+using FacturaDigital.Recursos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -78,7 +80,7 @@ namespace FacturaDigital.Historial
                 fac = null;
                 using (db_FacturaDigital db = new db_FacturaDigital())
                 {
-                    fac = db.Factura.Include("Factura_Detalle").FirstOrDefault(q => q.Id_Factura == IdFactura);
+                    fac = db.Factura.AsNoTracking().Include("Factura_Detalle").FirstOrDefault(q => q.Id_Factura == IdFactura);
                 }
 
                 if (fac == null)
@@ -181,6 +183,145 @@ namespace FacturaDigital.Historial
             {
                 this.LogError(ex);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void AnularFactura(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(txt_MotivoAnulacion.Text))
+                {
+                    MessageBox.Show("Favor ingresar el motivo de la aunlacion antes de continuar", "Validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    return;
+                }
+
+                if (MessageBox.Show("Esta seguro de anular esta factura?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    return;
+
+                int casaMatriz = 1;
+                int PuntoVenta = 1;
+                DateTime FechaEmicionDocumento = DateTime.Now;
+
+
+                Factura Anulacion = new Factura()
+                {
+                    Codigo_Moneda = "CRC",
+                    CondicionVenta = fac.CondicionVenta,
+                    Email_Enviado = false,
+                    CasaMatriz = casaMatriz,
+                    PuntoVenta = PuntoVenta,
+                    Emisor_CorreoElectronico = fac.Emisor_CorreoElectronico,
+                    Emisor_Identificacion_Numero = fac.Emisor_Identificacion_Numero,
+                    Emisor_Identificacion_Tipo = fac.Emisor_Identificacion_Tipo,
+                    Emisor_Nombre = fac.Emisor_Nombre,
+                    Emisor_NombreComercial = fac.Emisor_NombreComercial,
+                    Emisor_Telefono_Codigo = fac.Emisor_Telefono_Codigo,
+                    Emisor_Telefono_Numero = fac.Emisor_Telefono_Numero,
+                    Emisor_Ubicacion_Barrio = fac.Emisor_Ubicacion_Barrio,
+                    Emisor_Ubicacion_Canton = fac.Emisor_Ubicacion_Canton,
+                    Emisor_Ubicacion_Distrito = fac.Emisor_Ubicacion_Distrito,
+                    Emisor_Ubicacion_Provincia = fac.Emisor_Ubicacion_Provincia,
+                    Emisor_Ubicacion_OtrasSenas = fac.Emisor_Ubicacion_OtrasSenas,
+                    Fecha_Emision_Documento = FechaEmicionDocumento,
+                    Estado = (int)EstadoComprobante.Enviado,
+                    Id_Contribuyente = fac.Id_Contribuyente,
+                    Id_TipoDocumento = (int)Tipo_documento.Nota_de_crédito_electrónica,
+                    MedioPago = fac.MedioPago,
+                    Receptor_CorreoElectronico = fac.Receptor_CorreoElectronico,
+                    Receptor_Identificacion_Numero = fac.Receptor_Identificacion_Numero,
+                    Receptor_Identificacion_Tipo = fac.Receptor_Identificacion_Tipo,
+                    Receptor_Nombre = fac.Receptor_Nombre,
+                    Receptor_NombreComercial = fac.Receptor_NombreComercial,
+                    Receptor_Telefono_Codigo = fac.Receptor_Telefono_Codigo,
+                    Receptor_Telefono_Numero = fac.Receptor_Telefono_Numero,
+                    Receptor_Ubicacion_Barrio = fac.Receptor_Ubicacion_Barrio,
+                    Receptor_Ubicacion_Canton = fac.Receptor_Ubicacion_Canton,
+                    Receptor_Ubicacion_Distrito = fac.Receptor_Ubicacion_Distrito,
+                    Receptor_Ubicacion_OtrasSenas = fac.Receptor_Ubicacion_OtrasSenas,
+                    Receptor_Ubicacion_Provincia = fac.Receptor_Ubicacion_Provincia,
+
+                    TotalMercanciasExentas = fac.TotalMercanciasExentas,
+                    TotalMercanciasGravadas = fac.TotalMercanciasGravadas,
+                    TotalServExentos = fac.TotalServExentos,
+                    TotalServGravados = fac.TotalServGravados,
+                    TotalImpuesto = fac.TotalImpuesto,
+                    TotalDescuentos = fac.TotalDescuentos,
+                    TotalGravado = fac.TotalGravado,
+                    TotalExento = fac.TotalExento,
+                    TotalVenta = fac.TotalVenta,
+                    TotalVentaNeta = fac.TotalVentaNeta,
+                    TotalComprobante = fac.TotalComprobante,
+
+                    InformacionReferencia_IdFactura = fac.Id_Factura, 
+                    InformacionReferencia_Codigo = 1,
+                    InformacionReferencia_FechaEmision = FechaEmicionDocumento,
+                    InformacionReferencia_Numero = fac.Clave,
+                    InformacionReferencia_Razon = txt_MotivoAnulacion.Text
+                };
+              
+
+                Contribuyente_Consecutivos Consecutivo;
+                using (db_FacturaDigital db = new db_FacturaDigital())
+                {
+                    List<Factura_Detalle> detalle = new List<Factura_Detalle>();
+                    foreach (Factura_Detalle item in fac.Factura_Detalle)
+                    {
+                        List<Factura_Detalle_Impuesto> impuestos = db.Factura_Detalle_Impuesto.Where(q => q.Id_Factura_Detalle == item.Id_Factura_Detalle).ToList();
+                        if (impuestos != null && impuestos.Count > 0)
+                            item.Factura_Detalle_Impuesto = impuestos;
+
+                        detalle.Add(item);
+                    }
+
+
+                    Consecutivo = db.Contribuyente_Consecutivos.First(q => q.Id_Contribuyente == RecursosSistema.Contribuyente.Id_Contribuyente);
+                    Anulacion.NumeroConsecutivo = Consecutivo.Consecutivo_NotasCredito;
+
+                    string ClaveHacienda = new GeneradorDeClavesHacienda(new GeneradorDeClavesHacienda()
+                    {
+                        ConsecutivoHacienda = new ConsecutivoHacienda(new ConsecutivoHacienda()
+                        {
+                            TipoDocumento = Tipo_documento.Nota_de_crédito_electrónica,
+                            NumeracionConsecutiva = Consecutivo.Consecutivo_NotasCredito,
+                            CasaMatriz = casaMatriz,
+                            PuntoVenta = PuntoVenta
+                        }),
+                        FechaEmicion = FechaEmicionDocumento,
+                        Identificacion_Contribuyente = Convert.ToInt64(RecursosSistema.Contribuyente.Identificacion_Numero),
+                    }).ToString();
+
+                    Anulacion.Clave = ClaveHacienda;
+                    db.Factura.Add(Anulacion);
+                    Consecutivo.Consecutivo_NotasCredito++;
+
+                    Factura Original = db.Factura.First(q => q.Id_Factura == fac.Id_Factura);
+                    Original.Estado = (int)EstadoComprobante.Anulando;
+
+
+                    try
+                    {
+                            FacturaDB_ToNotaCredito Hacienda = new FacturaDB_ToNotaCredito(RecursosSistema.Contribuyente);
+                            Hacienda.Convertir(Anulacion,fac.Fecha_Emision_Documento).CrearXml(Tipo_documento.Nota_de_crédito_electrónica).Enviar();
+                            Anulacion.XML_Enviado = Hacienda.XML.InnerXml;
+                           // new FacturaPDF.FacturaElectronicaPDF().CrearFactura(fac);
+                   
+                        db.SaveChanges();
+                        RecursosSistema.WindosNotification("Factura", "La nota de crédito Clave [" + Anulacion.Clave + "] se envío para su valoración");
+                        RecursosSistema.Servicio_AgregarFactura(Anulacion.Clave);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }                    
+                }
+
+               
+
+            }catch(Exception ex)
+            {
+                this.LogError(ex);
+                MessageBox.Show("Ocurrio un error al anular la factura", "Error", MessageBoxButton.OK , MessageBoxImage.Error);
             }
         }
     }

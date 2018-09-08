@@ -86,9 +86,11 @@
     <Compile Include="EstructurasHacienda\FacturaElectronica_V_4_2.cs" />
     <Compile Include="EstructurasHacienda\TiqueteElectronico_V4_2.cs" />
     <Compile Include="GeneradorDeClaves.cs" />
+    <Compile Include="Hacienda_Comunication\FacturaDB_ToNotaCredito.cs" />
     <Compile Include="Hacienda_Comunication\FacturaRequest.cs" />
     <Compile Include="Hacienda_Comunication\HaciendaComunication.cs" />
     <Compile Include="Hacienda_Comunication\IDP\TokenIdp.cs" />
+    <Compile Include="EstructurasHacienda\NotaCreditoElectronica_V4_2.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="Migrations\201808200203580_Initial.cs" />
     <Compile Include="Migrations\201808200203580_Initial.Designer.cs">
@@ -117,6 +119,10 @@
     <Compile Include="Migrations\201808280144594_Email_Details_ColumnADD.cs" />
     <Compile Include="Migrations\201808280144594_Email_Details_ColumnADD.Designer.cs">
       <DependentUpon>201808280144594_Email_Details_ColumnADD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809081620292_informacionreferencia.cs" />
+    <Compile Include="Migrations\201809081620292_informacionreferencia.Designer.cs">
+      <DependentUpon>201809081620292_informacionreferencia.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -157,6 +163,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808280144594_Email_Details_ColumnADD.resx">
       <DependentUpon>201808280144594_Email_Details_ColumnADD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809081620292_informacionreferencia.resx">
+      <DependentUpon>201809081620292_informacionreferencia.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

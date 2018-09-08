@@ -116,9 +116,17 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="tb_Anular" Header="Anular">
-                <StackPanel>
-                    <TextBox x:Name="txt_MotivoAnulacion" HorizontalAlignment="Stretch" />
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70"/>
+                    </Grid.RowDefinitions>
+                    <TextBox x:Name="txt_MotivoAnulacion" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10" />
+                    <Button Grid.Column="1" Click="AnularFactura" Content="Anular" HorizontalAlignment="Stretch" Margin="10" />
+                </Grid>
             </TabItem>
             <TabItem Header="Xml  Hacienda">
                 <ListBox x:Name="lb_xmls">

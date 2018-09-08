@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NotaCreditoElectronica_V4_2;
 
 namespace DataModel.EF
 {
@@ -156,5 +157,12 @@ namespace DataModel.EF
 
         public virtual ICollection<Factura_Detalle> Factura_Detalle { get; set; }
 
+        [StringLength(50)]
+        public string InformacionReferencia_Numero { get;  set; }
+        [StringLength(180)]
+        public string InformacionReferencia_Razon { get;  set; }
+        public int ? InformacionReferencia_Codigo { get;  set; }
+        public DateTime ? InformacionReferencia_FechaEmision { get;  set; }
+        public int ? InformacionReferencia_IdFactura { get; set; }
     }
 }

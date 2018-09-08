@@ -64,7 +64,6 @@ namespace FacturaDigital.Recursos
                 string xml = @"<toast>
                             <visual>
                                 <binding template=""ToastImageAndText04"">
-                                    <image id=""1"" src=""file:///C:\meziantou.jpeg"" alt=""meziantou""/>
                                     <text id=""1"">{0}</text>
                                     <text id=""2"">{1}</text>
                                 </binding>

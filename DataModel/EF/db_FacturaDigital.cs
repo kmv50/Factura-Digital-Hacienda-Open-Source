@@ -15,8 +15,8 @@ namespace DataModel.EF
         // If you wish to target a different database and/or database provider, modify the 'db_FacturaDigital' 
         // connection string in the application configuration file.
         public db_FacturaDigital()
-            //: base("name=db_FacturaDigital")
-            :base(new ConnectionSettings().GetConnectionString())
+            : base("name=db_FacturaDigital")
+            //:base(new ConnectionSettings().GetConnectionString())
         {
             this.Configuration.ProxyCreationEnabled = false;
             Database.SetInitializer<db_FacturaDigital>(null);

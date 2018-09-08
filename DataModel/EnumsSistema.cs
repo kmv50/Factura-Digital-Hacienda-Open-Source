@@ -16,6 +16,7 @@ namespace DataModel
         Factura_electrónica = 1,
         [Description("Noda Débito")]
         Nota_de_débito_electrónica = 2,
+        [NameSpace("https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/notaCreditoElectronica")]
         [Description("Anulación")]
         Nota_de_crédito_electrónica = 3,
         [Description("Tiquete Electrónico")]

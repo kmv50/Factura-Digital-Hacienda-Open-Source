@@ -56,8 +56,12 @@ namespace FacturaDigital.Productos
 
         private void EliminarProducto(object sender, RoutedEventArgs e)
         {
+
             try
             {
+                if (MessageBox.Show("Esta seguro de eliminar este registro", "Confirmacion", MessageBoxButton.OK, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    return;
+
                 Button btn = (Button)sender;
                 using (db_FacturaDigital db = new db_FacturaDigital())
                 {

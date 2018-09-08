@@ -648,7 +648,7 @@ namespace FacturaDigital.Faturacion
                             PuntoVenta = PuntoVenta
                         }),
                         FechaEmicion = FechaEmicionDocumento,
-                        Identificacion_Contribuyente = Convert.ToInt32(RecursosSistema.Contribuyente.Identificacion_Numero),
+                        Identificacion_Contribuyente = Convert.ToInt64(RecursosSistema.Contribuyente.Identificacion_Numero),
                     }).ToString();
 
                     fac.Clave = ClaveHacienda;

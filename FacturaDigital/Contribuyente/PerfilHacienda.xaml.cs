@@ -357,6 +357,7 @@ namespace FacturaDigital.Contribuyente
                     MessageBox.Show("Perfil actualizado correctamente","Informacion",MessageBoxButton.OK,MessageBoxImage.Information);
                     try
                     {
+                        RecursosSistema.Contribuyente = Contribuyente;
                         RecursosSistema.OnStartMain_Load();
                     }catch(Exception ex)
                     {

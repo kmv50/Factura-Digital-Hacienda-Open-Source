@@ -25,9 +25,14 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
+    <TargetCulture>es-CR</TargetCulture>
+    <ProductName>Factura Digital Hacienda</ProductName>
+    <PublisherName>Kevin Marin Vargas</PublisherName>
+    <SuiteName>Factura Digital Hacienda</SuiteName>
+    <ApplicationRevision>9</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -106,6 +111,7 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -161,6 +167,9 @@
       <DependentUpon>PuntosDeVenta.xaml</DependentUpon>
     </Compile>
     <Compile Include="SendSmtp\SendSmtp.cs" />
+    <Compile Include="Settings\SettingsPdf.xaml.cs">
+      <DependentUpon>SettingsPdf.xaml</DependentUpon>
+    </Compile>
     <Page Include="Clientes\Clientes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -235,6 +244,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\PuntosDeVenta.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\SettingsPdf.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

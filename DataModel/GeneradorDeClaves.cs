@@ -54,7 +54,7 @@ namespace DataModel
         public DateTime FechaEmicion { set; get; }
         public Situación_Comprobante Situación_Comprobante { set; get; }
         public int CodigoPais { set; get; }
-        public int Identificacion_Contribuyente { set; get; }
+        public Int64 Identificacion_Contribuyente { set; get; }
         private int codigoSeguridad;
         public int CodigoSeguridad {
             get {

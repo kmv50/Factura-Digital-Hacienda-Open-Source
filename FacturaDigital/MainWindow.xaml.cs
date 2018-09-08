@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace FacturaDigital
 {
@@ -123,12 +124,22 @@ namespace FacturaDigital
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
+
+            Storyboard sb = this.FindResource("OpenMenu") as Storyboard;
+            Storyboard.SetTarget(sb, this.GridMenu);
+            sb.Begin();            
         }
 
         private void ButtonCloseMenu_Click(object sender, RoutedEventArgs e)
         {
+            if (ButtonCloseMenu.Visibility == Visibility.Collapsed)
+                return;
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;
+
+            Storyboard sb = this.FindResource("CloseMenu") as Storyboard;
+            Storyboard.SetTarget(sb, this.GridMenu);
+            sb.Begin();            
         }
 
 
@@ -171,6 +182,12 @@ namespace FacturaDigital
         {
             ButtonCloseMenu_Click(sender, e);
             MainConteiner.Content = new Contribuyente.PerfilHacienda();
+        }
+
+        private void ConfiguracionPDF(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu_Click(sender, e);
+            MainConteiner.Content = new Settings.SettingsPdf();
         }
 
         private void Consecutivos(object sender, RoutedEventArgs e)

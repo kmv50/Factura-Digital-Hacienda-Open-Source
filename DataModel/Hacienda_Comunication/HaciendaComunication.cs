@@ -4,6 +4,7 @@ using FacturaElectronica_V_4_2;
 using FirmaXadesNet;
 using FirmaXadesNet.Crypto;
 using FirmaXadesNet.Signature.Parameters;
+using NotaCreditoElectronica_V4_2;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -27,7 +28,11 @@ namespace DataModel.Hacienda_Comunication
         }
 
         public HaciendaComunication CrearXml(Tipo_documento tipo) {
-            XmlDocument doc = this.SerializeToXML<FacturaElectronica>(DocumentoElectronico, tipo.GetAttribute<NameSpaceAttribute>().Description);
+            XmlDocument doc = null;
+            if(tipo == Tipo_documento.Factura_electrónica)
+                doc = this.SerializeToXML<FacturaElectronica>(DocumentoElectronico, tipo.GetAttribute<NameSpaceAttribute>().Description);
+            else if (tipo == Tipo_documento.Nota_de_crédito_electrónica)
+                doc = this.SerializeToXML<NotaCreditoElectronica>(DocumentoElectronico, tipo.GetAttribute<NameSpaceAttribute>().Description);
 
             if (Contribuyente.Certificado == null || doc == null)
                 throw new Exception("Datos invalidos el certificado o el documento xml no son validos");

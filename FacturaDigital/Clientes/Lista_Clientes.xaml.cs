@@ -60,6 +60,9 @@ namespace FacturaDigital.Clientes
         {
             try
             {
+                if (MessageBox.Show("Esta seguro de eliminar este registro", "Confirmacion", MessageBoxButton.OK, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    return;
+
                 if (ClienteCollection != null)
                 {
                     Button btn = (Button)sender;
