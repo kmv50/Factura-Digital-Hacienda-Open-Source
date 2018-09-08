@@ -125,6 +125,38 @@ namespace FacturaDigital.Historial
 
                 lb_xmls.ItemsSource = XmlHacienda;
 
+                if(estado == EstadoComprobante.Anulando || estado == EstadoComprobante.ErrorAnulando)
+                {
+                    using (db_FacturaDigital db = new db_FacturaDigital())
+                    {
+                        Factura Anulada = db.Factura.AsNoTracking().FirstOrDefault(q => q.InformacionReferencia_IdFactura == fac.Id_Factura);
+                        if(Anulada != null)
+                        {
+                            txt_MotivoAnulacion.Text = Anulada.InformacionReferencia_Razon;
+                            btn_Anular.IsEnabled = false;
+                            txt_MotivoAnulacion.IsReadOnly = true;
+
+                            if (!string.IsNullOrEmpty(Anulada.XML_Enviado))
+                                XmlHacienda.Add(new XmlHacienda()
+                                {
+                                    Tipo = "Anulacion Enviada",
+                                    XmlUrl = Anulada.XML_Enviado
+                                });
+
+                            if (!string.IsNullOrEmpty(Anulada.XML_Respuesta))
+                                XmlHacienda.Add(new XmlHacienda()
+                                {
+                                    Tipo = "Anulacion Respuesta",
+                                    XmlUrl = Anulada.XML_Respuesta
+                                });
+
+                            txt_ConsecutivoNotaCredito.Text = Anulada.Clave;
+                            txt_FechaNotaCredito.Text = Anulada.Fecha_Emision_Documento.ToString();
+                            DetalleNomtaCreditoPanel.Visibility = Visibility.Visible;
+                        }
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -267,13 +299,23 @@ namespace FacturaDigital.Historial
                     List<Factura_Detalle> detalle = new List<Factura_Detalle>();
                     foreach (Factura_Detalle item in fac.Factura_Detalle)
                     {
-                        List<Factura_Detalle_Impuesto> impuestos = db.Factura_Detalle_Impuesto.Where(q => q.Id_Factura_Detalle == item.Id_Factura_Detalle).ToList();
-                        if (impuestos != null && impuestos.Count > 0)
-                            item.Factura_Detalle_Impuesto = impuestos;
+                        Factura_Detalle newItem = (Factura_Detalle)item.Clone();
+                        newItem.Factura = null;
+                        List<Factura_Detalle_Impuesto> newimpuestos = new List<Factura_Detalle_Impuesto>();
+                        foreach(Factura_Detalle_Impuesto detalleimpuesto in db.Factura_Detalle_Impuesto.AsNoTracking().Where(q => q.Id_Factura_Detalle == newItem.Id_Factura_Detalle))
+                        {
+                            Factura_Detalle_Impuesto newDetalleimpuesto = (Factura_Detalle_Impuesto)detalleimpuesto.Clone();
+                            newDetalleimpuesto.Factura_Detalle = null;
+                            newimpuestos.Add(newDetalleimpuesto);
+                        }
 
-                        detalle.Add(item);
+                        if (newimpuestos.Count > 0)
+                            newItem.Factura_Detalle_Impuesto = newimpuestos;
+
+                        detalle.Add(newItem);
                     }
 
+                    Anulacion.Factura_Detalle = detalle;
 
                     Consecutivo = db.Contribuyente_Consecutivos.First(q => q.Id_Contribuyente == RecursosSistema.Contribuyente.Id_Contribuyente);
                     Anulacion.NumeroConsecutivo = Consecutivo.Consecutivo_NotasCredito;
@@ -309,6 +351,7 @@ namespace FacturaDigital.Historial
                         db.SaveChanges();
                         RecursosSistema.WindosNotification("Factura", "La nota de crédito Clave [" + Anulacion.Clave + "] se envío para su valoración");
                         RecursosSistema.Servicio_AgregarFactura(Anulacion.Clave);
+                        this.Close();
                     }
                     catch (Exception ex)
                     {

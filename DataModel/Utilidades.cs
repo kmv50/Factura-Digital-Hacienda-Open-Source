@@ -38,8 +38,11 @@ namespace DataModel
         }
     }
 
+
+
     public static class Utilides
     {
+       
         public static string GetCondicionVentaFullName(string key)
         {
             if (key == "01")

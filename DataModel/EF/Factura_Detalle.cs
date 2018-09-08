@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace DataModel.EF
 {
     [Table("dbo.Facturas_Detalles")]
-    public partial class Factura_Detalle
+    public partial class Factura_Detalle : ICloneable
     {
         public Factura_Detalle()
         {
@@ -54,5 +54,10 @@ namespace DataModel.EF
         public int Id_Factura { get; set; }
         public virtual Factura Factura { get; set; }
         public virtual ICollection<Factura_Detalle_Impuesto> Factura_Detalle_Impuesto { get; set; }
+
+        public object Clone()
+        {
+            return (Factura_Detalle)this.MemberwiseClone();
+        }
     }
 }

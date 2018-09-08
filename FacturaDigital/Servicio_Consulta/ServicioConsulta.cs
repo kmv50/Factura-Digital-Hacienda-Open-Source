@@ -152,6 +152,16 @@ namespace FacturaDigital.Servicio_Consulta
                                     ObtenerEstadoRespuestaHacienda(Respuesta.respuesta_xml, out EstadoHacienda, out DetalleRespuestaHacienda);
                                     fac.Estado = EstadoHacienda;
                                     fac.HaciendaDetalle = DetalleRespuestaHacienda;
+
+                                    if((Tipo_documento)fac.Id_TipoDocumento == Tipo_documento.Nota_de_crédito_electrónica)
+                                    {
+                                       Factura facoriginal = db.Factura.FirstOrDefault();
+                                        if (EstadoHacienda == 1)
+                                            facoriginal.Estado = (int)EstadoComprobante.Anulando;
+                                        else if (EstadoHacienda == 3)
+                                            facoriginal.Estado = (int)EstadoComprobante.ErrorAnulando;
+                                    }
+
                                     db.SaveChanges();
                                     if (fac.Estado == 1 || fac.Estado == 2)
                                     {
