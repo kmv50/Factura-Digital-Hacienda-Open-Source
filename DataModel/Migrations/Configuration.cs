@@ -9,12 +9,12 @@ namespace ApiModels.Migrations
     using System.Data.Entity.Migrations.Model;
     using System.Data.Entity.Migrations.Sql;
     using System.Linq;
-    internal sealed class Configuration : DbMigrationsConfiguration<DataModel.EF.db_FacturaDigital>
+    public sealed class Configuration : DbMigrationsConfiguration<DataModel.EF.db_FacturaDigital>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = false;
+            AutomaticMigrationDataLossAllowed = true;
             SetSqlGenerator("MySql.Data.MySqlClient", new MySqlMigrationSqlGeneratorNS());
 
             SetHistoryContextFactory("MySql.Data.MySqlClient", (conn, schema) => new MySqlHistoryContext(conn, schema));

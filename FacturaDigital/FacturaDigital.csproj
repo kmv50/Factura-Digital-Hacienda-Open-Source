@@ -29,7 +29,7 @@
     <ProductName>Factura Digital Hacienda</ProductName>
     <PublisherName>Kevin Marin Vargas</PublisherName>
     <SuiteName>Factura Digital Hacienda</SuiteName>
-    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationRevision>11</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -139,6 +139,9 @@
       <DependentUpon>PerfilHacienda.xaml</DependentUpon>
     </Compile>
     <Compile Include="FacturaPDF\FacturaElectronicaPDF.cs" />
+    <Compile Include="Faturacion\Comprobacion.xaml.cs">
+      <DependentUpon>Comprobacion.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Faturacion\FacturaMedioPagos.xaml.cs">
       <DependentUpon>FacturaMedioPagos.xaml</DependentUpon>
     </Compile>
@@ -179,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Contribuyente\PerfilHacienda.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Faturacion\Comprobacion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -281,7 +288,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Style\" />

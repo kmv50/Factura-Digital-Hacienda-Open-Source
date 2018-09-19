@@ -15,8 +15,8 @@ namespace DataModel.EF
         // If you wish to target a different database and/or database provider, modify the 'db_FacturaDigital' 
         // connection string in the application configuration file.
         public db_FacturaDigital()
-            : base("name=db_FacturaDigital")
-            //:base(new ConnectionSettings().GetConnectionString())
+            //: base("name=db_FacturaDigital")
+            :base(new ConnectionSettings().GetConnectionString())
         {
             this.Configuration.ProxyCreationEnabled = false;
             Database.SetInitializer<db_FacturaDigital>(null);
@@ -37,7 +37,10 @@ namespace DataModel.EF
         public virtual DbSet<Contribuyente_Consecutivos> Contribuyente_Consecutivos { set; get; }
         public virtual DbSet<Errores_Sistema> Errores_Sistema { set; get; }
 
-        
+        public virtual DbSet<Factura_Resolucion> Factura_Resolucion { set; get; }
+        public virtual DbSet<Factura_Resolucion_Detalle> Factura_Resolucion_Detalle { set; get; }
+        public virtual DbSet<Factura_Resolucion_Detalle_Impuesto> Factura_Resolucion_Detalle_Impuesto { set; get; }        
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -56,6 +59,17 @@ namespace DataModel.EF
              .HasMany(e => e.Factura_Detalle_Impuesto)
              .WithRequired(e => e.Factura_Detalle)
              .WillCascadeOnDelete(true);
+
+
+            modelBuilder.Entity<Factura_Resolucion>()
+           .HasMany(e => e.Factura_Resolucion_Detalle)
+           .WithRequired(e => e.Factura_Resolucion)
+           .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Factura_Resolucion_Detalle>()
+            .HasMany(e => e.Factura_Resolucion_Detalle_Impuesto)
+            .WithRequired(e => e.Factura_Resolucion_Detalle)
+            .WillCascadeOnDelete(true);
         }
     }
 

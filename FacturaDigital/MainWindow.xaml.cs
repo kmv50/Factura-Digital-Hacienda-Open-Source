@@ -1,7 +1,9 @@
 ﻿using DataModel;
 using DataModel.EF;
+using FacturaDigital.Faturacion;
 using FacturaDigital.Recursos;
 using System;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -69,6 +71,21 @@ namespace FacturaDigital
             lb_mainUser.Text = RecursosSistema.Contribuyente.Nombre;
             RecursosSistema.IniciarServicioConsulta();
             ShowHistorial();
+
+            CorrerMigraciones();
+        }
+
+        void CorrerMigraciones() {
+            try
+            {
+                var configuration = new ApiModels.Migrations.Configuration();
+                var migrator = new DbMigrator(configuration);
+                migrator.Update();
+            }catch(Exception ex)
+            {
+                this.LogError(ex);
+                MessageBox.Show("Error al correr las ultimas migraciones","Error de base de datos",MessageBoxButton.OK);
+            }
         }
 
         private bool CheckSmtp()
@@ -163,6 +180,11 @@ namespace FacturaDigital
             MainConteiner.Content = new Clientes.Lista_Clientes();
         }
 
+        private void ShowResolucionComprobantes()
+        {
+            MainConteiner.Content = new Comprobacion();
+        }
+
         private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ButtonCloseMenu_Click(sender, e);
@@ -173,10 +195,13 @@ namespace FacturaDigital
                 case "Historial": ShowHistorial(); break;
                 case "Clientes": ShowClientes(); break;
                 case "Productos_Servicios": ShowProductos_Servicios(); break;
+                case "Resolucion": ShowResolucionComprobantes(); break;
                 default: MessageBox.Show("Error al seleccionar el tipo de menu", "Error", MessageBoxButton.OK, MessageBoxImage.Error); break;
             }
 
         }
+
+       
 
         private void PerfilHacienda(object sender, RoutedEventArgs e)
         {

@@ -77,7 +77,7 @@ namespace FacturaDigital.Historial
                 decimal Elementos = (decimal)cantidadElementos / TamanoPagina;
                 if (Elementos < 1)
                     return 1;
-                return (int)Math.Round(Elementos, 0,MidpointRounding.AwayFromZero);
+                return (int)Math.Round(Elementos+1, 0,MidpointRounding.ToEven);
             }
         }
 

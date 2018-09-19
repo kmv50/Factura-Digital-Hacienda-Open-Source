@@ -68,7 +68,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EF\ErroresSistema.cs" />
+    <Compile Include="EF\Factura_Resolucion.cs" />
+    <Compile Include="EF\Factura_Resolucion_Detalle.cs" />
+    <Compile Include="EF\Factura_Resolucion_Detalle_Impuesto.cs" />
     <Compile Include="Hacienda_Comunication\ApiConnector.cs" />
+    <Compile Include="Hacienda_Comunication\ConvertirFacturaXml_FacturaDB.cs" />
     <Compile Include="Hacienda_Comunication\FacturaDB_ToFacturaElectronica.cs" />
     <Compile Include="EF\Cliente.cs" />
     <Compile Include="EF\Contribuyente.cs" />
@@ -128,6 +132,10 @@
     <Compile Include="Migrations\201809081710006_informacionreferenciaIdFacturaOrigen.Designer.cs">
       <DependentUpon>201809081710006_informacionreferenciaIdFacturaOrigen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809190152221_FacturasResolucion.cs" />
+    <Compile Include="Migrations\201809190152221_FacturasResolucion.Designer.cs">
+      <DependentUpon>201809190152221_FacturasResolucion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\DbSettings.Designer.cs">
@@ -173,6 +181,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809081710006_informacionreferenciaIdFacturaOrigen.resx">
       <DependentUpon>201809081710006_informacionreferenciaIdFacturaOrigen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809190152221_FacturasResolucion.resx">
+      <DependentUpon>201809190152221_FacturasResolucion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
