@@ -101,7 +101,8 @@ namespace FacturaDigital.Faturacion
                 int? DescuentoRealPorcentaje = null;
                 if (!string.IsNullOrEmpty(txt_Descuento.Text))
                 {
-                    if (!int.TryParse(txt_Descuento.Text, out int Descuento) && Descuento <= 99 && Descuento > 0)
+                    int Descuento = 0;
+                    if (!int.TryParse(txt_Descuento.Text, out Descuento) && Descuento <= 99 && Descuento > 0)
                     {
                         MessageBox.Show("Error el decuento debe ser un dato numerico positivo de tipo entero no mayor a 99 y mayor a 0", "Validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
                         return;
@@ -130,7 +131,7 @@ namespace FacturaDigital.Faturacion
 
                 if (DescuentoRealPorcentaje.HasValue)
                 {
-                    item.Monto_Descuento = ((DescuentoRealPorcentaje / 100) * item.Monto_Total);
+                    item.Monto_Descuento = (((decimal)DescuentoRealPorcentaje / 100) * item.Monto_Total);
                 }
                 else
                 {
@@ -169,8 +170,8 @@ namespace FacturaDigital.Faturacion
                     item.Impuesto_Monto = Impuesto_Monto;
                     item.Factura_Detalle_Impuesto = Factura_Detalle_Impuesto;
                 }
-                item.SubTotal = item.Monto_Total - (item.Monto_Descuento.HasValue ? item.Monto_Descuento.Value : 0);
-                item.Monto_Total_Linea = item.SubTotal + (item.Impuesto_Monto.HasValue ? item.Impuesto_Monto.Value : 0);
+                item.SubTotal = item.Monto_Total - (item.Monto_Descuento ?? 0);
+                item.Monto_Total_Linea = item.SubTotal + (item.Impuesto_Monto ?? 0);
 
                 FacturaDetalle.Add(item);
                 LimpiarSelectorProducto();
@@ -207,29 +208,29 @@ namespace FacturaDigital.Faturacion
                         ResumenDescuentos += item.Monto_Descuento.Value;
                     }
 
-                    ResumenSubTotalNeto += item.SubTotal;
+                    ResumenSubTotalNeto += item.Monto_Total;
                     ResumenTotales += item.Monto_Total_Linea;
 
                     if (item.Tipo) // tipo true => servicio
                     {
                         if (item.Gravado && item.Impuesto_Monto.HasValue)
                         {
-                            ResumenServicioGravado += item.SubTotal;
+                            ResumenServicioGravado += item.Monto_Total;
                         }
                         else
                         {
-                            ResumenServicioExento += item.SubTotal;
+                            ResumenServicioExento += item.Monto_Total;
                         }
                     }
                     else
                     {
                         if (item.Gravado && item.Impuesto_Monto.HasValue)
                         {
-                            ResumenProductoGravado += item.SubTotal;
+                            ResumenProductoGravado += item.Monto_Total;
                         }
                         else
                         {
-                            ResumenProductoExento += item.SubTotal;
+                            ResumenProductoExento += item.Monto_Total;
                         }
                     }
                 }

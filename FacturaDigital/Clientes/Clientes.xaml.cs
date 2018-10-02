@@ -47,6 +47,9 @@ namespace FacturaDigital.Clientes
             if (cb_Cedula.SelectedIndex != 0)
             {
                 txt_Identificacion.Visibility = Visibility.Visible;
+            }else
+            {
+                txt_Identificacion.Visibility = Visibility.Hidden;
             }
         }
 
@@ -196,7 +199,7 @@ namespace FacturaDigital.Clientes
                     }
                     #endregion
 
-                    if (cli.Identificacion_Numero != null)
+                    if (!string.IsNullOrEmpty(cli.Identificacion_Numero))
                     {
                         if (db.Cliente.Any(q => q.Identificacion_Numero == cli.Identificacion_Numero))
                         {
