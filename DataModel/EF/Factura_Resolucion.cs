@@ -24,7 +24,9 @@ namespace DataModel.EF
         [StringLength(50)]
         public string Clave { get; set; }
 
-        public int NumeroConsecutivo { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string NumeroConsecutivo { get; set; }
 
         public DateTime Fecha_Documento_Origen { get; set; }
         public DateTime Fecha_Documento { get; set; }
@@ -116,6 +118,10 @@ namespace DataModel.EF
         public virtual Contribuyente Contribuyente { get; set; }
 
         public virtual ICollection<Factura_Resolucion_Detalle> Factura_Resolucion_Detalle { get; set; }
+
+        public int Resolucion { set; get; }
+        [StringLength(80)]
+        public string DetalleResolucion { set; get; }
 
     }
 }

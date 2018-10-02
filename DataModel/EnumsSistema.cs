@@ -21,11 +21,17 @@ namespace DataModel
         Nota_de_crédito_electrónica = 3,
         [Description("Tiquete Electrónico")]
         Tiquete_Electrónico = 4,
+        [NameSpace("https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/mensajeReceptor")]
         [Description("Confirmación Aceptación")]
+        [XmlEnumAttribute("01")]
         Confirmación_aceptación = 5,
         [Description("Confirmación Aceptación Parcial")]
+        [NameSpace("https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/mensajeReceptor")]
+        [XmlEnumAttribute("02")]
         Confirmación_aceptación_parcial = 6,
-        [Description("Rechazo Comprobante")]    
+        [Description("Rechazo Comprobante")]
+        [NameSpace("https://tribunet.hacienda.go.cr/docs/esquemas/2017/v4.2/mensajeReceptor")]
+        [XmlEnumAttribute("03")]
         Confirmación_rechazo_comprobante = 7
     }
 

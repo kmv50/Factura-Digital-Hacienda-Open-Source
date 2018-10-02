@@ -19,7 +19,7 @@ namespace DataModel.Hacienda_Comunication
                 Email_Enviado = false,
                 TipoDocumentoOrigen = (int)Tipo_documento.Factura_electrónica,
                 Estado = (int)EstadoComprobante.Enviado,
-                
+                Fecha_Documento_Origen = factura.FechaEmision                
             };
 
             if (factura.MedioPago != null && factura.MedioPago.Length > 0)
@@ -98,7 +98,7 @@ namespace DataModel.Hacienda_Comunication
                     if(result != null)
                         Detalles.Add(result);
                 }
-                
+                fac.Factura_Resolucion_Detalle = Detalles;
             }
         }
 

@@ -33,6 +33,11 @@ namespace DataModel.Hacienda_Comunication
                 doc = this.SerializeToXML<FacturaElectronica>(DocumentoElectronico, tipo.GetAttribute<NameSpaceAttribute>().Description);
             else if (tipo == Tipo_documento.Nota_de_crédito_electrónica)
                 doc = this.SerializeToXML<NotaCreditoElectronica>(DocumentoElectronico, tipo.GetAttribute<NameSpaceAttribute>().Description);
+            else if (tipo == Tipo_documento.Confirmación_aceptación)
+                doc = this.SerializeToXML<MensajeReceptor>(DocumentoElectronico, tipo.GetAttribute<NameSpaceAttribute>().Description);
+            else if (tipo == Tipo_documento.Confirmación_aceptación || tipo == Tipo_documento.Confirmación_aceptación_parcial || tipo == Tipo_documento.Confirmación_rechazo_comprobante)
+                doc = this.SerializeToXML<MensajeReceptor>(DocumentoElectronico, tipo.GetAttribute<NameSpaceAttribute>().Description);
+
 
             if (Contribuyente.Certificado == null || doc == null)
                 throw new Exception("Datos invalidos el certificado o el documento xml no son validos");

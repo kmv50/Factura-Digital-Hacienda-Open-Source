@@ -71,8 +71,8 @@ namespace FacturaDigital.Settings
         {
             try
             {
-                int FacturasConsecutivo ,  NotasCreditoConsecutivo , TiqueteElectronico;
-                if(!int.TryParse(txt_facturas.Text,out FacturasConsecutivo) || !int.TryParse(txt_NotasCredito.Text,out NotasCreditoConsecutivo) || !int.TryParse(txt_TiqueteElectronico.Text, out TiqueteElectronico) || TiqueteElectronico <= 0 || FacturasConsecutivo <= 0|| NotasCreditoConsecutivo <= 0)
+                int FacturasConsecutivo ,  NotasCreditoConsecutivo , TiqueteElectronico , Confirmacion;
+                if(!int.TryParse(txt_facturas.Text,out FacturasConsecutivo) || !int.TryParse(txt_NotasCredito.Text,out NotasCreditoConsecutivo) || !int.TryParse(txt_TiqueteElectronico.Text, out TiqueteElectronico) || !int.TryParse(txt_Confirmacion.Text , out Confirmacion) || TiqueteElectronico <= 0 || FacturasConsecutivo <= 0|| NotasCreditoConsecutivo <= 0 || Confirmacion <= 0)
                 {
                     MessageBox.Show("Error de formato para los consecutivo solo se permiten numeros","Validacion",MessageBoxButton.OK,MessageBoxImage.Stop);
                     return;
@@ -93,6 +93,13 @@ namespace FacturaDigital.Settings
                             return;
                     }
 
+
+                    if (consecutivos.Consecutivo_Confirmacion > Confirmacion)
+                    {
+                        if (MessageBox.Show("Esta ingresando un numero menor al que ya existe para los consecutivos de confirmacion esto puede causar problemas de colisiones desea continuar", "Validacion", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
+                            return;
+                    }
+
                     if (consecutivos.Consecutivo_NotasCredito > NotasCreditoConsecutivo)
                     {
                         if (MessageBox.Show("Esta ingresando un numero menor al que ya existe para los consecutivos de notas de credito esto puede causar problemas de colisiones desea continuar", "Validacion", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
@@ -101,6 +108,8 @@ namespace FacturaDigital.Settings
 
                     consecutivos.Consecutivo_Facturas = FacturasConsecutivo;
                     consecutivos.Consecutivo_NotasCredito = NotasCreditoConsecutivo;
+                    consecutivos.Consecutivo_Tiquete_Electrónico = TiqueteElectronico;
+                    consecutivos.Consecutivo_Confirmacion = FacturasConsecutivo;
                     db.SaveChanges();
                     MessageBox.Show("Cambio realizado correctamente","Estado",MessageBoxButton.OK);
                 }

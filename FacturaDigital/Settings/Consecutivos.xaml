@@ -32,6 +32,11 @@
             <Label Content="Notas de credito" Width="150" VerticalAlignment="Center" Margin="10"/>
             <TextBox x:Name="txt_NotasCredito" materialDesign:HintAssist.Hint="Consecutivo Notas Credito" materialDesign:HintAssist.IsFloating="True" Margin="10" Width="200" />
         </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Confirmaciones" Width="150" VerticalAlignment="Center" Margin="10"/>
+            <TextBox x:Name="txt_Confirmacion" materialDesign:HintAssist.Hint="Consecutivo confirmaciones" materialDesign:HintAssist.IsFloating="True" Margin="10" Width="200" />
+        </StackPanel>
         <Button Content="Guardar" Margin="10" HorizontalAlignment="Right" Click="Guardar" />
     </StackPanel>
 </Page>

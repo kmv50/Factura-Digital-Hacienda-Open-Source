@@ -71,6 +71,7 @@
     <Compile Include="EF\Factura_Resolucion.cs" />
     <Compile Include="EF\Factura_Resolucion_Detalle.cs" />
     <Compile Include="EF\Factura_Resolucion_Detalle_Impuesto.cs" />
+    <Compile Include="EstructurasHacienda\MensajeReceptor_4_2.cs" />
     <Compile Include="Hacienda_Comunication\ApiConnector.cs" />
     <Compile Include="Hacienda_Comunication\ConvertirFacturaXml_FacturaDB.cs" />
     <Compile Include="Hacienda_Comunication\FacturaDB_ToFacturaElectronica.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="EstructurasHacienda\FacturaElectronica_V_4_2.cs" />
     <Compile Include="EstructurasHacienda\TiqueteElectronico_V4_2.cs" />
     <Compile Include="GeneradorDeClaves.cs" />
+    <Compile Include="Hacienda_Comunication\FacturaDB_ToMensajeReceptor.cs" />
     <Compile Include="Hacienda_Comunication\FacturaDB_ToNotaCredito.cs" />
     <Compile Include="Hacienda_Comunication\FacturaRequest.cs" />
     <Compile Include="Hacienda_Comunication\HaciendaComunication.cs" />
@@ -135,6 +137,14 @@
     <Compile Include="Migrations\201809190152221_FacturasResolucion.cs" />
     <Compile Include="Migrations\201809190152221_FacturasResolucion.Designer.cs">
       <DependentUpon>201809190152221_FacturasResolucion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810020042033_AceptacionFacturas.cs" />
+    <Compile Include="Migrations\201810020042033_AceptacionFacturas.Designer.cs">
+      <DependentUpon>201810020042033_AceptacionFacturas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810020140429_AceptacionFacturasConcecutivo.cs" />
+    <Compile Include="Migrations\201810020140429_AceptacionFacturasConcecutivo.Designer.cs">
+      <DependentUpon>201810020140429_AceptacionFacturasConcecutivo.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -184,6 +194,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809190152221_FacturasResolucion.resx">
       <DependentUpon>201809190152221_FacturasResolucion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810020042033_AceptacionFacturas.resx">
+      <DependentUpon>201810020042033_AceptacionFacturas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810020140429_AceptacionFacturasConcecutivo.resx">
+      <DependentUpon>201810020140429_AceptacionFacturasConcecutivo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

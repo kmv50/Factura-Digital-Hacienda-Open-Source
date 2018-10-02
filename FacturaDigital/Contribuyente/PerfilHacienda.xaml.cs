@@ -348,6 +348,7 @@ namespace FacturaDigital.Contribuyente
                             Consecutivo_Facturas = 1,
                             Consecutivo_NotasCredito = 1,
                             Consecutivo_Tiquete_Electrónico = 1,
+                            Consecutivo_Confirmacion = 1,
                             Id_Contribuyente = Contribuyente.Id_Contribuyente
                         };
                         db.Contribuyente_Consecutivos.Add(conse);

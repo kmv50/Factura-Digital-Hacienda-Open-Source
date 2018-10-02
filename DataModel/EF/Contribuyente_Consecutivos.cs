@@ -14,6 +14,7 @@ namespace DataModel.EF
         public int Consecutivo_Facturas { set; get; }
         public int Consecutivo_NotasCredito { set; get; }
         public int Consecutivo_Tiquete_Electrónico { set; get; }
+        public int Consecutivo_Confirmacion { set; get; }
         [Key]
         public int Id_Contribuyente { get; set; }
         [ForeignKey("Id_Contribuyente")]
