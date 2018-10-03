@@ -171,10 +171,10 @@ namespace FacturaDigital.FacturaPDF
                     int left_marginValuesSecondColumn  = 420;
                     doc.Linea("Datos Cliente", left_margin, top_margin);
                     doc.Linea("Nombre:", left_margin, top_margin - 12);
-                    doc.Linea(string.IsNullOrEmpty(fac.Receptor_NombreComercial) ? fac.Emisor_Nombre : fac.Emisor_NombreComercial, left_marginValuesSecondColumn, top_margin - 12);
+                    doc.Linea(string.IsNullOrEmpty(fac.Receptor_NombreComercial) ? fac.Receptor_Nombre : fac.Receptor_NombreComercial, left_marginValuesSecondColumn, top_margin - 12);
 
                     doc.Linea("Identificación:", left_margin, top_margin - 24);
-                    doc.Linea(string.IsNullOrEmpty(fac.Receptor_Identificacion_Numero) ? "No se indica" : fac.Emisor_Identificacion_Numero, left_marginValuesSecondColumn, top_margin - 24);
+                    doc.Linea(string.IsNullOrEmpty(fac.Receptor_Identificacion_Numero) ? "No se indica" : fac.Receptor_Identificacion_Numero, left_marginValuesSecondColumn, top_margin - 24);
 
                     doc.Linea("Teléfono:", left_margin, top_margin - 36);
                     doc.Linea(!fac.Receptor_Telefono_Numero.HasValue ? "No se indica" : fac.Receptor_Telefono_Numero.ToString(), left_marginValuesSecondColumn, top_margin - 36);
