@@ -37,14 +37,30 @@
                                             EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
 
 
+                <DataGridTemplateColumn  MinWidth="100" Header="Editar"  CanUserSort="False" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="MaterialDesignFloatingActionMiniAccentButton" CommandParameter="{Binding Id_Producto}" Click="EditarProducto">
+                                <materialDesign:PackIcon Kind="Pencil" Height="24" Width="24" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
 
                 <DataGridTemplateColumn  MinWidth="100" Header="Eliminar"  CanUserSort="False" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Eliminar" CommandParameter="{Binding Id_Producto}" Click="EliminarProducto"/>
+                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="MaterialDesignFloatingActionMiniAccentButton" CommandParameter="{Binding Id_Producto}" Click="EliminarProducto">
+                                <materialDesign:PackIcon Kind="Delete" Height="24" Width="24" />
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
+                
+                
+                               
 
             </DataGrid.Columns>
         </DataGrid>

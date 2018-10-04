@@ -82,5 +82,21 @@ namespace FacturaDigital.Productos
         {
             RecursosSistema.MainConteiner.Content = new Productos();
         }
+
+        private void EditarProducto(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button btn = sender as Button;
+                if (btn == null)
+                    return;
+                int IdProducto = (int) btn.CommandParameter;
+                RecursosSistema.MainConteiner.Content = new Productos(IdProducto);
+            }catch(Exception ex)
+            {
+                this.LogError(ex);
+                MessageBox.Show("Ocurrio un error al editar el producto");
+            }
+        }
     }
 }

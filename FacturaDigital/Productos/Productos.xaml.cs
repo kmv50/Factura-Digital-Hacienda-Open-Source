@@ -13,10 +13,52 @@ namespace FacturaDigital.Productos
     /// <summary>
     /// Interaction logic for Productos.xaml
     /// </summary>
-    public partial class Productos : Page , ILog
+    public partial class Productos : Page, ILog
     {
         private ObservableCollection<Producto_ImpuestoSeleccionado> ColeccionImpuesto;
+        private Producto ProductoActual;
         public Productos()
+        {
+            ProductoActual = null;
+            StarViewProductos();
+        }
+
+        public Productos(int idProducto)
+        {
+            StarViewProductos();
+            using (db_FacturaDigital db = new db_FacturaDigital())
+            {
+                ProductoActual = db.Producto.Include("Producto_Impuesto").FirstOrDefault(q => q.Id_Producto == idProducto);
+            }
+
+            if (ProductoActual == null)
+            {
+                return;
+            }
+
+            loadProducto();
+        }
+
+        private void loadProducto()
+        {
+
+            txt_Codigo.Text = ProductoActual.Codigo;
+            txt_precioUnitario.Text = ProductoActual.PrecioUnitario.ToString();
+            txt_Producto.Text = ProductoActual.ProductoServicio;
+
+            if (ProductoActual.Tipo)
+            {
+                cb_Tipo.SelectedIndex = 0;
+            }
+            else
+            {
+                cb_Tipo.SelectedIndex = 1;
+            }
+
+            //ProductoActual.Unidad_Medida = ((UnidadMedida)cb_UnidadMedida.SelectedItem).Value;
+        }
+
+        private void StarViewProductos()
         {
             InitializeComponent();
             ColeccionImpuesto = new ObservableCollection<Producto_ImpuestoSeleccionado>();
@@ -51,38 +93,51 @@ namespace FacturaDigital.Productos
                     MessageBox.Show("El precio unitario debe de estar en un formato decimal", "Error validacion", MessageBoxButton.OK, MessageBoxImage.Stop);
                     return;
                 }
-
-
-
-                Producto nuevoProducto = new Producto()
-                {
-                    Codigo = txt_Codigo.Text,
-                    PrecioUnitario = precioUnitario,
-                    ProductoServicio = txt_Producto.Text,
-                    Tipo = cb_Tipo.SelectedIndex == 0 ? true : false,
-                    Unidad_Medida = ((UnidadMedida)cb_UnidadMedida.SelectedItem).Value,
-                    Id_Contribuyente = RecursosSistema.Contribuyente.Id_Contribuyente,
-                };
-
-                decimal TarifaTotal = 0;
-                if (ColeccionImpuesto.Count > 0)
-                {
-                    foreach (Producto_ImpuestoSeleccionado s in ColeccionImpuesto)
-                    {
-                        TarifaTotal += s.Impuesto_Tarifa;
-                        nuevoProducto.Producto_Impuesto.Add(new Producto_Impuesto()
-                        {
-                            Impuesto_Tarifa = s.Impuesto_Tarifa,
-                            Impuesto_Codigo = s.Impuesto_Codigo,
-                        });
-
-                    }
-                }
-                nuevoProducto.ImpuestosTarifaTotal = TarifaTotal;
-
                 using (db_FacturaDigital db = new db_FacturaDigital())
                 {
-                    db.Producto.Add(nuevoProducto);
+                    bool ProductoNuevo = false;
+                    if (ProductoActual == null)
+                    {
+                        ProductoActual = new Producto();
+                        ProductoNuevo = true;
+                    }
+                    else
+                    {
+                        db.Producto.Attach(ProductoActual);
+                    }
+
+                    ProductoActual.Codigo = txt_Codigo.Text;
+                    ProductoActual.PrecioUnitario = precioUnitario;
+                    ProductoActual.ProductoServicio = txt_Producto.Text;
+                    ProductoActual.Tipo = cb_Tipo.SelectedIndex == 0 ? true : false;
+                    ProductoActual.Unidad_Medida = ((UnidadMedida)cb_UnidadMedida.SelectedItem).Value;
+                    ProductoActual.Id_Contribuyente = RecursosSistema.Contribuyente.Id_Contribuyente;
+
+
+                    List<Producto_Impuesto> Impuestos = new List<Producto_Impuesto>();
+
+                    decimal TarifaTotal = 0;
+                    if (ColeccionImpuesto.Count > 0)
+                    {
+                        foreach (Producto_ImpuestoSeleccionado s in ColeccionImpuesto)
+                        {
+                            TarifaTotal += s.Impuesto_Tarifa;
+                            Impuestos.Add(new Producto_Impuesto()
+                            {
+                                Impuesto_Tarifa = s.Impuesto_Tarifa,
+                                Impuesto_Codigo = s.Impuesto_Codigo,
+                            });
+
+                        }
+                    }
+                    ProductoActual.Producto_Impuesto = Impuestos;
+                    ProductoActual.ImpuestosTarifaTotal = TarifaTotal;
+
+
+                    if (ProductoNuevo)
+                    {
+                        db.Producto.Add(ProductoActual);
+                    }    
                     db.SaveChanges();
                 }
 

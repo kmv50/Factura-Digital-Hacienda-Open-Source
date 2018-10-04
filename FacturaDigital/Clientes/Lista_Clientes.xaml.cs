@@ -86,5 +86,22 @@ namespace FacturaDigital.Clientes
         {
             RecursosSistema.MainConteiner.Content = new Clientes();
         }
+
+        private void EditarCliente(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button btn = sender as Button;
+                if (btn == null)
+                    return;
+                int IdCliente = (int)btn.CommandParameter;
+                RecursosSistema.MainConteiner.Content = new Clientes(IdCliente);
+            }
+            catch (Exception ex)
+            {
+                this.LogError(ex);
+                MessageBox.Show("Ocurrio un error al editar el producto");
+            }
+        }
     }
 }
