@@ -59,5 +59,30 @@ namespace FacturaDigital.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a &lt;html&gt;
+        ///   &lt;head&gt;
+        ///      &lt;link rel=&quot;stylesheet&quot; href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css&quot; integrity=&quot;sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO&quot; crossorigin=&quot;anonymous&quot;&gt;
+        ///	  &lt;style&gt;
+        ///	  .alert-gris {
+        ///		border-color: #F7F7F7;
+        ///		background: #F7F7F7;
+        ///		color: #212529;
+        ///		}
+        ///	  &lt;/style&gt;
+        ///   &lt;/head&gt;
+        ///   &lt;body&gt;
+        ///   &lt;div class=&quot;container&quot;&gt;
+        ///      &lt;div class=&quot;card&quot;&gt;
+        ///         &lt;div class=&quot;card-header&quot;&gt;
+        ///            Fecha
+        ///            &lt;strong&gt;[Fech [resto de la cadena truncado]&quot;;.
+        /// </summary>
+        internal static string factura {
+            get {
+                return ResourceManager.GetString("factura", resourceCulture);
+            }
+        }
     }
 }

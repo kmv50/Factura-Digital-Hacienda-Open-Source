@@ -1,5 +1,6 @@
 ﻿using DataModel;
 using DataModel.EF;
+using FacturaDigital.FacturaPDF;
 using FacturaDigital.Faturacion;
 using FacturaDigital.Recursos;
 using System;
@@ -23,7 +24,7 @@ namespace FacturaDigital
             InitializeComponent();
             ListViewMenu.Visibility = Visibility.Hidden;
             RecursosSistema.MainConteiner = MainConteiner;
-            StartMain();         
+            StartMain();
         }
 
         private bool TestDbConection()
