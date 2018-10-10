@@ -103,12 +103,24 @@ namespace FacturaDigital.FacturaPDF
                     Body.Append("<td>" + Item.Codigo + "</td>");
                     Body.Append("<td>" + Item.ProductoServicio + "</td>");
                     Body.Append("<td>" + Item.Cantidad.ToString() + "</td>");
-                    Body.Append("<td>" + Item.PrecioUnitario.ToString("C", formatstr) + "</td>");
-                    Body.Append("<td>" + (Item.Impuesto_Monto ?? 0).ToString("C", formatstr) + "</td>");
-                    Body.Append("<td>" + (Item.Monto_Descuento ?? 0).ToString("C", formatstr) + "</td>");
-                    Body.Append("<td>" + Item.Monto_Total_Linea.ToString("C", formatstr) + "</td>");
+                    Body.Append("<td class='text-right'>" + Item.PrecioUnitario.ToString("C", formatstr) + "</td>");
+                    Body.Append("<td class='text-right'>" + (Item.Impuesto_Monto ?? 0).ToString("C", formatstr) + "</td>");
+                    Body.Append("<td class='text-right'>" + (Item.Monto_Descuento ?? 0).ToString("C", formatstr) + "</td>");
+                    Body.Append("<td class='text-right'>" + Item.Monto_Total_Linea.ToString("C", formatstr) + "</td>");
 
                     Body.Append("</tr>");
+                }
+
+                string IMG = "";
+                try
+                {
+                    byte[] bytes = File.ReadAllBytes(System.IO.Path.Combine(Environment.CurrentDirectory, "Logo.png"));
+                    var b64String = Convert.ToBase64String(bytes);
+                    IMG = "data:image/png;base64," + b64String;
+                }
+                catch(Exception ex)
+                {
+                    this.LogError(ex);                    
                 }
 
 
@@ -120,6 +132,7 @@ namespace FacturaDigital.FacturaPDF
                 .Replace("[Telefono_Vendedor]", IfStringIsNull(TelefonoEmisor))
                 .Replace("[Nombre_Comprador]", IfStringIsNull(fac.Receptor_NombreComercial, fac.Receptor_Nombre))
                 .Replace("[Email_Comprador]", IfStringIsNull(fac.Receptor_CorreoElectronico))
+                .Replace("[Identificacion_Comprador]", IfStringIsNull(fac.Receptor_Identificacion_Numero))
                 .Replace("[Telefono_Comprador]", IfStringIsNull(TelefonoReceptor))
                 .Replace("[Medio_Pago]", Utilides.GetMedioDePagoFullName(fac.MedioPago))
                 .Replace("[Condicion_Venta]", Utilides.GetCondicionVentaFullName(fac.CondicionVenta))
@@ -129,8 +142,8 @@ namespace FacturaDigital.FacturaPDF
                 .Replace("[SubTotal]", fac.TotalVenta.ToString("C", formatstr))
                 .Replace("[Descuento]", (fac.TotalDescuentos ?? 0).ToString("C", formatstr))
                 .Replace("[Impuesto]", (fac.TotalImpuesto ?? 0).ToString("C", formatstr))
-                .Replace("[Total]", fac.TotalComprobante.ToString("C", formatstr));
-
+                .Replace("[Total]", fac.TotalComprobante.ToString("C", formatstr))
+                .Replace("[IMG]", IMG);
 
                 byte[] pdfBuffer = htmlToPdfConverter.ConvertHtmlToMemory(Html, null);
                 string NewPdfName = Guid.NewGuid().ToString() + ".pdf";

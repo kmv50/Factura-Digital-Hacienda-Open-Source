@@ -29,7 +29,7 @@
     <ProductName>Factura Digital Hacienda</ProductName>
     <PublisherName>Kevin Marin Vargas</PublisherName>
     <SuiteName>Factura Digital Hacienda</SuiteName>
-    <ApplicationRevision>13</ApplicationRevision>
+    <ApplicationRevision>14</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
