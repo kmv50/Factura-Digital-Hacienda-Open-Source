@@ -35,7 +35,7 @@ namespace FacturaDigital.SendSmtp
                     throw new Exception("Favor llenar los datos del email antes de continuar");
                 }
 
-                fac = db.Factura.FirstOrDefault(q => q.Id_Factura == Id_Facura);
+                fac = db.Factura.Include("Factura_Detalle").FirstOrDefault(q => q.Id_Factura == Id_Facura);
                 
                 if (fac == null)
                 {
