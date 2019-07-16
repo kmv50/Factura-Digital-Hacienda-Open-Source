@@ -17,7 +17,7 @@ namespace FacturaDigital
     /// </summary>
     public partial class MainWindow : Window , ILog
     {
-        bool ConexionDBChequeada, DatosSMTP , DatosContribuyente;
+        bool ConexionDBChequeada, DatosSMTP , DatosContribuyente , DatosActividadesEconomicas;
         public MainWindow()
         {
             RecursosSistema.OnStartMain_Load = new RecursosSistema.StartMain_Load(StartMain);
@@ -57,11 +57,19 @@ namespace FacturaDigital
             else
                 ConexionDBChequeada = true;
 
+            //////////////
             if (!DatosContribuyente && !VerificarDatosContribuyente())
                 return;
             else
                 DatosContribuyente = true;
 
+            //////////////
+            if (DatosActividadesEconomicas && !VerificarDatosContribuyente())
+                return;
+            else
+                DatosActividadesEconomicas = true;
+
+            //////////////
             if (!DatosSMTP && !CheckSmtp())
                 return;
             else
@@ -136,6 +144,31 @@ namespace FacturaDigital
                 return false;
             }
 
+        }
+
+        private bool VerificarActividadesEconomicas() {
+            try
+            {
+                using (db_FacturaDigital db = new db_FacturaDigital())
+                {                    
+                    if (db.Contribuyente_ActividadesEconomicas.Count() == 0)
+                    {
+                        MessageBox.Show("Antes de continuar debe de actualizar sus actividades Económicas", "Informacion", MessageBoxButton.OK, MessageBoxImage.Information);
+                        ConfiguracionActividadesEconomicas(null, null);
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ListViewMenu.Visibility = Visibility.Hidden;
+                MessageBox.Show("Error al consultar la base de datos. Esto de se puede deber a que la base de datos no responde. Verfique que el servidor de mysql se encuente en linea. Verifique los datos de conexion de la base datos. " + ex.Message + " " + ex.StackTrace, "Erro", MessageBoxButton.OK);
+                return false;
+            }
         }
 
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
@@ -214,6 +247,12 @@ namespace FacturaDigital
         {
             ButtonCloseMenu_Click(sender, e);
             MainConteiner.Content = new Settings.SettingsPdf();
+        }
+
+        private void ConfiguracionActividadesEconomicas(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu_Click(sender, e);
+            MainConteiner.Content = new Settings.ActividadesEconomicas();
         }
 
         private void Consecutivos(object sender, RoutedEventArgs e)

@@ -40,7 +40,7 @@ namespace DataModel.EF
         public virtual DbSet<Factura_Resolucion> Factura_Resolucion { set; get; }
         public virtual DbSet<Factura_Resolucion_Detalle> Factura_Resolucion_Detalle { set; get; }
         public virtual DbSet<Factura_Resolucion_Detalle_Impuesto> Factura_Resolucion_Detalle_Impuesto { set; get; }        
-
+        public virtual DbSet<Contribuyente_ActividadesEconomicas> Contribuyente_ActividadesEconomicas { set; get; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

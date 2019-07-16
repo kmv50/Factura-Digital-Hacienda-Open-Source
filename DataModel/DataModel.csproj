@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EF\Contribuyente_ActividadesEconomicas.cs" />
     <Compile Include="EF\ErroresSistema.cs" />
     <Compile Include="EF\Factura_Resolucion.cs" />
     <Compile Include="EF\Factura_Resolucion_Detalle.cs" />

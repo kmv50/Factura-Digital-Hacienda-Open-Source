@@ -50,6 +50,7 @@
                             <Button Content="Perfil Hacienda" Click="PerfilHacienda"/>
                             <Button Content="Consecutivos" Click="Consecutivos"/>
                             <Button Content="Correo" Click="ConfiguracionCorreo"/>
+                            <Button Content="Actividades Económicas" Click="ConfiguracionActividadesEconomicas"/>
                             <Button Content="Pdf" Click="ConfiguracionPDF"/>
                         <Separator/>
                             <Button Content="Logout"/>
