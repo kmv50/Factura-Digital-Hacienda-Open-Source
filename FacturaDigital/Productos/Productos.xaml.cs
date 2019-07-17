@@ -49,13 +49,43 @@ namespace FacturaDigital.Productos
             if (ProductoActual.Tipo)
             {
                 cb_Tipo.SelectedIndex = 0;
+                cb_UnidadMedida.SelectedItem = ProductosData.UnidadesMedida.Where(q => !q.EsServicio);
             }
             else
             {
                 cb_Tipo.SelectedIndex = 1;
+                cb_UnidadMedida.SelectedItem = ProductosData.UnidadesMedida.Where(q => q.EsServicio);
             }
+            cb_UnidadMedida.SelectedItem = ProductosData.UnidadesMedida.FirstOrDefault(q => q.Value == ProductoActual.Unidad_Medida);
 
-            //ProductoActual.Unidad_Medida = ((UnidadMedida)cb_UnidadMedida.SelectedItem).Value;
+            foreach (Producto_Impuesto impuesto in ProductoActual.Producto_Impuesto) {
+                Producto_ImpuestoSeleccionado val = new Producto_ImpuestoSeleccionado() {
+                    CodigoTarifa = impuesto.CodigoTarifa,
+                    Exento = impuesto.Exento,
+                    Exoneracion_FechaEmision = impuesto.Exoneracion_FechaEmision,
+                    Exoneracion_MontoImpuesto = impuesto.Exoneracion_MontoImpuesto,
+                    Impuesto_Tarifa = impuesto.Impuesto_Tarifa,
+                    Exoneracion_NombreInstitucion = impuesto.Exoneracion_NombreInstitucion,
+                    Exoneracion_NumeroDocumento = impuesto.Exoneracion_NumeroDocumento,
+                    Exoneracion_PorcentajeCompra = impuesto.Exoneracion_PorcentajeCompra,
+                    Exoneracion_TipoDocumento = impuesto.Exoneracion_TipoDocumento,
+                    Impuesto_Codigo = impuesto.Impuesto_Codigo,
+                    Id_Producto = impuesto.Id_Producto,
+                    Id_Producto_Impuesto = impuesto.Id_Producto_Impuesto,                    
+                };
+                Impuestos im = ProductosData.Impuestos.FirstOrDefault(q => q.Value == impuesto.Impuesto_Codigo);
+                if (im == null)
+                    val.Nombre = "Impuesto";
+                else
+                    val.Nombre = im.Text;
+
+                val.Monto = ((val.Impuesto_Tarifa / (decimal)100) * ProductoActual.PrecioUnitario);
+                if (val.Exento)
+                    val.Monto -= val.Exoneracion_MontoImpuesto ?? 0;
+
+                ColeccionImpuesto.Add(val);
+            }
+            
         }
 
         private void StarViewProductos()

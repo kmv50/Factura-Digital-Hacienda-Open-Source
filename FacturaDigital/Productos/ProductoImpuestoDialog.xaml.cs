@@ -113,10 +113,10 @@ namespace FacturaDigital.Productos
                 Monto = Convert.ToDecimal(txt_monto.Text),                
                 Exento = chk_Exoneracion.IsChecked.Value,
                 Exoneracion_FechaEmision = dt_FechaExoneracion.SelectedDate,
-                Exoneracion_MontoImpuesto = Convert.ToDecimal(txt_ExoneracionTotal.Text),
+                Exoneracion_MontoImpuesto = string.IsNullOrEmpty(txt_ExoneracionTotal.Text) ? 0 : Convert.ToDecimal(txt_ExoneracionTotal.Text),
                 Exoneracion_NombreInstitucion = txt_nombreinstitucion.Text,
                 Exoneracion_NumeroDocumento = txt_numerodocumento.Text,
-                Exoneracion_PorcentajeCompra = Convert.ToInt32(txt_procentajeExoneracion.Text),
+                Exoneracion_PorcentajeCompra = string.IsNullOrEmpty(txt_procentajeExoneracion.Text) ? 0 : Convert.ToInt32(txt_procentajeExoneracion.Text),
                 Exoneracion_TipoDocumento = Exoneracion_TipoDocumento == null || Exoneracion_TipoDocumento.Value == null ? null : Exoneracion_TipoDocumento.Value,                
             };
 
@@ -139,7 +139,7 @@ namespace FacturaDigital.Productos
                     return;
                 }
 
-                if (!Producto_Impuesto.Exoneracion_MontoImpuesto.HasValue || Producto_Impuesto.Exoneracion_MontoImpuesto.Value <= 0 || Producto_Impuesto.Exoneracion_MontoImpuesto.Value >= Producto_Impuesto.Monto) {
+                if (!Producto_Impuesto.Exoneracion_MontoImpuesto.HasValue || Producto_Impuesto.Exoneracion_MontoImpuesto.Value <= 0 ) {
                     MessageBox.Show("Favor verificar el monto a exonerar");
                     return;
                 }
