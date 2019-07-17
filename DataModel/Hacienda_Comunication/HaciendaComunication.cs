@@ -1,10 +1,10 @@
 ﻿using DataModel.EF;
 using DataModel.Hacienda_Comunication.IDP;
-using FacturaElectronica_V_4_2;
+using FacturaElectronica_V_4_3;
 using FirmaXadesNet;
 using FirmaXadesNet.Crypto;
 using FirmaXadesNet.Signature.Parameters;
-using NotaCreditoElectronica_V4_2;
+using NotaCreditoElectronica_V4_3;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

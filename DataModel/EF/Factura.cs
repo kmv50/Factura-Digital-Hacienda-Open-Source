@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NotaCreditoElectronica_V4_2;
+using NotaCreditoElectronica_V4_3;
 
 namespace DataModel.EF
 {

@@ -46,7 +46,9 @@ namespace FacturaDigital.Productos
             }
             cb_impuestoTipo.ItemsSource = ImpuestosDisponbles;
             cb_impuestoTipo.SelectedIndex = 0;
+            cb_codigotarifa.ItemsSource = ProductosData.TarifaCodigo;
             txt_monto.Text = "0";
+            cb_TipoDocumento.ItemsSource = ProductosData.TiposDocumentosExoneracion;
         }
 
         internal Producto_ImpuestoSeleccionado GetImpuesto()
@@ -72,8 +74,17 @@ namespace FacturaDigital.Productos
                     ui.Text = null;
                     return;
                 }
-
-                txt_monto.Text = ((Tarifa / 100) * precioUnitario).ToString();
+                decimal montoImpuesto = ((Tarifa / (decimal)100) * precioUnitario);
+                if (chk_Exoneracion.IsChecked.Value)
+                {
+                    decimal MontoAExonerar = ((Convert.ToDecimal(txt_procentajeExoneracion.Text) / (decimal)100) * montoImpuesto);
+                    txt_ExoneracionTotal.Text = MontoAExonerar.ToString();
+                    txt_monto.Text =  (montoImpuesto - MontoAExonerar).ToString();
+                }
+                else
+                {
+                    txt_monto.Text = montoImpuesto.ToString();
+                }
 
             }
             catch(Exception ex)
@@ -91,17 +102,102 @@ namespace FacturaDigital.Productos
                 return;
             }
             var v1 = ((Impuestos)cb_impuestoTipo.SelectedItem);
+
+            TiposDocumentosExoneracion Exoneracion_TipoDocumento = cb_TipoDocumento.SelectedItem as TiposDocumentosExoneracion;
             Producto_Impuesto = new Producto_ImpuestoSeleccionado()
             {
                 Impuesto_Tarifa = Tarifa,
                 Impuesto_Codigo = v1.Value,
+                CodigoTarifa = (cb_codigotarifa.SelectedItem as TarifaCodigo).Value,
                 Nombre = v1.Text,
-                Monto = Convert.ToDecimal(txt_monto.Text)
+                Monto = Convert.ToDecimal(txt_monto.Text),                
+                Exento = chk_Exoneracion.IsChecked.Value,
+                Exoneracion_FechaEmision = dt_FechaExoneracion.SelectedDate,
+                Exoneracion_MontoImpuesto = Convert.ToDecimal(txt_ExoneracionTotal.Text),
+                Exoneracion_NombreInstitucion = txt_nombreinstitucion.Text,
+                Exoneracion_NumeroDocumento = txt_numerodocumento.Text,
+                Exoneracion_PorcentajeCompra = Convert.ToInt32(txt_procentajeExoneracion.Text),
+                Exoneracion_TipoDocumento = Exoneracion_TipoDocumento == null || Exoneracion_TipoDocumento.Value == null ? null : Exoneracion_TipoDocumento.Value,                
             };
-            
+
+            #region Validacion Exoneracion
+            if (Producto_Impuesto.Exento) {
+                if (string.IsNullOrEmpty(Producto_Impuesto.Exoneracion_NombreInstitucion)) {
+                    MessageBox.Show("Favor llenar el nombre de la institucion");
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(Producto_Impuesto.Exoneracion_NumeroDocumento))
+                {
+                    MessageBox.Show("Favor llenar el numero del documento");
+                    return;
+                }
+
+                if (!Producto_Impuesto.Exoneracion_FechaEmision.HasValue)
+                {
+                    MessageBox.Show("Favor seleccionar la fecha de emicion del documento");
+                    return;
+                }
+
+                if (!Producto_Impuesto.Exoneracion_MontoImpuesto.HasValue || Producto_Impuesto.Exoneracion_MontoImpuesto.Value <= 0 || Producto_Impuesto.Exoneracion_MontoImpuesto.Value >= Producto_Impuesto.Monto) {
+                    MessageBox.Show("Favor verificar el monto a exonerar");
+                    return;
+                }
+            }
+            #endregion
+
             this.DialogResult = true;
             this.Close();
         }
-       
+
+        private void CambiarSelecionCodigoTarifa(object sender, SelectionChangedEventArgs e)
+        {
+            TarifaCodigo cod = cb_codigotarifa.SelectedItem as TarifaCodigo;
+            if (cod == null)
+                return;
+            txt_Tarifa.Text =  cod.Tarifa.ToString();
+            CalculeMonto(txt_Tarifa,null);
+        }
+
+        private void CalcularExoneracion(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                TextBox txt = sender as TextBox;
+                if (txt == null)
+                {
+                    return;
+                }
+                int v = 0;
+                if (!int.TryParse(txt.Text, out v) || v < 0 || v >= 99)
+                {
+                    txt.Text = null;
+                }
+                CalculeMonto(txt_Tarifa, null);
+            }
+            catch (Exception ex)
+            {
+                this.LogError(ex);
+                MessageBox.Show("Ocurrio un error al calcular el subtotal");
+            }
+        }
+
+        void limpiarExoneracion() {
+            cb_TipoDocumento.SelectedItem = 0;
+            txt_numerodocumento.Text = null;
+            txt_nombreinstitucion.Text = null;
+            dt_FechaExoneracion.SelectedDate = null;
+            txt_procentajeExoneracion.Text = null;
+            txt_ExoneracionTotal.Text = null;
+        }
+
+        private void CambiarEstadoExoneracion(object sender, RoutedEventArgs e)
+        {
+            limpiarExoneracion();
+            if (chk_Exoneracion.IsChecked.Value) 
+                PanelDisableExoneracion.Visibility = Visibility.Collapsed;
+            else
+                PanelDisableExoneracion.Visibility = Visibility.Visible;
+        }
     }
 }

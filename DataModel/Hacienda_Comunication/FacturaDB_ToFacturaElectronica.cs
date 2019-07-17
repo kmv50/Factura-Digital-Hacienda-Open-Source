@@ -1,5 +1,5 @@
 ﻿using DataModel.EF;
-using FacturaElectronica_V_4_2;
+using FacturaElectronica_V_4_3;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,12 +55,7 @@ namespace DataModel.Hacienda_Comunication
                         Distrito = facturaDB.Emisor_Ubicacion_Distrito.Value.ToString("00"),
                         OtrasSenas = facturaDB.Emisor_Ubicacion_OtrasSenas ?? "No indicado"
                     }                  
-                },
-                Normativa = new FacturaElectronicaNormativa()
-                {
-                    NumeroResolucion = "DGT-R-48-2016",
-                    FechaResolucion = facturaDB.Fecha_Emision_Documento.ToString("dd-MM-yyyy HH:mm:ss")
-                },
+                },     
                 DetalleServicio = GetDetalleFromFacturaDB(facturaDB.Factura_Detalle).ToArray(),
                 Receptor = GetReceptorFromFacturaDB(facturaDB),
                 ResumenFactura = GetResumenFactura(facturaDB)
@@ -97,8 +92,11 @@ namespace DataModel.Hacienda_Comunication
             FacturaElectronicaResumenFactura resumen = new FacturaElectronicaResumenFactura();
             //if (fac.Codigo_Moneda == "CRC")
             //{
-                resumen.CodigoMoneda = FacturaElectronicaResumenFacturaCodigoMoneda.CRC;
-                resumen.CodigoMonedaSpecified = true;
+            resumen.CodigoTipoMoneda = new CodigoMonedaType()
+            {
+                CodigoMoneda = CodigoMonedaTypeCodigoMoneda.CRC,
+                TipoCambio = 0
+            };
             //}
             //else
             //{
@@ -237,14 +235,13 @@ namespace DataModel.Hacienda_Comunication
                 FacturaElectronicaLineaDetalle fd = new FacturaElectronicaLineaDetalle()
                 {
                     Cantidad = q.Cantidad,
-                    Codigo = new CodigoType[]{
+                    CodigoComercial = new CodigoType[]{
                         new CodigoType(){
                             Codigo = q.Codigo,
                             Tipo = CodigoTypeTipo.Item01
                         }
                     },
-                    Detalle = q.ProductoServicio,
-                    MontoDescuentoSpecified = false,
+                    Detalle = q.ProductoServicio,                    
                     NumeroLinea = NumeroLinea.ToString(),
                     PrecioUnitario = q.PrecioUnitario,
                     SubTotal = q.SubTotal,
@@ -257,16 +254,12 @@ namespace DataModel.Hacienda_Comunication
 
                 if (q.Monto_Descuento.HasValue && q.Monto_Descuento.Value != 0)
                 {
-                    fd.MontoDescuento = q.Monto_Descuento.Value;
-                    fd.MontoDescuentoSpecified = true;
-                    if (string.IsNullOrEmpty(q.Naturaleza_Descuento))
-                    {
-                        fd.NaturalezaDescuento = "No se indica";
-                    }
-                    else
-                    {
-                        fd.NaturalezaDescuento = q.Naturaleza_Descuento;
-                    }
+                    fd.Descuento = new DescuentoType[] {
+                        new DescuentoType(){
+                            MontoDescuento = q.Monto_Descuento.Value,
+                            NaturalezaDescuento = string.IsNullOrEmpty(q.Naturaleza_Descuento) ? "No se indica" : q.Naturaleza_Descuento
+                        }
+                    };                   
                 }
 
             
@@ -283,21 +276,38 @@ namespace DataModel.Hacienda_Comunication
                             if (!string.IsNullOrWhiteSpace(impuesto.Exoneracion_PorcentajeCompra) && impuesto.Exoneracion_MontoImpuesto.HasValue)//exento parcial
                             {
 
-                                impuestoD.Add(new ImpuestoType()
+                                ImpuestoType impuestoHacienda = new ImpuestoType()
                                 {
                                     Codigo = EnumUtils.SetTypeString<ImpuestoTypeCodigo>(impuesto.Impuesto_Codigo),
                                     Monto = impuesto.Impuesto_Monto,
-                                    Tarifa = impuesto.Impuesto_Tarifa,
+                                    TarifaSpecified = true,
+                                    Tarifa = impuesto.Impuesto_Tarifa,                                    
                                     Exoneracion = new ExoneracionType()
                                     {
                                         FechaEmision = impuesto.Exoneracion_FechaEmision.Value,
-                                        MontoImpuesto = impuesto.Exoneracion_MontoImpuesto.Value,
+                                        MontoExoneracion = impuesto.Exoneracion_MontoImpuesto.Value,
                                         NombreInstitucion = impuesto.Exoneracion_NombreInstitucion,
                                         NumeroDocumento = impuesto.Exoneracion_NumeroDocumento,
-                                        PorcentajeCompra = impuesto.Exoneracion_PorcentajeCompra,
+                                        PorcentajeExoneracion = impuesto.Exoneracion_PorcentajeCompra,
                                         TipoDocumento = EnumUtils.SetTypeString<ExoneracionTypeTipoDocumento>(impuesto.Exoneracion_TipoDocumento)
-                                    }
-                                });
+                                    },
+                                    
+                                };
+
+                                if (!string.IsNullOrEmpty(impuesto.CodigoTarifa)) {
+                                    impuestoHacienda.CodigoTarifa = EnumUtils.SetTypeString<ImpuestoTypeCodigoTarifa>(impuesto.CodigoTarifa);
+                                    impuestoHacienda.CodigoTarifaSpecified = true;
+                                }
+                                else {
+                                    impuestoHacienda.CodigoTarifaSpecified = false;
+                                }
+
+                                if (impuesto.FactorIVA.HasValue && impuesto.FactorIVA > 0) {
+                                    impuestoHacienda.FactorIVA = impuesto.FactorIVA.Value;
+                                }
+
+
+                                impuestoD.Add(impuestoHacienda);
 
                             }
                             else if (impuesto.Impuesto_Tarifa != 0) //exento linea total todo a 0 

@@ -158,7 +158,7 @@ namespace FacturaDigital.Faturacion
                             Exoneracion_MontoImpuesto = impuesto.Exoneracion_MontoImpuesto,
                             Exoneracion_NombreInstitucion = impuesto.Exoneracion_NombreInstitucion,
                             Exoneracion_NumeroDocumento = impuesto.Exoneracion_NumeroDocumento,
-                            Exoneracion_PorcentajeCompra = impuesto.Exoneracion_PorcentajeCompra,
+                            Exoneracion_PorcentajeCompra = impuesto.Exoneracion_PorcentajeCompra.ToString(),
                             Exoneracion_TipoDocumento = impuesto.Exoneracion_TipoDocumento,
                             Impuesto_Codigo = impuesto.Impuesto_Codigo,
                             Impuesto_Tarifa = impuesto.Impuesto_Tarifa,

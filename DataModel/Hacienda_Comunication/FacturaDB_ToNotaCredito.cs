@@ -1,5 +1,5 @@
 ﻿using DataModel.EF;
-using NotaCreditoElectronica_V4_2;
+using NotaCreditoElectronica_V4_3;
 using System;
 using System.Collections.Generic;
 
@@ -34,22 +34,22 @@ namespace DataModel.Hacienda_Comunication
                     NumeracionConsecutiva = facturaDB.NumeroConsecutivo,
                     TipoDocumento = (Tipo_documento)facturaDB.Id_TipoDocumento
                 }.ToString(),
-                Emisor = new NotaCreditoElectronica_V4_2.EmisorType()
+                Emisor = new NotaCreditoElectronica_V4_3.EmisorType()
                 {
                     CorreoElectronico = facturaDB.Emisor_CorreoElectronico,
-                    Identificacion = new NotaCreditoElectronica_V4_2.IdentificacionType()
+                    Identificacion = new NotaCreditoElectronica_V4_3.IdentificacionType()
                     {
-                        Tipo = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_2.IdentificacionTypeTipo>(facturaDB.Emisor_Identificacion_Tipo),
+                        Tipo = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_3.IdentificacionTypeTipo>(facturaDB.Emisor_Identificacion_Tipo),
                         Numero = facturaDB.Emisor_Identificacion_Numero
                     },
                     Nombre = facturaDB.Emisor_Nombre,
                     NombreComercial = facturaDB.Emisor_NombreComercial,
-                    Telefono = new NotaCreditoElectronica_V4_2.TelefonoType()
+                    Telefono = new NotaCreditoElectronica_V4_3.TelefonoType()
                     {
                         CodigoPais = facturaDB.Emisor_Telefono_Codigo.Value.ToString(),
                         NumTelefono = facturaDB.Emisor_Telefono_Numero.Value.ToString()
                     },
-                    Ubicacion = new NotaCreditoElectronica_V4_2.UbicacionType()
+                    Ubicacion = new NotaCreditoElectronica_V4_3.UbicacionType()
                     {
                         Barrio = facturaDB.Emisor_Ubicacion_Barrio.Value.ToString("00"),
                         Provincia = facturaDB.Emisor_Ubicacion_Provincia.Value.ToString(),
@@ -57,12 +57,7 @@ namespace DataModel.Hacienda_Comunication
                         Distrito = facturaDB.Emisor_Ubicacion_Distrito.Value.ToString("00"),
                         OtrasSenas = facturaDB.Emisor_Ubicacion_OtrasSenas ?? "No indicado"
                     }
-                },
-                Normativa = new NotaCreditoElectronicaNormativa()
-                {
-                    NumeroResolucion = "DGT-R-48-2016",
-                    FechaResolucion = facturaDB.Fecha_Emision_Documento.ToString("dd-MM-yyyy HH:mm:ss")
-                },
+                },               
                 DetalleServicio = GetDetalleFromFacturaDB(facturaDB.Factura_Detalle).ToArray(),
                 Receptor = GetReceptorFromFacturaDB(facturaDB),
                 ResumenFactura = GetResumenFactura(facturaDB)
@@ -113,8 +108,11 @@ namespace DataModel.Hacienda_Comunication
             {
                 //if (fac.Codigo_Moneda == "CRC")
                 //{
-                CodigoMoneda = NotaCreditoElectronicaResumenFacturaCodigoMoneda.CRC,
-                CodigoMonedaSpecified = true,
+                CodigoTipoMoneda = new CodigoMonedaType() {
+                    CodigoMoneda = CodigoMonedaTypeCodigoMoneda.CRC,
+                    TipoCambio = 1
+                },
+                
                 //}
                 //else
                 //{
@@ -185,18 +183,18 @@ namespace DataModel.Hacienda_Comunication
         }
 
 
-        private NotaCreditoElectronica_V4_2.ReceptorType GetReceptorFromFacturaDB(Factura facturaDB)
+        private NotaCreditoElectronica_V4_3.ReceptorType GetReceptorFromFacturaDB(Factura facturaDB)
         {
             try
             {
-                NotaCreditoElectronica_V4_2.ReceptorType e = new NotaCreditoElectronica_V4_2.ReceptorType
+                NotaCreditoElectronica_V4_3.ReceptorType e = new NotaCreditoElectronica_V4_3.ReceptorType
                 {
                     CorreoElectronico = facturaDB.Receptor_CorreoElectronico
                 };
 
                 if (facturaDB.Receptor_Telefono_Codigo != null && facturaDB.Receptor_Telefono_Numero != null)
                 {
-                    e.Telefono = new NotaCreditoElectronica_V4_2.TelefonoType()
+                    e.Telefono = new NotaCreditoElectronica_V4_3.TelefonoType()
                     {
                         CodigoPais = facturaDB.Receptor_Telefono_Codigo.Value.ToString(),
                         NumTelefono = facturaDB.Receptor_Telefono_Numero.Value.ToString()
@@ -207,7 +205,7 @@ namespace DataModel.Hacienda_Comunication
                 e.NombreComercial = facturaDB.Receptor_NombreComercial;
                 if (facturaDB.Receptor_Ubicacion_Barrio != null && facturaDB.Receptor_Ubicacion_Canton != null && facturaDB.Receptor_Ubicacion_Provincia != null && facturaDB.Receptor_Ubicacion_Distrito != null)
                 {
-                    e.Ubicacion = new NotaCreditoElectronica_V4_2.UbicacionType()
+                    e.Ubicacion = new NotaCreditoElectronica_V4_3.UbicacionType()
                     {
                         Barrio = facturaDB.Receptor_Ubicacion_Barrio.Value.ToString("00"),
                         Canton = facturaDB.Receptor_Ubicacion_Canton.Value.ToString("00"),
@@ -221,10 +219,10 @@ namespace DataModel.Hacienda_Comunication
                 {
                     if (facturaDB.Receptor_Identificacion_Tipo != "EX")
                     {
-                        e.Identificacion = new NotaCreditoElectronica_V4_2.IdentificacionType()
+                        e.Identificacion = new NotaCreditoElectronica_V4_3.IdentificacionType()
                         {
                             Numero = facturaDB.Receptor_Identificacion_Numero,
-                            Tipo = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_2.IdentificacionTypeTipo>(facturaDB.Receptor_Identificacion_Tipo)
+                            Tipo = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_3.IdentificacionTypeTipo>(facturaDB.Receptor_Identificacion_Tipo)
                         };
                     }
                     else
@@ -239,7 +237,7 @@ namespace DataModel.Hacienda_Comunication
             catch (Exception ex)
             {
                 this.LogError(ex);
-                return new NotaCreditoElectronica_V4_2.ReceptorType()
+                return new NotaCreditoElectronica_V4_3.ReceptorType()
                 {
                     Nombre = facturaDB.Receptor_Nombre,
                     CorreoElectronico = facturaDB.Receptor_CorreoElectronico
@@ -258,18 +256,17 @@ namespace DataModel.Hacienda_Comunication
                 NotaCreditoElectronicaLineaDetalle fd = new NotaCreditoElectronicaLineaDetalle()
                 {
                     Cantidad = q.Cantidad,
-                    Codigo = new NotaCreditoElectronica_V4_2.CodigoType[]{
-                        new NotaCreditoElectronica_V4_2.CodigoType(){
+                    CodigoComercial = new NotaCreditoElectronica_V4_3.CodigoType[]{
+                        new NotaCreditoElectronica_V4_3.CodigoType(){
                             Codigo = q.Codigo,
-                            Tipo = NotaCreditoElectronica_V4_2.CodigoTypeTipo.Item01
+                            Tipo = NotaCreditoElectronica_V4_3.CodigoTypeTipo.Item01
                         }
                     },
                     Detalle = q.ProductoServicio,
-                    MontoDescuentoSpecified = false,
                     NumeroLinea = NumeroLinea.ToString(),
                     PrecioUnitario = q.PrecioUnitario,
                     SubTotal = q.SubTotal,
-                    UnidadMedida = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_2.UnidadMedidaType>(q.Unidad_Medida),
+                    UnidadMedida = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_3.UnidadMedidaType>(q.Unidad_Medida),
                     MontoTotal = q.Monto_Total,
                     MontoTotalLinea = q.Monto_Total_Linea,
 
@@ -278,16 +275,12 @@ namespace DataModel.Hacienda_Comunication
 
                 if (q.Monto_Descuento.HasValue && q.Monto_Descuento.Value != 0)
                 {
-                    fd.MontoDescuento = q.Monto_Descuento.Value;
-                    fd.MontoDescuentoSpecified = true;
-                    if (string.IsNullOrEmpty(q.Naturaleza_Descuento))
-                    {
-                        fd.NaturalezaDescuento = "No se indica";
-                    }
-                    else
-                    {
-                        fd.NaturalezaDescuento = q.Naturaleza_Descuento;
-                    }
+                    fd.Descuento = new DescuentoType[] {
+                        new DescuentoType(){
+                            MontoDescuento = q.Monto_Descuento.Value,
+                            NaturalezaDescuento = string.IsNullOrEmpty(q.Naturaleza_Descuento) ? "No se indica" : q.Naturaleza_Descuento
+                        }
+                    };                  
                 }
 
 
@@ -295,7 +288,7 @@ namespace DataModel.Hacienda_Comunication
 
                 if (q.Factura_Detalle_Impuesto != null && q.Factura_Detalle_Impuesto.Count > 0)
                 {
-                    List<NotaCreditoElectronica_V4_2.ImpuestoType> impuestoD = new List<NotaCreditoElectronica_V4_2.ImpuestoType>();
+                    List<NotaCreditoElectronica_V4_3.ImpuestoType> impuestoD = new List<NotaCreditoElectronica_V4_3.ImpuestoType>();
                     foreach (Factura_Detalle_Impuesto impuesto in q.Factura_Detalle_Impuesto)
                     {
                         if (impuesto.Exento)
@@ -304,28 +297,29 @@ namespace DataModel.Hacienda_Comunication
                             if (!string.IsNullOrWhiteSpace(impuesto.Exoneracion_PorcentajeCompra) && impuesto.Exoneracion_MontoImpuesto.HasValue)//exento parcial
                             {
 
-                                impuestoD.Add(new NotaCreditoElectronica_V4_2.ImpuestoType()
+                                impuestoD.Add(new NotaCreditoElectronica_V4_3.ImpuestoType()
                                 {
-                                    Codigo = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_2.ImpuestoTypeCodigo>(impuesto.Impuesto_Codigo),
+                                    Codigo = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_3.ImpuestoTypeCodigo>(impuesto.Impuesto_Codigo),
                                     Monto = impuesto.Impuesto_Monto,
                                     Tarifa = impuesto.Impuesto_Tarifa,
-                                    Exoneracion = new NotaCreditoElectronica_V4_2.ExoneracionType()
+                                    Exoneracion = new NotaCreditoElectronica_V4_3.ExoneracionType()
                                     {
                                         FechaEmision = impuesto.Exoneracion_FechaEmision.Value,
-                                        MontoImpuesto = impuesto.Exoneracion_MontoImpuesto.Value,
+                                        //MontoImpuesto = impuesto.Exoneracion_MontoImpuesto.Value,
                                         NombreInstitucion = impuesto.Exoneracion_NombreInstitucion,
                                         NumeroDocumento = impuesto.Exoneracion_NumeroDocumento,
-                                        PorcentajeCompra = impuesto.Exoneracion_PorcentajeCompra,
-                                        TipoDocumento = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_2.ExoneracionTypeTipoDocumento>(impuesto.Exoneracion_TipoDocumento)
-                                    }
+                                        PorcentajeExoneracion = impuesto.Exoneracion_PorcentajeCompra,
+                                        TipoDocumento = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_3.ExoneracionTypeTipoDocumento>(impuesto.Exoneracion_TipoDocumento)
+                                    },
+                                    
                                 });
 
                             }
                             else if (impuesto.Impuesto_Tarifa != 0) //exento linea total todo a 0 
                             {
-                                impuestoD.Add(new NotaCreditoElectronica_V4_2.ImpuestoType()
+                                impuestoD.Add(new NotaCreditoElectronica_V4_3.ImpuestoType()
                                 {
-                                    Codigo = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_2.ImpuestoTypeCodigo>(impuesto.Impuesto_Codigo),
+                                    Codigo = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_3.ImpuestoTypeCodigo>(impuesto.Impuesto_Codigo),
                                     Monto = 0,
                                     Tarifa = 0,
                                 });
@@ -333,9 +327,9 @@ namespace DataModel.Hacienda_Comunication
                         }
                         else//gravado
                         {
-                            impuestoD.Add(new NotaCreditoElectronica_V4_2.ImpuestoType()
+                            impuestoD.Add(new NotaCreditoElectronica_V4_3.ImpuestoType()
                             {
-                                Codigo = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_2.ImpuestoTypeCodigo>(impuesto.Impuesto_Codigo),
+                                Codigo = EnumUtils.SetTypeString<NotaCreditoElectronica_V4_3.ImpuestoTypeCodigo>(impuesto.Impuesto_Codigo),
                                 Monto = impuesto.Impuesto_Monto,
                                 Tarifa = impuesto.Impuesto_Tarifa,
                             });

@@ -126,6 +126,14 @@ namespace FacturaDigital.Productos
                             {
                                 Impuesto_Tarifa = s.Impuesto_Tarifa,
                                 Impuesto_Codigo = s.Impuesto_Codigo,
+                                CodigoTarifa = s.CodigoTarifa,
+                                Exento = s.Exento,
+                                Exoneracion_FechaEmision = s.Exoneracion_FechaEmision,
+                                Exoneracion_MontoImpuesto = s.Exoneracion_MontoImpuesto,
+                                Exoneracion_NombreInstitucion = s.Exoneracion_NombreInstitucion,
+                                Exoneracion_NumeroDocumento = s.Exoneracion_NumeroDocumento,
+                                Exoneracion_PorcentajeCompra = s.Exoneracion_PorcentajeCompra,
+                                Exoneracion_TipoDocumento = s.Exoneracion_TipoDocumento,                                
                             });
 
                         }

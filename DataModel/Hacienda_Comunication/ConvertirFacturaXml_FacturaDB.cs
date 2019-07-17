@@ -1,5 +1,5 @@
 ﻿using DataModel.EF;
-using FacturaElectronica_V_4_2;
+using FacturaElectronica_V_4_3;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,12 +39,12 @@ namespace DataModel.Hacienda_Comunication
                 Factura_Resolucion_Detalle lineaDB = new Factura_Resolucion_Detalle();
                 lineaDB.Cantidad = Convert.ToInt32(linea.Cantidad);
                 if(lineaDB.Codigo != null && linea.Codigo.Length > 0)                
-                    lineaDB.Codigo = linea.Codigo[0].Codigo;
+                    lineaDB.Codigo = linea.CodigoComercial[0].Codigo;
 
-                if (linea.MontoDescuentoSpecified)
+                if (linea.Descuento != null && linea.Descuento.Length > 0)
                 {
-                    lineaDB.Monto_Descuento = linea.MontoDescuento;
-                    lineaDB.Naturaleza_Descuento = linea.NaturalezaDescuento;
+                    lineaDB.Monto_Descuento = linea.Descuento.Sum(q => q.MontoDescuento);
+                    lineaDB.Naturaleza_Descuento = string.Join(", ", linea.Descuento.Select(q => q.NaturalezaDescuento));
                 }
 
                 lineaDB.Monto_Total = linea.MontoTotal;
@@ -121,11 +121,10 @@ namespace DataModel.Hacienda_Comunication
             FacturaElectronicaResumenFactura Resumen = factura.ResumenFactura;
             if(Resumen != null)
             {
-                if (Resumen.CodigoMonedaSpecified)                
-                    fac.Codigo_Moneda = Resumen.CodigoMoneda.ToString();
-                
-                if (Resumen.TipoCambioSpecified)                
-                    fac.TipoCambio = Resumen.TipoCambio;               
+                if (Resumen.CodigoTipoMoneda != null) {
+                    fac.Codigo_Moneda = Resumen.CodigoTipoMoneda.CodigoMoneda.ToString();
+                    fac.TipoCambio = Resumen.CodigoTipoMoneda.TipoCambio;
+                }                                             
 
                 if(Resumen.TotalDescuentosSpecified)
                     fac.TotalDescuentos = Resumen.TotalDescuentos ;

@@ -8,12 +8,10 @@ namespace DataModel.EF
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class db_FacturaDigital : DbContext
     {
-        // Your context has been configured to use a 'db_FacturaDigital' connection string from your application's 
-        // configuration file (App.config or Web.config). By default, this connection string targets the 
-        // 'DataModel.EF.db_FacturaDigital' database on your LocalDb instance. 
-        // 
-        // If you wish to target a different database and/or database provider, modify the 'db_FacturaDigital' 
-        // connection string in the application configuration file.
+  
+
+        //muy importante para poder crear migraciones nuevas en desarrollo incluir : base("name=db_FacturaDigital")
+        //mientras q para el release o puesta a correr es :base(new ConnectionSettings().GetConnectionString())
         public db_FacturaDigital()
             //: base("name=db_FacturaDigital")
             :base(new ConnectionSettings().GetConnectionString())
@@ -22,8 +20,7 @@ namespace DataModel.EF
             Database.SetInitializer<db_FacturaDigital>(null);
         }
 
-        // Add a DbSet for each entity type that you want to include in your model. For more information 
-        // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
+    
 
         public virtual DbSet<Contribuyente> Contribuyente { get; set; }
         public virtual DbSet<Factura> Factura { get; set; }

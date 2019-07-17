@@ -32,7 +32,7 @@ namespace DataModel.EF
 
         public decimal? Monto_Descuento { get; set; }
 
-        [StringLength(80)]
+        [StringLength(500)]
         public string Naturaleza_Descuento { get; set; }
 
         public decimal SubTotal { get; set; }

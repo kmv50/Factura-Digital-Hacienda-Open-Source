@@ -36,11 +36,16 @@ namespace DataModel.EF
 
         public DateTime? Exoneracion_FechaEmision { get; set; }
 
-        public string Exoneracion_PorcentajeCompra { get; set; }
+        public int Exoneracion_PorcentajeCompra { get; set; }
 
         public int Id_Producto { set; get; }
 
+        [StringLength(3)]
+        [Column(TypeName = "char")]
+        public string CodigoTarifa { get; set; }
+
         [ForeignKey("Id_Producto"), Required]
         public virtual Producto Producto { set; get; }
+
     }
 }

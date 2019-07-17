@@ -94,6 +94,17 @@
                 <materialDesign:MaterialDataGridTextColumn Binding="{Binding Impuesto_Tarifa}" Width="1*" Header="Tarifa" />
                 <materialDesign:MaterialDataGridTextColumn Binding="{Binding Monto}" Width="1*" Header="Monto" />
 
+                <DataGridTemplateColumn  MinWidth="110" Header="Exonerado"  CanUserSort="False" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Exento}" IsEnabled="False" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <materialDesign:MaterialDataGridTextColumn Binding="{Binding Exoneracion_MontoImpuesto}" Width="1*" Header="Monto Exonerado" />
+
+                
                 <DataGridTemplateColumn  MinWidth="110"   CanUserSort="False" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

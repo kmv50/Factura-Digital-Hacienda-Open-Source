@@ -14,36 +14,73 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d" 
         Title="Impuesto"
-        Height="260" Width="500" ResizeMode="NoResize">
+        Height="600" Width="650" ResizeMode="NoResize">
     <StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="150" />
                 <ColumnDefinition Width="5*" />
             </Grid.ColumnDefinitions>
-            <Label Content="Tipo Impuesto" VerticalAlignment="Center" Margin="10"/>
-            <ComboBox Grid.Column="1"  x:Name="cb_impuestoTipo"  materialDesign:HintAssist.Hint="Seleccione el timpo de impuesto" materialDesign:HintAssist.IsFloating="True" Margin="10" DisplayMemberPath="Text" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Label Content="Tipo Impuesto" VerticalAlignment="Center" Margin="5"/>
+            <ComboBox Grid.Column="1"  x:Name="cb_impuestoTipo"  materialDesign:HintAssist.Hint="Seleccione el timpo de impuesto" materialDesign:HintAssist.IsFloating="True" Margin="5" DisplayMemberPath="Text" />
+
+            <Label Content="Código Tarifa"  Grid.Row="1" VerticalAlignment="Center" Margin="5"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" SelectionChanged="CambiarSelecionCodigoTarifa"  x:Name="cb_codigotarifa"  materialDesign:HintAssist.Hint="Tipo de Tarifa" materialDesign:HintAssist.IsFloating="True" Margin="5" DisplayMemberPath="Text" />
+
+            <Label Content="Tarifa" Grid.Row="2" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Grid.Column="1" Grid.Row="2" Width="200" HorizontalAlignment="Left" x:Name="txt_Tarifa" KeyUp="CalculeMonto"  materialDesign:HintAssist.Hint="Agregue una tarifa %" materialDesign:HintAssist.IsFloating="True" Margin="5"  />
+
+            <CheckBox Grid.Column="1" Grid.Row="3" Content="Incluir Exoneración"  HorizontalAlignment="Left" x:Name="chk_Exoneracion"  Margin="5" Click="CambiarEstadoExoneracion"  />
         </Grid>
+
+
+        <GroupBox Margin="5" Header="Datos Exoneración">
+            <Grid>
+                <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+
+                <ComboBox x:Name="cb_TipoDocumento" Margin="5" materialDesign:HintAssist.Hint="Seleccione el timpo de impuesto" materialDesign:HintAssist.IsFloating="True"  DisplayMemberPath="Text" ></ComboBox>
+                <TextBox Grid.Column="1"  x:Name="txt_numerodocumento" MaxLength="40" Margin="5" materialDesign:HintAssist.Hint="Numero de documento a Exonerar" materialDesign:HintAssist.IsFloating="True"  ></TextBox>
+                <TextBox  Grid.Row="1" Grid.ColumnSpan="2" Margin="5" x:Name="txt_nombreinstitucion" MaxLength="160" materialDesign:HintAssist.Hint="Nombre de institución o dependencia que emitió la exoneración" materialDesign:HintAssist.IsFloating="True"  ></TextBox>
+
+                <DatePicker Grid.Row="2" x:Name="dt_FechaExoneracion" Margin="5" materialDesign:HintAssist.Hint="Fecha de emisión del documento de exoneración" materialDesign:HintAssist.IsFloating="True" ToolTip="Fecha de emisión del documento de exoneración o de autorización"   ></DatePicker>
+
+                <TextBox  Grid.Row="3"  Margin="5" x:Name="txt_procentajeExoneracion" MaxLength="2" materialDesign:HintAssist.Hint="Porcentaje de la Exoneración" materialDesign:HintAssist.IsFloating="True" KeyUp="CalcularExoneracion" ></TextBox>
+
+                <TextBox  Grid.Row="3" Grid.Column="1"  Margin="5" x:Name="txt_ExoneracionTotal" IsEnabled="False" IsReadOnly="True" MaxLength="160" materialDesign:HintAssist.Hint="Monto del Impuesto Exonerado" materialDesign:HintAssist.IsFloating="True" ></TextBox>
+
+            </Grid>
+                <Grid x:Name="PanelDisableExoneracion">
+                    <Border Opacity="0.5" Background="Black" ></Border>
+                    <TextBlock Padding="5" Text="Seleccione la opcion de Incluir Exoneración para llenar estos campos" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                </Grid>
+            </Grid>
+        </GroupBox>
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="200" />
-            </Grid.ColumnDefinitions>
-            <Label Content="Tarifa" VerticalAlignment="Center" Margin="10"/>
-            <TextBox Grid.Column="1"  x:Name="txt_Tarifa" KeyUp="CalculeMonto"  materialDesign:HintAssist.Hint="Agregue una tarifa %" materialDesign:HintAssist.IsFloating="True" Margin="10"  />
-        </Grid>
-
-
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="150" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label Content="Monto" VerticalAlignment="Center" Margin="10"/>
-            <TextBox Grid.Column="1" IsReadOnly="True" IsEnabled="False" x:Name="txt_monto"  materialDesign:HintAssist.Hint="Auto Calculado" materialDesign:HintAssist.IsFloating="True" Margin="10"  />
+            <Label Content="Monto" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Grid.Column="1" IsReadOnly="True" IsEnabled="False" x:Name="txt_monto"  materialDesign:HintAssist.Hint="Auto Calculado" materialDesign:HintAssist.IsFloating="True" Margin="5"  />
         </Grid>
 
-        <Button Content="Agregar" HorizontalAlignment="Right" Margin="10" Click="Agregar" />
+        <Button Content="Agregar" HorizontalAlignment="Right" Margin="5" Click="Agregar" />
     </StackPanel>
 </Window>

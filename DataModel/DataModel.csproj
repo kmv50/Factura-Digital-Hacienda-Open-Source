@@ -72,7 +72,7 @@
     <Compile Include="EF\Factura_Resolucion.cs" />
     <Compile Include="EF\Factura_Resolucion_Detalle.cs" />
     <Compile Include="EF\Factura_Resolucion_Detalle_Impuesto.cs" />
-    <Compile Include="EstructurasHacienda\MensajeReceptor_4_2.cs" />
+    <Compile Include="EstructurasHacienda\MensajeReceptor_4_3.cs" />
     <Compile Include="Hacienda_Comunication\ApiConnector.cs" />
     <Compile Include="Hacienda_Comunication\ConvertirFacturaXml_FacturaDB.cs" />
     <Compile Include="Hacienda_Comunication\FacturaDB_ToFacturaElectronica.cs" />
@@ -89,15 +89,15 @@
     <Compile Include="EF\SMTP.cs" />
     <Compile Include="EF\Ubicaciones.cs" />
     <Compile Include="EnumsSistema.cs" />
-    <Compile Include="EstructurasHacienda\FacturaElectronica_V_4_2.cs" />
-    <Compile Include="EstructurasHacienda\TiqueteElectronico_V4_2.cs" />
+    <Compile Include="EstructurasHacienda\FacturaElectronica_V_4_3.cs" />
+    <Compile Include="EstructurasHacienda\TiqueteElectronico_V4_3.cs" />
     <Compile Include="GeneradorDeClaves.cs" />
     <Compile Include="Hacienda_Comunication\FacturaDB_ToMensajeReceptor.cs" />
     <Compile Include="Hacienda_Comunication\FacturaDB_ToNotaCredito.cs" />
     <Compile Include="Hacienda_Comunication\FacturaRequest.cs" />
     <Compile Include="Hacienda_Comunication\HaciendaComunication.cs" />
     <Compile Include="Hacienda_Comunication\IDP\TokenIdp.cs" />
-    <Compile Include="EstructurasHacienda\NotaCreditoElectronica_V4_2.cs" />
+    <Compile Include="EstructurasHacienda\NotaCreditoElectronica_V4_3.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="Migrations\201808200203580_Initial.cs" />
     <Compile Include="Migrations\201808200203580_Initial.Designer.cs">
@@ -146,6 +146,10 @@
     <Compile Include="Migrations\201810020140429_AceptacionFacturasConcecutivo.cs" />
     <Compile Include="Migrations\201810020140429_AceptacionFacturasConcecutivo.Designer.cs">
       <DependentUpon>201810020140429_AceptacionFacturasConcecutivo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907170014381_nuevoscampos43.cs" />
+    <Compile Include="Migrations\201907170014381_nuevoscampos43.Designer.cs">
+      <DependentUpon>201907170014381_nuevoscampos43.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -201,6 +205,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810020140429_AceptacionFacturasConcecutivo.resx">
       <DependentUpon>201810020140429_AceptacionFacturasConcecutivo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907170014381_nuevoscampos43.resx">
+      <DependentUpon>201907170014381_nuevoscampos43.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

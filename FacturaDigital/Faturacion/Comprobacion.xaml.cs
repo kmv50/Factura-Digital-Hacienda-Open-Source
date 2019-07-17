@@ -2,7 +2,7 @@
 using DataModel.EF;
 using DataModel.Hacienda_Comunication;
 using FacturaDigital.Recursos;
-using FacturaElectronica_V_4_2;
+using FacturaElectronica_V_4_3;
 using Microsoft.Win32;
 using System;
 using System.Linq;

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FacturaElectronica_V_4_3;
 
 namespace DataModel.EF
 {
@@ -49,6 +50,10 @@ namespace DataModel.EF
         
         public int Id_Factura_Detalle { get; set; }
         public virtual Factura_Detalle Factura_Detalle { get; set; }
+        [StringLength(3)]
+        [Column(TypeName = "char")]
+        public string CodigoTarifa { get;  set; }
+        public decimal? FactorIVA { get;  set; }
 
         public object Clone()
         {

@@ -43,7 +43,7 @@ namespace DataModel.Hacienda_Comunication
                 emisor = new FacturaClient()
                 {
                     numeroIdentificacion = Contribuyente.Identificacion_Numero,
-                    tipoIdentificacion = EnumUtils.SetTypeString< FacturaElectronica_V_4_2.IdentificacionTypeTipo >(Contribuyente.Identificacion_Tipo).ToString()
+                    tipoIdentificacion = EnumUtils.SetTypeString< FacturaElectronica_V_4_3.IdentificacionTypeTipo >(Contribuyente.Identificacion_Tipo).ToString()
                 },
                 fecha = facturaResolucion.Fecha_Documento.ToString("yyyy-MM-ddTHH:mm:ss"),
             };
